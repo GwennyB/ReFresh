@@ -15,6 +15,7 @@
     <Folder Include="Models\Interfaces\" />
     <Folder Include="Models\Services\" />
     <Folder Include="Data\" />
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>
