@@ -5,8 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ReFreshMVC.Data;
+//using ReFreshMVC.Data.Interfaces;
+//using ReFreshMVC.Data.Services;
 
 namespace ReFreshMVC
 {
@@ -24,6 +28,10 @@ namespace ReFreshMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+
+            services.AddDbContext<ReFreshDbContext>(options =>
+    options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddScoped<___INTERFACE___, ___SERVICE___>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
