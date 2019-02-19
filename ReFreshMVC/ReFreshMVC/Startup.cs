@@ -25,7 +25,7 @@ namespace ReFreshMVC
             services.AddMvc();
 
             services.AddDbContext<ReFreshDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             //services.AddScoped<___INTERFACE___, ___SERVICE___>();
         }
 
