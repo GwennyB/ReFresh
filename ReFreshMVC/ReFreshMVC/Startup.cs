@@ -4,8 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
-//using ReFreshMVC.Data.Interfaces;
-//using ReFreshMVC.Data.Services;
+using ReFreshMVC.Models.Interfaces;
+using ReFreshMVC.Models.Services;
+using Microsoft.AspNetCore.Identity.UI;
+using Microsoft.AspNetCore.Identity;
+using ReFreshMVC.Models;
 
 namespace ReFreshMVC
 {
@@ -24,9 +27,17 @@ namespace ReFreshMVC
         {
             services.AddMvc();
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
-            //services.AddScoped<___INTERFACE___, ___SERVICE___>();
+            services.AddScoped<IInventoryManager, InventoryManagementService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -37,6 +48,8 @@ namespace ReFreshMVC
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(route =>
             {

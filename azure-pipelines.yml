@@ -16,3 +16,6 @@ steps:
 - script: dotnet build ReFreshMVC/ReFreshMVC/ReFreshMVC.csproj --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
+- task: DownloadPipelineArtifact@0
+  inputs:
+    targetPath: $(System.DefaultWorkingDirectory)
