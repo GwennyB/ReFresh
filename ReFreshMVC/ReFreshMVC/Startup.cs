@@ -29,6 +29,9 @@ namespace ReFreshMVC
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
