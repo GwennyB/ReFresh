@@ -7,7 +7,8 @@ using ReFreshMVC.Data;
 using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.Services;
 using Microsoft.AspNetCore.Identity.UI;
-
+using Microsoft.AspNetCore.Identity;
+using ReFreshMVC.Models;
 
 namespace ReFreshMVC
 {
@@ -26,12 +27,17 @@ namespace ReFreshMVC
         {
             services.AddMvc();
 
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<UserDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
 
-            services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
