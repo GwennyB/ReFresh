@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
-//using ReFreshMVC.Data.Interfaces;
-//using ReFreshMVC.Data.Services;
+using ReFreshMVC.Models.Interfaces;
+using ReFreshMVC.Models.Services;
 
 namespace ReFreshMVC
 {
@@ -26,7 +26,7 @@ namespace ReFreshMVC
 
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
-            //services.AddScoped<___INTERFACE___, ___SERVICE___>();
+            services.AddScoped<IInventoryManager, InventoryManagementService>();
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

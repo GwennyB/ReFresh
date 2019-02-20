@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using ReFreshMVC.Models;
 
 namespace ReFreshMVC.Data
 {
@@ -26,7 +27,7 @@ namespace ReFreshMVC.Data
         //}
 
 
-        //public DbSet<___> Posts { get; set; }
+        public DbSet<Product> Inventory { get; set; }
 
     }
 }
