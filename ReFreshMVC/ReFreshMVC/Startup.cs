@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.Services;
+using Microsoft.AspNetCore.Identity.UI;
+
 
 namespace ReFreshMVC
 {
@@ -37,6 +39,8 @@ namespace ReFreshMVC
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(route =>
             {
