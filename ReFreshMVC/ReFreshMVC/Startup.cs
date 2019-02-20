@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.Services;
+using Microsoft.AspNetCore.Identity.UI;
+
 
 namespace ReFreshMVC
 {
@@ -27,6 +29,9 @@ namespace ReFreshMVC
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
+
+            services.AddDbContext<UserDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -37,6 +42,8 @@ namespace ReFreshMVC
             }
 
             app.UseStaticFiles();
+
+            app.UseAuthentication();
 
             app.UseMvc(route =>
             {
