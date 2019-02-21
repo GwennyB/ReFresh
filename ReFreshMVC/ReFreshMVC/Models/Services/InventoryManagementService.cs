@@ -33,9 +33,16 @@ namespace ReFreshMVC.Models.Services
         /// <returns></returns>
         public async Task DeleteAsync(int id)
         {
-            Product productToDelete = await _context.Inventory.FindAsync(id);
-            _context.Inventory.Remove(productToDelete);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Product productToDelete = await _context.Inventory.FindAsync(id);
+                _context.Inventory.Remove(productToDelete);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         /// <summary>
         /// Get all Products from DB
