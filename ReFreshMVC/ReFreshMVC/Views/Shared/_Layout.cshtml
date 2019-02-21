@@ -1,4 +1,11 @@
-﻿<!DOCTYPE html>
+﻿@* TODO:  ADD USING DIRECTIVES AND LOGIN DIV*@
+
+
+@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+@inject SignInManager<User> signInManager
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -9,6 +16,19 @@
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
+    <div>
+        @if (signInManager.IsSignedIn(User))
+        {
+            <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
+        }
+        else
+        {
+            <a asp-controller="User" asp-action="Login">Log in here!</a>
+            <a asp-controller="User" asp-action="Register">(No account? Register here!)</a>
+
+        }
+    </div>
+
     <div>
         @RenderBody()
     </div>
