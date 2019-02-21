@@ -21,6 +21,7 @@ namespace ReFreshMVC.Models
         [DataType(DataType.Currency)]
         public int Price { get; set; }
         public string Description { get; set; }
+        [DataType(DataType.ImageUrl)]
         public string Image { get; set; }
     }
 }
