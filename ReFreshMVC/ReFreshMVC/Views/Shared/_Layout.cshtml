@@ -15,15 +15,13 @@
 <body>
     <div>
         @if (signInManager.IsSignedIn(User))
-    {
-        <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
-    }
-    else
-    {
-        <a asp-controller="User" asp-action="Login">Log in here!</a>
-        <a asp-controller="User" asp-action="Register">(No account? Register here!)</a>
-
-    }
+        {
+            <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
+        }
+        else
+        {
+            <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
+        }
     </div>
 
     <div>
