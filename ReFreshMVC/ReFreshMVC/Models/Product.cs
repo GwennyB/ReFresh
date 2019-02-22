@@ -23,5 +23,7 @@ namespace ReFreshMVC.Models
         public string Description { get; set; }
         [DataType(DataType.ImageUrl)]
         public string Image { get; set; }
+
+
     }
 }
