@@ -19,11 +19,11 @@
         @if (signInManager.IsSignedIn(User))
         {
             <p>Thanks for stopping by, @User.Claims.First(c => c.Type == "FullName").Value!</p>
-            <p><a asp-controller="User" asp-action="Logout">Sign Out</a></p>
+            
         }
         else
         {
-            <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
+            <p>Hello, Guest!</p>
         }
     </div>
     <partial name="../Shared/_NavPartial.cshtml" />
@@ -35,6 +35,20 @@
             crossorigin="anonymous">
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-    
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+            $('.carousel.carousel-slider').carousel({
+                //fullWidth: true,
+                indicators: true,
+                duration: 10,
+            });
+            autoplay();
+            function autoplay() {
+                $('.carousel.carousel-slider').carousel('next');
+                setTimeout(autoplay, 4500);
+            }
+        });
+    </script>
 </body>
 </html>
