@@ -103,6 +103,14 @@ namespace ReFreshMVC.Controllers
             return View(bag);
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 
 
