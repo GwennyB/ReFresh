@@ -6,7 +6,7 @@
 }
 
 <div class="row">
-    <form class="col s8" style="margin: auto; padding-left:5%; float:none">
+    <form class="col s8" asp-controller="Product" asp-action="Index" style="margin: auto; padding-left:5%; float:none">
         <div class="row">
 
             <div class="input-field col s2">
@@ -18,18 +18,21 @@
                 </select>
             </div>
             <div class="input-field col s6">
-                <textarea id="icon_prefix2" class="materialize-textarea"></textarea>
-                <label for="icon_prefix2">SEARCH</label>
+                <p>
+                    Search: <input type="text" name="SearchString" />
+                    <input type="submit" value="Filter" />
+                </p>
+                @*<textarea id="icon_prefix2" class="materialize-textarea"></textarea>
+        <label for="icon_prefix2">SEARCH</label>*@
             </div>
-            <button class="btn waves-effect waves-light" type="submit" style="margin-top:2%;">
+            @*<button class="btn waves-effect waves-light" type="submit" style="margin-top:2%;">
                 <i class="material-icons center">search</i>
-            </button>
+            </button>*@
         </div>
     </form>
     <partial name="../Shared/_CarouselPartial.cshtml" />
 
 </div>
-
 
 
 
