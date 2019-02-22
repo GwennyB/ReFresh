@@ -16,10 +16,10 @@
 </head>
 <body>
     <div class="welcome">
-        @*@signInManager.SignOutAsync();*@
         @if (signInManager.IsSignedIn(User))
         {
             <p>Thanks for stopping by, @User.Claims.First(c => c.Type == "FullName").Value!</p>
+            <p><a asp-controller="User" asp-action="Logout">Sign Out</a></p>
         }
         else
         {
