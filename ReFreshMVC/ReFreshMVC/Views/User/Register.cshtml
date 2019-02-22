@@ -30,5 +30,12 @@
     <input asp-for="ConfirmPassword" />
     <span asp-validation-for="ConfirmPassword"></span>
 
+    <label asp-for="EatsMeat"></label>
+    <select  asp-for="EatsMeat">
+        <option value="true">Of course I do!</option>
+        <option value="false">Ew. No.</option>
+    </select>
+    <span asp-validation-for="EatsMeat"></span>
+
     <button type="submit">Add My Account</button>
 </form>

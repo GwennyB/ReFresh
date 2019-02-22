@@ -9,6 +9,8 @@ using ReFreshMVC.Models.Services;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
+using ReFreshMVC.Models.Handler;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReFreshMVC
 {
@@ -37,6 +39,13 @@ namespace ReFreshMVC
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
+            });
+
+            services.AddScoped<IAuthorizationHandler, DietRestriction>();
 
         }
 

@@ -19,9 +19,7 @@ namespace ReFreshMVC.Models
         [Display(Name = "Birthdate")]
         [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
-        [Required]
-        [Display(Name = "Do you eat meat?")]
-        public bool EatsMeat { get; set; }
+
     }
 
     public static class AppRoles
