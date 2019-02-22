@@ -6,6 +6,7 @@ using ReFreshMVC.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReFreshMVC.Controllers
@@ -60,10 +61,45 @@ namespace ReFreshMVC.Controllers
 
                 if(query.Succeeded)
                 {
+                    Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim });
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
             }
+            return View(bag);
+        }
+
+        /// <summary>
+        /// GET: User/Login
+        /// loads login page
+        /// </summary>
+        /// <returns> login view </returns>
+        [HttpGet]
+        public IActionResult Login() => View();
+
+        /// <summary>
+        /// POST: User/Login
+        /// redirects to Home if login successful, reloads login page with entered data if unsuccessful
+        /// </summary>
+        /// <param name="bag"> login data submitted by user </param>
+        /// <returns> View (home or login) </returns>
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel bag)
+        {
+            if (ModelState.IsValid)
+            {
+                var query = await _signInManager.PasswordSignInAsync(bag.Email, bag.Password, false, false);
+
+                if (query.Succeeded)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            ModelState.AddModelError(string.Empty, "Login failed. Please try again.");
+
             return View(bag);
         }
 
