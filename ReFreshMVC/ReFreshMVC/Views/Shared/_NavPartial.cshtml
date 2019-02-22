@@ -4,9 +4,8 @@
 
 <nav>
     <ul>
-        <li><a asp-page="/Index">Home</a></li>
-        <li><a asp-page="/User/Register">Register</a></li>
-        <li><a asp-page="/Index">Home</a></li>   @*new links here*@
-        <li><a asp-page="/Index">Home</a></li>   @*new links here*@
+        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li><a asp-controller="User" asp-action="Login">Log In</a></li>
+        <li><a asp-controller="User" asp-action="Register">Register</a></li>
     </ul>
 </nav>

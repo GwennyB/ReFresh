@@ -1,14 +1,29 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+@inject SignInManager<User> signInManager
+
+<!DOCTYPE html>
 
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link href="~/reset.css" rel="stylesheet" />
-    <link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">
+    @*<link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">*@
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
+    <div>
+        @if (signInManager.IsSignedIn(User))
+        {
+            <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
+        }
+        else
+        {
+            <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
+        }
+    </div>
+
     <div>
         @RenderBody()
     </div>
