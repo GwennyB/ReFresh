@@ -32,10 +32,10 @@ namespace ReFreshMVC
                 .AddDefaultTokenProviders();
 
             services.AddDbContext<UserDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("UserConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("UserLocalConnection")));
 
             services.AddDbContext<ReFreshDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
 
         }
