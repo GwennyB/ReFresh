@@ -1,7 +1,4 @@
-﻿@* TODO:  ADD USING DIRECTIVES AND LOGIN DIV*@
-
-
-@using Microsoft.AspNetCore.Identity
+﻿@using Microsoft.AspNetCore.Identity
 @using ReFreshMVC.Models
 @inject SignInManager<User> signInManager
 
@@ -12,24 +9,23 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
     <link href="~/reset.css" rel="stylesheet" />
-    <link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">
+    @*<link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">*@
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <div class="welcome">
+        @*@signInManager.SignOutAsync();*@
         @if (signInManager.IsSignedIn(User))
         {
-            <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
+            <p>Thanks for stopping by, @User.Claims.First(c => c.Type == "FullName").Value!</p>
         }
         else
         {
-            <a asp-controller="User" asp-action="Login">Log in here!</a>
-            <a asp-controller="User" asp-action="Register">(No account? Register here!)</a>
-
+            <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
         }
     </div>
-
-    <div>
+    <partial name="../Shared/_NavPartial.cshtml" />
+    <div class="contents">
         @RenderBody()
     </div>
 </body>
