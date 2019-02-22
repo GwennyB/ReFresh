@@ -6,6 +6,7 @@ using ReFreshMVC.Models.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReFreshMVC.Controllers
@@ -60,6 +61,9 @@ namespace ReFreshMVC.Controllers
 
                 if(query.Succeeded)
                 {
+                    Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim });
+
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
