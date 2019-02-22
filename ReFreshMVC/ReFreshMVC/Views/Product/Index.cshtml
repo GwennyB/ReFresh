@@ -1,0 +1,24 @@
+﻿@model IEnumerable<ReFreshMVC.Models.Product>
+@using ReFreshMVC.Models;
+@{
+    Layout = "_Layout";
+}
+
+<h1>Inventory</h1>
+@foreach (Product product in Model)
+{
+    <div class="row">
+        <div class="col s3 m1">
+            <div class="card">
+                <div class="card-image">
+                    <img src="@product.Image">
+                    <span class="card-title">@product.Name</span>
+                    <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+                </div>
+                <div class="card-content">
+                    <p>@product.Description</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}

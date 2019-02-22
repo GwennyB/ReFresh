@@ -48,7 +48,7 @@ namespace ReFreshMVC.Models.Services
         /// Get all Products from DB
         /// </summary>
         /// <returns>List of Products</returns>
-        public async Task<IEnumerable<Product>> GetAllAsync()
+        public async Task<List<Product>> GetAllAsync()
         {
             return await _context.Inventory.ToListAsync();
         }
