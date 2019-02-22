@@ -13,19 +13,19 @@
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
-    <div>
+    <div class="welcome">
         @*@signInManager.SignOutAsync();*@
         @if (signInManager.IsSignedIn(User))
         {
-            <p>Hello, @User.Claims.First(c => c.Type == "FullName").Value</p>
+            <p>Thanks for stopping by, @User.Claims.First(c => c.Type == "FullName").Value!</p>
         }
         else
         {
             <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
         }
     </div>
-
-    <div>
+    <partial name="../Shared/_NavPartial.cshtml" />
+    <div class="contents">
         @RenderBody()
     </div>
 </body>

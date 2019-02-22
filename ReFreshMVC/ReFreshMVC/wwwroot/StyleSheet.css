@@ -1,2 +1,29 @@
 ﻿body {
+    background-image: url(https://dynamicmedia.zuza.com/zz/m/original_/b/1/b142e9a2-4697-4f53-897c-a3d7922b89ef/B823623631Z.1_20171031135924_000_GB61VVRGJ.2_Super_Portrait.jpg);
+    background-repeat: no-repeat;
+    background-position-x: 100%;
+    background-size: 90%;
+    background-attachment: fixed;
 }
+
+.welcome {
+    margin: 60px 0px 10px 50px;
+    font-size: 20px;
+    color: darkred;
+}
+
+form, .navbar {
+    display: block;
+    margin: 40px;
+    width: 30%;
+    display: flex;
+    flex-flow: column;
+    background-color: white;
+    border: darkred solid 5px;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+    form > * {
+        margin: 5px;
+    }
