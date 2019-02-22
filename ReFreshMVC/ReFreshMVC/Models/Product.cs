@@ -26,6 +26,9 @@ namespace ReFreshMVC.Models
         [Required]
         [Display(Name = "Category")]
         public Categories Category { get; set; }
+        [Required]
+        [Display(Name = "Contains Meat?")]
+        public bool Meaty { get; set; }
     }
 
     public enum Categories

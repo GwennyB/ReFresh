@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReFreshMVC.Data;
 
 namespace ReFreshMVC.Migrations
 {
     [DbContext(typeof(ReFreshDbContext))]
-    partial class ReFreshDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190222185632_add-meaty")]
+    partial class addmeaty
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
