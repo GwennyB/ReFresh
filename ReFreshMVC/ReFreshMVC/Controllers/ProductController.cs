@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 
 namespace ReFreshMVC.Controllers
 {
-    //[Authorize(Policy = "LoggedIn")]
     public class ProductController : Controller
     {
         private readonly IInventoryManager _products;
@@ -32,6 +31,11 @@ namespace ReFreshMVC.Controllers
             return View(list);
         }
 
+        /// <summary>
+        /// displays all products matching the search string
+        /// </summary>
+        /// <param name="searchString"> string to search </param>
+        /// <returns> view with filtered products list </returns>
         [HttpPost]
         public async Task<IActionResult> Index(string searchString)
         {
@@ -43,6 +47,10 @@ namespace ReFreshMVC.Controllers
             return View(products);
         }
 
+        /// <summary>
+        /// displays all meatless products (for non-MeatEaters)
+        /// </summary>
+        /// <returns> view with all products displayed </returns>
         [HttpGet]
         public async Task<IActionResult> NonMeatProducts()
         {
@@ -52,6 +60,10 @@ namespace ReFreshMVC.Controllers
 
         }
 
+        /// <summary>
+        /// captures 404 on this route (from non-MeatEater 'AccessDenied') and redirects to NonMeatProducts
+        /// </summary>
+        /// <returns> redirect to NonMeatProducts route </returns>
         // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
         [Route("error/404")]
         public IActionResult Error404()
