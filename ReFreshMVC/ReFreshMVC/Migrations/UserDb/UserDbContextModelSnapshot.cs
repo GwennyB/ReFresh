@@ -141,8 +141,6 @@ namespace ReFreshMVC.Migrations.UserDb
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<bool>("EatsMeat");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
