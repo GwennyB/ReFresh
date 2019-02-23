@@ -15,6 +15,7 @@ namespace ReFreshMVC.Models.ViewModels
 
         [Required]
         [Display(Name = "Birthdate")]
+        [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
 
         [Required]

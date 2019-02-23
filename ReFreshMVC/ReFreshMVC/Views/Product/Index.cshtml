@@ -4,38 +4,12 @@
     Layout = "_Layout";
 }
 
-<h1>Inventory</h1>
+<div class="row">
+    <partial name="../Shared/_SearchPartial.cshtml" />
 
- <div class="row">
-@foreach (Product product in Model)
-{
-        <div class="col s12 m3">
-            <div class="card modal-trigger" href="#modal1">
-                <div class="card-image">
-                    <img src="@product.Image">
-                    <span class="card-title">@product.Name</span>
-                    <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
-                </div>
-                <div class="card-content">
-                    <p>@product.Description</p>
-                </div>
-            </div>
-        </div>
-}
+    @foreach (Product product in Model)
+    {
+        <partial name="../Shared/_ProductCardPartial.cshtml" model="product" />
+
+    }
 </div>
- <div id="modal1" class="modal">
-     <div class="modal-header">
-         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Button</a>
-     </div>
-     <div class="modal-content">
-         <div class="row">
-             <div class="col s4"></div>
-             <div class="col s4"></div>
-             <div class="col s4"></div>
-         </div>
-
-     </div>
-     <div class="modal-footer">
-         <a href="#!" class="modal-close waves-effect waves-green btn-flat">Button</a>
-     </div>
- </div>

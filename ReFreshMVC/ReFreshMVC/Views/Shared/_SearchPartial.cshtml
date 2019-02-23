@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+
+<form class="col s8" asp-controller="Product" asp-action="Index" style="margin: auto; padding-left:5%; float:none">
+    <input hidden="hidden" value="@User.Claims" name="userClaims" />
+    <div class="row">
+        <div class="input-field col s2">
+            <select name="SearchCategory">
+                <option value="10">Food Category</option>
+                <option value="0">@Categories.entrees</option>
+                <option value="1">@Categories.sides</option>
+                <option value="2">@Categories.desserts</option>
+                <option value="3">@Categories.snacks</option>
+
+            </select>
+        </div>
+        <div class="input-field col s6">
+            <p>
+                Search: <input type="text" name="SearchString" />
+                <input type="submit" value="Filter" />
+            </p>
+        </div>
+    </div>
+</form>
