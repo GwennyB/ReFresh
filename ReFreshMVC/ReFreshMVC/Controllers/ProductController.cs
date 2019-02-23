@@ -20,6 +20,12 @@ namespace ReFreshMVC.Controllers
             _products = products;
         }
 
+        /// <summary>
+        /// displays all products (restricted to 'Carnivore' users only)
+        /// </summary>
+        /// <returns> view with all products displayed </returns>
+        [Authorize(Policy = "Carnivore")]
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             IEnumerable<Product> list = await _products.GetAllAsync();
@@ -36,5 +42,22 @@ namespace ReFreshMVC.Controllers
             }
             return View(products);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> NonMeatProducts()
+        {
+            IEnumerable<Product> list = await _products.GetAllAsync();
+            list = list.Where(s => s.Meaty == false);
+            return View("Index", list);
+
+        }
+
+        // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
+        [Route("error/404")]
+        public IActionResult Error404()
+        {
+            return RedirectToAction("NonMeatProducts", "Product");
+        }
+
     }
 }
