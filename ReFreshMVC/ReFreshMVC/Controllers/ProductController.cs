@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models;
@@ -7,6 +8,7 @@ using ReFreshMVC.Models.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace ReFreshMVC.Controllers
@@ -14,8 +16,11 @@ namespace ReFreshMVC.Controllers
     public class ProductController : Controller
     {
         private readonly IInventoryManager _products;
-        public ProductController(IInventoryManager products)
+        private readonly UserManager<User> _userManager;
+
+        public ProductController(UserManager<User> userManager, IInventoryManager products)
         {
+            _userManager = userManager;
             _products = products;
         }
 
@@ -37,12 +42,50 @@ namespace ReFreshMVC.Controllers
         /// <param name="searchString"> string to search </param>
         /// <returns> view with filtered products list </returns>
         [HttpPost]
-        public async Task<IActionResult> Index(string searchString)
+        public async Task<IActionResult> Index(string searchString, int SearchCategory, IEnumerable<Claim> userClaims)
         {
+            string x = "";
+            var identity = (ClaimsIdentity)User.Identity;
+            IEnumerable<Claim> claims = identity.Claims;
+
+            // https://stackoverflow.com/questions/21404935/mvc-5-access-claims-identity-user-data Darren Dimitrov
+            foreach (var item in claims)
+            {
+                x = item.Subject.Claims.Last().Value;
+            }
+
             IEnumerable<Product> products = await _products.GetAllAsync();
+
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(s => s.Name.Contains(searchString));
+                if (x == "false")
+                {
+                    searchString = searchString.ToLower();
+                    products = products.Where(s => s.Name.ToLower().Contains(searchString) && s.Meaty == false);
+                }
+                else
+                {
+                    searchString = searchString.ToLower();
+                    products = products.Where(s => s.Name.ToLower().Contains(searchString));
+                }
+            }
+            if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
+            {
+                if (x == "false")
+                {
+                    products = products.Where(s => (int)s.Category == SearchCategory && s.Meaty == false);
+                }
+                else
+                {
+                    products = products.Where(s => (int)s.Category == SearchCategory);
+                }
+            }
+            if (String.IsNullOrEmpty(searchString) && SearchCategory == 10)
+            {
+                if (x == "false")
+                {
+                    products = products.Where(s => s.Meaty == false);
+                }
             }
             return View(products);
         }

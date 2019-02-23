@@ -10,8 +10,8 @@ using ReFreshMVC.Data;
 namespace ReFreshMVC.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20190222184355_add-diet")]
-    partial class adddiet
+    [Migration("20190223023552_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -142,8 +142,6 @@ namespace ReFreshMVC.Migrations.UserDb
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
-
-                    b.Property<bool>("EatsMeat");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256);

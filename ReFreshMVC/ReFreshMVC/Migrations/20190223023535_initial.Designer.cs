@@ -9,8 +9,8 @@ using ReFreshMVC.Data;
 namespace ReFreshMVC.Migrations
 {
     [DbContext(typeof(ReFreshDbContext))]
-    [Migration("20190222185632_add-meaty")]
-    partial class addmeaty
+    [Migration("20190223023535_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
