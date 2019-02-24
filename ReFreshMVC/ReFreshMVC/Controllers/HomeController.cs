@@ -9,9 +9,10 @@ namespace ReFreshMVC.Controllers
     public class HomeController : Controller
     {
         /// <summary>
-        /// GET Action for homepage
+        /// GET: Home/Index
+        /// displays splash page
         /// </summary>
-        /// <returns>Homepage view</returns>
+        /// <returns> Homepage view </returns>
         public IActionResult Index()
         {
             return View();
