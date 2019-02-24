@@ -1,0 +1,15 @@
+﻿@model IEnumerable<ReFreshMVC.Models.Product>
+@using ReFreshMVC.Models;
+@{
+    Layout = "_Layout";
+}
+
+<div class="row">
+    <partial name="../Shared/_SearchPartial.cshtml" />
+
+    @foreach (Product product in Model)
+    {
+        <partial name="../Shared/_ProductCardPartial.cshtml" model="product" />
+
+    }
+</div>

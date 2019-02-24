@@ -1,11 +1,20 @@
-﻿
+﻿@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+@inject SignInManager<User> signInManager
 @{
 }
 
 <nav class="navbar">
     <ul>
-        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
-        <li><a asp-controller="User" asp-action="Login">Log In</a></li>
-        <li><a asp-controller="User" asp-action="Register">Register</a></li>
+        <li><a asp-controller="Home" asp-action="Index" style="color:black;">Home</a></li>
+        <li><a asp-controller="Product" asp-action="Index" style="color:black;">Products</a></li>
+        @if (signInManager.IsSignedIn(User))
+        {
+            <li><a asp-controller="User" asp-action="Logout" style="color:black;">Sign Out</a></li>
+        }
+        else
+        {
+            <li><a asp-controller="User" asp-action="Login" style="color:black;">Login</a></li>
+        }
     </ul>
 </nav>

@@ -10,7 +10,7 @@ namespace ReFreshMVC.Models.Interfaces
         
         Task CreateAsync(Product product);
         
-        Task<IEnumerable<Product>> GetAllAsync();
+        Task<List<Product>> GetAllAsync();
         
         Task<Product> GetOneByIdAsync(int id);
         

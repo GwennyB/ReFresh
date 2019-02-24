@@ -15,6 +15,7 @@ namespace ReFreshMVC.Models.ViewModels
 
         [Required]
         [Display(Name = "Birthdate")]
+        [DataType(DataType.Date)]
         public DateTime Birthdate { get; set; }
 
         [Required]
@@ -27,10 +28,14 @@ namespace ReFreshMVC.Models.ViewModels
         public string Password { get; set; }
 
         [Required]
-        [Display(Name = "Confirm Password")]
+        [Display(Name = "Confirm password")]
         [DataType(DataType.Password)]
         [Compare("Password", ErrorMessage = "Passwords do not match. Please try again.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [Display(Name = "Do you eat meat?")]
+        public string EatsMeat { get; set; }
 
     }
 }

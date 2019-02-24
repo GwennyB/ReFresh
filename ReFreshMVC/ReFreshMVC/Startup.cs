@@ -9,6 +9,8 @@ using ReFreshMVC.Models.Services;
 using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
+using ReFreshMVC.Models.Handler;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ReFreshMVC
 {
@@ -38,6 +40,13 @@ namespace ReFreshMVC
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
+            });
+
+            services.AddScoped<IAuthorizationHandler, DietRestriction>();
+
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -50,6 +59,9 @@ namespace ReFreshMVC
             app.UseStaticFiles();
 
             app.UseAuthentication();
+
+            // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
+            app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseMvc(route =>
             {

@@ -10,8 +10,8 @@ using ReFreshMVC.Data;
 namespace ReFreshMVC.Migrations.UserDb
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20190220183253_initial-user")]
-    partial class initialuser
+    [Migration("20190222222651_add-carnivoe-caim")]
+    partial class addcarnivoecaim
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -148,9 +148,11 @@ namespace ReFreshMVC.Migrations.UserDb
 
                     b.Property<bool>("EmailConfirmed");
 
-                    b.Property<string>("FirstName");
+                    b.Property<string>("FirstName")
+                        .IsRequired();
 
-                    b.Property<string>("LastName");
+                    b.Property<string>("LastName")
+                        .IsRequired();
 
                     b.Property<bool>("LockoutEnabled");
 

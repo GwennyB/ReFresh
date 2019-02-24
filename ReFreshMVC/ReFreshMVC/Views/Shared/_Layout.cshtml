@@ -8,25 +8,48 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/reset.css" rel="stylesheet" />
     @*<link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">*@
     <link href="~/StyleSheet.css" rel="stylesheet" />
 </head>
 <body>
     <div class="welcome">
-        @*@signInManager.SignOutAsync();*@
         @if (signInManager.IsSignedIn(User))
         {
             <p>Thanks for stopping by, @User.Claims.First(c => c.Type == "FullName").Value!</p>
+            
         }
         else
         {
-            <p>Hello, Guest! Please <span><a asp-controller="User" asp-action="Login">log in</a></span> or <span><a asp-controller="User" asp-action="Register">register</a></span>.</p>
+            <p>Hello, Guest!</p>
         }
     </div>
     <partial name="../Shared/_NavPartial.cshtml" />
     <div class="contents">
         @RenderBody()
     </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('select').formSelect();
+            $('.modal').modal();
+            $('.carousel.carousel-slider').carousel({
+                //fullWidth: true,
+                indicators: true,
+                duration: 10,
+            });
+            autoplay();
+            function autoplay() {
+                $('.carousel.carousel-slider').carousel('next');
+                setTimeout(autoplay, 4500);
+            }
+        });
+    </script>
 </body>
 </html>

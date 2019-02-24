@@ -23,5 +23,19 @@ namespace ReFreshMVC.Models
         public string Description { get; set; }
         [DataType(DataType.ImageUrl)]
         public string Image { get; set; }
+        [Required]
+        [Display(Name = "Category")]
+        public Categories Category { get; set; }
+        [Required]
+        [Display(Name = "Contains Meat?")]
+        public bool Meaty { get; set; }
+    }
+
+    public enum Categories
+    {
+        entrees,
+        sides,
+        desserts,
+        snacks
     }
 }

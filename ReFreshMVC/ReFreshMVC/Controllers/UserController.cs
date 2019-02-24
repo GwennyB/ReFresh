@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.ViewModels;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -54,15 +53,16 @@ namespace ReFreshMVC.Controllers
                     Email = bag.Email,
                     FirstName = bag.FirstName,
                     LastName = bag.LastName,
-                    Birthdate = bag.Birthdate
+                    Birthdate = bag.Birthdate,
                 };
 
                 var query = await _userManager.CreateAsync(user, bag.Password);
 
-                if(query.Succeeded)
+                if (query.Succeeded)
                 {
                     Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
-                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim });
+                    Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore });
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
@@ -101,6 +101,17 @@ namespace ReFreshMVC.Controllers
             ModelState.AddModelError(string.Empty, "Login failed. Please try again.");
 
             return View(bag);
+        }
+
+        /// <summary>
+        /// GET: User/Logout
+        /// </summary>
+        /// <returns> redirects to Home </returns>
+        [HttpGet]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
     }
