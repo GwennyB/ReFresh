@@ -9,7 +9,7 @@ using ReFreshMVC.Data;
 namespace ReFreshMVC.Migrations
 {
     [DbContext(typeof(ReFreshDbContext))]
-    [Migration("20190223023535_initial")]
+    [Migration("20190225193330_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -51,7 +51,7 @@ namespace ReFreshMVC.Migrations
                             ID = 1,
                             Category = 0,
                             Description = "Delicious home cooked Penne Pasta with red sauce and diced sausage",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/penne.jpeg",
                             Meaty = true,
                             Name = "Penne Pasta",
                             Price = 5,
@@ -62,7 +62,7 @@ namespace ReFreshMVC.Migrations
                             ID = 2,
                             Category = 0,
                             Description = "Take home this take-out. Exquisite pad thai with chicken, no spice",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/PadThaiChicken.jpeg",
                             Meaty = true,
                             Name = "Pad Thai Chicken",
                             Price = 6,
@@ -73,7 +73,7 @@ namespace ReFreshMVC.Migrations
                             ID = 3,
                             Category = 3,
                             Description = "Thawed and refrozen, still highly refreshing",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/AssortedBerries.jpeg",
                             Meaty = false,
                             Name = "Assorted Berries",
                             Price = 3,
@@ -84,7 +84,7 @@ namespace ReFreshMVC.Migrations
                             ID = 4,
                             Category = 1,
                             Description = "Crispy and cruncy, this sourdough makes the perfect cracker for any soup!",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/BreadButt.jpg",
                             Meaty = false,
                             Name = "Sourdough Bread Butt",
                             Price = 1,
@@ -95,7 +95,7 @@ namespace ReFreshMVC.Migrations
                             ID = 5,
                             Category = 3,
                             Description = "With plenty of squeeze left, this lime will pucker you up.",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/Lime.jpeg",
                             Meaty = false,
                             Name = "Lime",
                             Price = 1,
@@ -106,7 +106,7 @@ namespace ReFreshMVC.Migrations
                             ID = 6,
                             Category = 0,
                             Description = "The perfect side to any meal, these beans are refried but truely refreshing",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/RefriedBeans.jpg",
                             Meaty = false,
                             Name = "Refried Beans",
                             Price = 2,
@@ -117,7 +117,7 @@ namespace ReFreshMVC.Migrations
                             ID = 7,
                             Category = 0,
                             Description = "Looking to try that new restraunt, don't just try our Mexican Mystery Bag. Who knows what you will get, but that's part of the fun. Guaranteed to contain Mexican food.",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/MysteryMexican.jpg",
                             Meaty = true,
                             Name = "Mexican Mystery Bag",
                             Price = 5,
@@ -128,7 +128,7 @@ namespace ReFreshMVC.Migrations
                             ID = 8,
                             Category = 3,
                             Description = "Serves One, because who wants to share this amazing appetizer. With just enough for you this Chips and Dip package is perfect for any couch adventure.",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/ChipsDip",
                             Meaty = false,
                             Name = "Chips and Dip",
                             Price = 3,
@@ -139,7 +139,7 @@ namespace ReFreshMVC.Migrations
                             ID = 9,
                             Category = 2,
                             Description = "Crispy and squishy, this sweet treat will leave you wanting more. Includes chopped nuts and honey filling.",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/Baklava.jpg",
                             Meaty = false,
                             Name = "Baklava",
                             Price = 4,
@@ -150,7 +150,7 @@ namespace ReFreshMVC.Migrations
                             ID = 10,
                             Category = 0,
                             Description = "This sweet breakfast staple contains a whole wheat biscuit with creamy peanut butter spread on top.",
-                            Image = "https://via.placeholder.com/150",
+                            Image = "~/Img/AlmondButterBagel",
                             Meaty = false,
                             Name = "Almond Butter Bagel",
                             Price = 4,
