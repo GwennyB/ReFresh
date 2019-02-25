@@ -44,21 +44,13 @@ namespace ReFreshMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> Index(string searchString, int SearchCategory, IEnumerable<Claim> userClaims)
         {
-            string x = "";
-            var identity = (ClaimsIdentity)User.Identity;
-            IEnumerable<Claim> claims = identity.Claims;
-
-            // https://stackoverflow.com/questions/21404935/mvc-5-access-claims-identity-user-data Darren Dimitrov
-            foreach (var item in claims)
-            {
-                x = item.Subject.Claims.Last().Value;
-            }
-
+            string carnivoreClaim = User.Claims.FirstOrDefault(c => c.Type == "Carnivore").Value;
+            
             IEnumerable<Product> products = await _products.GetAllAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                if (x == "false")
+                if (carnivoreClaim == "false")
                 {
                     searchString = searchString.ToLower();
                     products = products.Where(s => s.Name.ToLower().Contains(searchString) && s.Meaty == false);
@@ -71,7 +63,7 @@ namespace ReFreshMVC.Controllers
             }
             if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
             {
-                if (x == "false")
+                if (carnivoreClaim == "false")
                 {
                     products = products.Where(s => (int)s.Category == SearchCategory && s.Meaty == false);
                 }
@@ -82,7 +74,7 @@ namespace ReFreshMVC.Controllers
             }
             if (String.IsNullOrEmpty(searchString) && SearchCategory == 10)
             {
-                if (x == "false")
+                if (carnivoreClaim == "false")
                 {
                     products = products.Where(s => s.Meaty == false);
                 }
@@ -114,5 +106,13 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("NonMeatProducts", "Product");
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Inventory()
+        {
+            IEnumerable<Product> list = await _products.GetAllAsync();
+            return View(list);
+        }
+        [HttpGet]
+        public IActionResult Create() => View();
     }
 }

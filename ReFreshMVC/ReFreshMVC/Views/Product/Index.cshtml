@@ -4,12 +4,13 @@
     Layout = "_Layout";
 }
 
+<a asp-controller="Product" asp-action="Inventory">Inventory</a>
 <div class="row">
     <partial name="../Shared/_SearchPartial.cshtml" />
 
     @foreach (Product product in Model)
     {
         <partial name="../Shared/_ProductCardPartial.cshtml" model="product" />
-
+        <partial name="../Shared/_ProductModalPartial.cshtml" model="product" />
     }
 </div>
