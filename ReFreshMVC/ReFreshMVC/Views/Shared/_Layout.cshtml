@@ -38,7 +38,11 @@
     <script>
         $(document).ready(function () {
             $('select').formSelect();
-            $('.modal').modal();
+            $('.modal').modal({
+                preventScrolling: true,
+                startingTop: '4%',
+                endingTop:'30%'
+            });
             $('.carousel.carousel-slider').carousel({
                 //fullWidth: true,
                 indicators: true,
