@@ -2,15 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ReFreshMVC.Data;
 
 namespace ReFreshMVC.Migrations
 {
     [DbContext(typeof(ReFreshDbContext))]
-    partial class ReFreshDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190225193950_imageLinkUpdate")]
+    partial class imageLinkUpdate
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,7 +62,7 @@ namespace ReFreshMVC.Migrations
                             ID = 2,
                             Category = 0,
                             Description = "Take home this take-out. Exquisite pad thai with chicken, no spice",
-                            Image = "PadThaiChicken.jpg",
+                            Image = "PadThaiChicken.jpeg",
                             Meaty = true,
                             Name = "Pad Thai Chicken",
                             Price = 6,
@@ -71,7 +73,7 @@ namespace ReFreshMVC.Migrations
                             ID = 3,
                             Category = 3,
                             Description = "Thawed and refrozen, still highly refreshing",
-                            Image = "AssortedBerries.jpg",
+                            Image = "AssortedBerries.jpeg",
                             Meaty = false,
                             Name = "Assorted Berries",
                             Price = 3,
@@ -93,7 +95,7 @@ namespace ReFreshMVC.Migrations
                             ID = 5,
                             Category = 3,
                             Description = "With plenty of squeeze left, this lime will pucker you up.",
-                            Image = "Lime.jpg",
+                            Image = "Lime.jpeg",
                             Meaty = false,
                             Name = "Lime",
                             Price = 1,
@@ -126,7 +128,7 @@ namespace ReFreshMVC.Migrations
                             ID = 8,
                             Category = 3,
                             Description = "Serves One, because who wants to share this amazing appetizer. With just enough for you this Chips and Dip package is perfect for any couch adventure.",
-                            Image = "ChipsDip.jpg",
+                            Image = "ChipsDip",
                             Meaty = false,
                             Name = "Chips and Dip",
                             Price = 3,
@@ -148,7 +150,7 @@ namespace ReFreshMVC.Migrations
                             ID = 10,
                             Category = 0,
                             Description = "This sweet breakfast staple contains a whole wheat biscuit with creamy peanut butter spread on top.",
-                            Image = "AlmondButterBagel.jpg",
+                            Image = "AlmondButterBagel",
                             Meaty = false,
                             Name = "Almond Butter Bagel",
                             Price = 4,
