@@ -1,8 +1,21 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @using ReFreshMVC.Models
+@{ 
+    string temp = "";
+    if (User.Claims.Count() > 0)
+    {
+        if (User.Claims.Where(c => c.Type == "Carnivore").FirstOrDefault().Value == "true")
+        {
+            temp = "Index";
+        }
+        else
+        {
+            temp = "NonMeatProducts";
+        }
+    }
 
-<form class="col s8" asp-controller="Product" asp-action="Index" style="margin: auto; padding-left:5%; float:none">
-    <input hidden="hidden" value="@User.Claims" name="userClaims" />
+}
+    <form class="col s8" asp-controller="Product" asp-action="@temp" style="margin: auto; padding-left:5%; float:none">
     <div class="row">
         <div class="input-field col s2">
             <select name="SearchCategory">
