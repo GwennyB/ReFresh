@@ -6,15 +6,15 @@
 
 <nav class="navbar">
     <ul>
-        <li><a asp-controller="Home" asp-action="Index" style="color:black;">Home</a></li>
-        <li><a asp-controller="Product" asp-action="Index" style="color:black;">Products</a></li>
+        <li><a class="navbarLink" asp-controller="Home" asp-action="Index">Home</a></li>
+        <li><a class="navbarLink" asp-controller="Product" asp-action="Index">Products</a></li>
         @if (signInManager.IsSignedIn(User))
         {
-            <li><a asp-controller="User" asp-action="Logout" style="color:black;">Sign Out</a></li>
+            <li><a class="navbarLink" asp-controller="User" asp-action="Logout">Sign Out</a></li>
         }
         else
         {
-            <li><a asp-controller="User" asp-action="Login" style="color:black;">Login</a></li>
+            <li><a  class="navbarLink" asp-controller="User" asp-action="Login">Login</a></li>
         }
     </ul>
 </nav>
