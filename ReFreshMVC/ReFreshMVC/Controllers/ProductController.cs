@@ -41,9 +41,11 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <param name="searchString"> string to search </param>
         /// <returns> view with filtered products list </returns>
+        [Authorize(Policy = "Carnivore")]
         [HttpPost]
         public async Task<IActionResult> Index(string searchString, int SearchCategory)
         {
+
             IEnumerable<Product> products = await _products.GetAllAsync();
 
             if (!String.IsNullOrEmpty(searchString))
@@ -63,12 +65,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> view with all products displayed </returns>
         [HttpGet]
-        public async Task<IActionResult> NonMeatProducts()
-        {
-            IEnumerable<Product> list = await _products.GetAllAsync();
-            list = list.Where(s => s.Meaty == false);
-            return View("Index", list);
-        }
+        public async Task<IActionResult> NonMeatProducts() => View("Index", await _products.GetAllNonMeatAsync());
 
         /// <summary>
         /// displays all products matching the search string (for non-MeatEaters)
@@ -89,7 +86,7 @@ namespace ReFreshMVC.Controllers
             {
                 products = products.Where(s => (int)s.Category == SearchCategory);
             }
-            return View(products);
+            return View("Index", products);
         }
 
         /// <summary>
