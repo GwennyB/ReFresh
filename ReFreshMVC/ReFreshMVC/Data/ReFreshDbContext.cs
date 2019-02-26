@@ -20,6 +20,8 @@ namespace ReFreshMVC.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<Order>().HasKey(ce => new { ce.CartID, ce.ProductID });
+
             modelBuilder.Entity<Product>().HasData(
                 new Product { ID = 1, Sku = 1, Name = "Penne Pasta", Description = "Delicious home cooked Penne Pasta with red sauce and diced sausage", Image = "penne.jpeg", Price = 5, Category = Categories.entrees, Meaty = true },
                 new Product { ID = 2, Sku = 2, Name = "Pad Thai Chicken", Description = "Take home this take-out. Exquisite pad thai with chicken, no spice", Image = "PadThaiChicken.jpg", Price = 6, Category = Categories.entrees, Meaty = true },
