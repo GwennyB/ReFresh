@@ -42,42 +42,18 @@ namespace ReFreshMVC.Controllers
         /// <param name="searchString"> string to search </param>
         /// <returns> view with filtered products list </returns>
         [HttpPost]
-        public async Task<IActionResult> Index(string searchString, int SearchCategory, IEnumerable<Claim> userClaims)
+        public async Task<IActionResult> Index(string searchString, int SearchCategory)
         {
-            string carnivoreClaim = User.Claims.FirstOrDefault(c => c.Type == "Carnivore").Value;
-            
             IEnumerable<Product> products = await _products.GetAllAsync();
 
             if (!String.IsNullOrEmpty(searchString))
             {
-                if (carnivoreClaim == "false")
-                {
-                    searchString = searchString.ToLower();
-                    products = products.Where(s => s.Name.ToLower().Contains(searchString) && s.Meaty == false);
-                }
-                else
-                {
-                    searchString = searchString.ToLower();
-                    products = products.Where(s => s.Name.ToLower().Contains(searchString));
-                }
+                searchString = searchString.ToLower();
+                products = products.Where(s => s.Name.ToLower().Contains(searchString));
             }
             if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
             {
-                if (carnivoreClaim == "false")
-                {
-                    products = products.Where(s => (int)s.Category == SearchCategory && s.Meaty == false);
-                }
-                else
-                {
-                    products = products.Where(s => (int)s.Category == SearchCategory);
-                }
-            }
-            if (String.IsNullOrEmpty(searchString) && SearchCategory == 10)
-            {
-                if (carnivoreClaim == "false")
-                {
-                    products = products.Where(s => s.Meaty == false);
-                }
+                products = products.Where(s => (int)s.Category == SearchCategory);
             }
             return View(products);
         }
@@ -92,7 +68,28 @@ namespace ReFreshMVC.Controllers
             IEnumerable<Product> list = await _products.GetAllAsync();
             list = list.Where(s => s.Meaty == false);
             return View("Index", list);
+        }
 
+        /// <summary>
+        /// displays all products matching the search string (for non-MeatEaters)
+        /// </summary>
+        /// <param name="searchString"> string to search </param>
+        /// <returns> view with filtered products list </returns>
+        [HttpPost]
+        public async Task<IActionResult> NonMeatProducts(string searchString, int SearchCategory)
+        {
+            IEnumerable<Product> products = await _products.GetAllNonMeatAsync();
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                searchString = searchString.ToLower();
+                products = products.Where(s => s.Name.ToLower().Contains(searchString));
+            }
+            if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
+            {
+                products = products.Where(s => (int)s.Category == SearchCategory);
+            }
+            return View(products);
         }
 
         /// <summary>

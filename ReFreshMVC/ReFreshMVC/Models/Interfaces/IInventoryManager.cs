@@ -11,12 +11,15 @@ namespace ReFreshMVC.Models.Interfaces
         Task CreateAsync(Product product);
         
         Task<List<Product>> GetAllAsync();
-        
+
+        Task<List<Product>> GetAllNonMeatAsync();
+
         Task<Product> GetOneByIdAsync(int id);
         
         Task UpdateAsync(Product product);
         
         Task DeleteAsync(int id);
+
 
     }
 }
