@@ -15,23 +15,14 @@ namespace ReFreshMVC.Models.Handler
         /// <returns></returns>
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, DietRestriction requirement)
         {
-            try
-            {
-                string carnivore = context.User.Claims.FirstOrDefault(c => c.Type == "Carnivore").Value;
+            string carnivore = context.User.Claims.FirstOrDefault(c => c.Type == "Carnivore").Value;
 
-                if (carnivore == "true")
-                {
-                    context.Succeed(requirement);
-                }
-
-                return Task.CompletedTask;
-            }
-            catch
+            if (carnivore == "true")
             {
                 context.Succeed(requirement);
-                return Task.CompletedTask;
             }
 
+            return Task.CompletedTask;
         }
     }
 
