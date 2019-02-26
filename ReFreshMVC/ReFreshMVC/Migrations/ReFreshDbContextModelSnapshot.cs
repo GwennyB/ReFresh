@@ -71,6 +71,8 @@ namespace ReFreshMVC.Migrations
 
                     b.Property<int>("Price");
 
+                    b.Property<int>("QtyAvail");
+
                     b.Property<int>("Sku");
 
                     b.HasKey("ID");
@@ -87,6 +89,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = true,
                             Name = "Penne Pasta",
                             Price = 5,
+                            QtyAvail = 5,
                             Sku = 1
                         },
                         new
@@ -98,6 +101,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = true,
                             Name = "Pad Thai Chicken",
                             Price = 6,
+                            QtyAvail = 5,
                             Sku = 2
                         },
                         new
@@ -109,6 +113,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Assorted Berries",
                             Price = 3,
+                            QtyAvail = 5,
                             Sku = 3
                         },
                         new
@@ -120,6 +125,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Sourdough Bread Butt",
                             Price = 1,
+                            QtyAvail = 5,
                             Sku = 4
                         },
                         new
@@ -131,6 +137,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Lime",
                             Price = 1,
+                            QtyAvail = 5,
                             Sku = 5
                         },
                         new
@@ -142,6 +149,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Refried Beans",
                             Price = 2,
+                            QtyAvail = 5,
                             Sku = 6
                         },
                         new
@@ -153,6 +161,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = true,
                             Name = "Mexican Mystery Bag",
                             Price = 5,
+                            QtyAvail = 5,
                             Sku = 7
                         },
                         new
@@ -164,6 +173,7 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Chips and Dip",
                             Price = 3,
+                            QtyAvail = 5,
                             Sku = 8
                         },
                         new
@@ -175,17 +185,19 @@ namespace ReFreshMVC.Migrations
                             Meaty = false,
                             Name = "Baklava",
                             Price = 4,
+                            QtyAvail = 5,
                             Sku = 9
                         },
                         new
                         {
                             ID = 10,
                             Category = 0,
-                            Description = "This sweet breakfast staple contains a whole wheat biscuit with creamy peanut butter spread on top.",
+                            Description = "This sweet breakfast staple contains a half cinnamon raison bagel with creamy almond butter spread on top.",
                             Image = "AlmondButterBagel.jpg",
                             Meaty = false,
                             Name = "Almond Butter Bagel",
                             Price = 4,
+                            QtyAvail = 5,
                             Sku = 10
                         });
                 });
