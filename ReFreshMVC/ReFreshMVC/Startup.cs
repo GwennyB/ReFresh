@@ -39,7 +39,7 @@ namespace ReFreshMVC
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
-
+            services.AddScoped<ISearchBarManager, SearchBarManagementService>();
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));

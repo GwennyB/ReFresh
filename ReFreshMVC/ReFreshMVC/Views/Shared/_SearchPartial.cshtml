@@ -18,7 +18,7 @@
     <form class="col s8" asp-controller="Product" asp-action="@temp" style="margin: auto; padding-left:5%; float:none">
     <div class="row">
         <div class="input-field col s2">
-            <select name="SearchCategory">
+            <select name="searchCategory">
                 <option value="10">Food Category</option>
                 <option value="0">@Categories.entrees</option>
                 <option value="1">@Categories.sides</option>
@@ -29,7 +29,7 @@
         </div>
         <div class="input-field col s6">
             <p>
-                Search: <input type="text" name="SearchString" />
+                Search: <input type="text" name="searchString" />
                 <input type="submit" value="Filter" />
             </p>
         </div>
