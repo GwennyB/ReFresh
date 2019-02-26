@@ -53,6 +53,14 @@ namespace ReFreshMVC.Models.Services
             return await _context.Inventory.ToListAsync();
         }
         /// <summary>
+        /// Get all Non-Meat Products from DB
+        /// </summary>
+        /// <returns>List of Non-Meats Products</returns>
+        public async Task<List<Product>> GetAllNonMeatAsync()
+        {
+            return await _context.Inventory.Where(p => p.Meaty == false).ToListAsync();
+        }
+        /// <summary>
         /// Get one Product by the ProductID
         /// </summary>
         /// <param name="id"></param>
