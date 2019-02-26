@@ -60,22 +60,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="searchString"> string to search </param>
         /// <returns> view with filtered products list </returns>
         [HttpPost]
-        public async Task<IActionResult> NonMeatProducts(string searchString, int SearchCategory)
-        {
-
-            IEnumerable<Product> products = await _products.GetAllNonMeatAsync();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower();
-                products = products.Where(s => s.Name.ToLower().Contains(searchString));
-            }
-            if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
-            {
-                products = products.Where(s => (int)s.Category == SearchCategory);
-            }
-            return View("Index", products);
-        }
+        public async Task<IActionResult> NonMeatProducts(string searchString, int searchCategory) => View("Index", await _search.SearchProducts(searchString, searchCategory, false));
 
         /// <summary>
         /// captures 404 on this route (from non-MeatEater 'AccessDenied') and redirects to NonMeatProducts
@@ -87,13 +72,20 @@ namespace ReFreshMVC.Controllers
         {
             return RedirectToAction("NonMeatProducts", "Product");
         }
-
+        /// <summary>
+        /// displays a list of all products to the Iventory View
+        /// </summary>
+        /// <returns>View of Product List</returns>
         [HttpGet]
         public async Task<IActionResult> Inventory()
         {
             IEnumerable<Product> list = await _products.GetAllAsync();
             return View(list);
         }
+        /// <summary>
+        /// displays creation page for Inventory
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public IActionResult Create() => View();
     }

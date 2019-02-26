@@ -16,20 +16,31 @@ namespace ReFreshMVC.Models.Services
         {
             _context = context;
         }
+        /// <summary>
+        /// Get products based on search string, product category, and meat user claim. 
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="category"></param>
+        /// <param name="meat"></param>
+        /// <returns>IEnumerable<Product>Filtered Products</returns>
         public async Task<IEnumerable<Product>> SearchProducts(string search, int category, bool meat)
         {
+            // Get Inventory
             IEnumerable<Product> products = await _context.Inventory.ToListAsync();
+
+            // Filter on Meat Claim
             if (meat == false)
                 products = products.Where(p => p.Meaty == false);
-
-            if (search == "" && category == 10)
-                return products;
-            if (search == "" && category != 10)
+            // Filter on enum category 
+            if (search == null && category != 10)
                 return products.Where(s => (int)s.Category == category);
-            if(search != "" && category == 10)
+            // Filter on string search
+            if(search != null && category == 10)
                 return products.Where(p => p.Name.ToLower().Contains(search.ToLower()));
-            if(search != "" && category != 10)
+            // Filter on both enum category and string search
+            if(search != null && category != 10)
                 return products.Where(p => p.Name.ToLower().Contains(search.ToLower()) && (int)p.Category == category);
+            // Return all Meat or Non-Meat products not filtered
             return products;
         }
     }
