@@ -16,12 +16,14 @@ namespace ReFreshMVC.Controllers
     public class ProductController : Controller
     {
         private readonly IInventoryManager _products;
+        private readonly ISearchBarManager _search;
         private readonly UserManager<User> _userManager;
 
-        public ProductController(UserManager<User> userManager, IInventoryManager products)
+        public ProductController(UserManager<User> userManager, IInventoryManager products, ISearchBarManager search)
         {
             _userManager = userManager;
             _products = products;
+            _search = search;
         }
 
         /// <summary>
@@ -43,22 +45,7 @@ namespace ReFreshMVC.Controllers
         /// <returns> view with filtered products list </returns>
         [Authorize(Policy = "Carnivore")]
         [HttpPost]
-        public async Task<IActionResult> Index(string searchString, int SearchCategory)
-        {
-
-            IEnumerable<Product> products = await _products.GetAllAsync();
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                searchString = searchString.ToLower();
-                products = products.Where(s => s.Name.ToLower().Contains(searchString));
-            }
-            if (String.IsNullOrEmpty(searchString) && SearchCategory != 10)
-            {
-                products = products.Where(s => (int)s.Category == SearchCategory);
-            }
-            return View(products);
-        }
+        public async Task<IActionResult> Index(string searchString, int searchCategory) => View(await _search.SearchProducts(searchString, searchCategory, true));
 
         /// <summary>
         /// displays all meatless products (for non-MeatEaters)
@@ -75,6 +62,7 @@ namespace ReFreshMVC.Controllers
         [HttpPost]
         public async Task<IActionResult> NonMeatProducts(string searchString, int SearchCategory)
         {
+
             IEnumerable<Product> products = await _products.GetAllNonMeatAsync();
 
             if (!String.IsNullOrEmpty(searchString))
