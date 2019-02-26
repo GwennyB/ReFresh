@@ -42,7 +42,7 @@ namespace ReFreshMVC.Models.Services
         /// </summary>
         /// <param name="cart"> cart to close out </param>
         /// <returns> task completed </returns>
-        public async Task CloseCart(Cart cart)
+        public async Task CloseCartAsync(Cart cart)
         {
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
