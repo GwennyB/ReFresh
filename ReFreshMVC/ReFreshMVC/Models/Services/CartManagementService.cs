@@ -23,16 +23,16 @@ namespace ReFreshMVC.Models.Services
         /// </summary>
         /// <param name="username"> FullName claim of logged in user </param>
         /// <returns> newly created cart </returns>
-        public async Task<Cart> CreateCartAsync(string username)
+        public async Task<Cart> CreateCartAsync(string user)
         {
             Cart cart = new Cart()
             {
-                UserName = username,
+                UserName = user,
                 Completed = null
             };
             await _context.Carts.AddAsync(cart);
             await _context.SaveChangesAsync();
-            return await _context.Carts.FirstOrDefaultAsync(c => c.UserName == username && c.Completed == null);
+            return await _context.Carts.FirstOrDefaultAsync(c => c.UserName == user && c.Completed == null);
         }
 
         /// <summary>
@@ -53,7 +53,6 @@ namespace ReFreshMVC.Models.Services
             }
             await _context.SaveChangesAsync();
         }
-
 
     }
 }
