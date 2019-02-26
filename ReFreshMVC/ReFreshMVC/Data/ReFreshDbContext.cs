@@ -35,6 +35,9 @@ namespace ReFreshMVC.Data
         }
         
         public DbSet<Product> Inventory { get; set; }
+        public DbSet<Cart> Carts { get; set; }
+        public DbSet<Order> Orders { get; set; }
+
     }
 }
 
