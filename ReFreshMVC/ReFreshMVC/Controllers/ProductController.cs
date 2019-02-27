@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models;
+using ReFreshMVC.Models.ViewModels;
 using ReFreshMVC.Models.Interfaces;
 
 using System;
@@ -17,13 +18,15 @@ namespace ReFreshMVC.Controllers
     {
         private readonly IInventoryManager _products;
         private readonly ISearchBarManager _search;
+        private readonly ICartManager _cart;
         private readonly UserManager<User> _userManager;
 
-        public ProductController(UserManager<User> userManager, IInventoryManager products, ISearchBarManager search)
+        public ProductController(UserManager<User> userManager, IInventoryManager products, ISearchBarManager search, ICartManager cart)
         {
             _userManager = userManager;
             _products = products;
             _search = search;
+            _cart = cart;
         }
 
         /// <summary>
@@ -94,6 +97,33 @@ namespace ReFreshMVC.Controllers
         /// <param name="id"></param>
         /// <returns>View with product details</returns>
         [HttpGet]
-        public async Task<IActionResult> Landing(int id) => View(await _products.GetOneByIdAsync(id));
+        public async Task<IActionResult> Landing(int id)
+        {
+            Product product = await _products.GetOneByIdAsync(id);
+
+            OrderProductViewModel opvm = new OrderProductViewModel();
+            opvm.ProductID = product.ID;
+            opvm.Sku = product.Sku;
+            opvm.Name = product.Name;
+            opvm.QtyAvail = product.QtyAvail;
+            opvm.Image = product.Image;
+            opvm.Category = product.Category;
+            opvm.Meaty = product.Meaty;
+
+            return View(opvm);
+        } 
+        [HttpPost]
+        public async Task<IActionResult> AddToCart([Bind("ProductID, Qty, ExtPrice")] Order order)
+        {
+            string username = User.Identity.Name;
+            Cart cart = await _cart.GetCartAsync(username);
+
+            Product product = await _products.GetOneByIdAsync(order.ProductID);
+
+            order.CartID = cart.ID;
+            order.ExtPrice = order.Qty * product.Price;
+            
+            return RedirectToAction("Index");
+        }
     }
 }

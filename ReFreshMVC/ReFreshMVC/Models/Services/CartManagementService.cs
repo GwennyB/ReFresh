@@ -62,5 +62,10 @@ namespace ReFreshMVC.Models.Services
             return true;
         }
 
+        public async Task<Cart> GetCartAsync(string username)
+        {
+            var x = await _context.Carts.Where(c => c.UserName == username).FirstOrDefaultAsync();
+            return x;
+        }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model ReFreshMVC.Models.Product
+﻿@model ReFreshMVC.Models.ViewModels.OrderProductViewModel
 @{ 
     Layout = "_Layout";
 }
@@ -16,16 +16,16 @@
                 <p>@Model.Description</p>
             </div>
             <div class="row" >
-                <form method="post" asp-action="AddProduct" asp-controller="Cart" style="width:100%">
-                    <select >
-                        <option value="" disabled selected>Quantity</option>
+                <form method="post" asp-action="AddToCart" asp-controller="Product" style="width:100%">
+                    <input hidden="hidden" asp-for="@Model.CartID" />
+                    <input hidden="hidden" asp-for="@Model.ProductID" />
+                    <select asp-for="@Model.Qty">
                         @for (int i = 1; i <= 10; i++)
                         {
-                            <option value="@i">@i</option>
+                            <option name="qty" value="@i">@i</option>
                         }
                     </select>
-                    @*check if no items in qty*@
-                    <a class="waves-effect waves-light btn" style="display:inline-block">Add To Cart</a>
+                    <input class="waves-effect waves-light btn" type="submit" value="Submit" style="display:inline-block" />
                 </form>
             </div>
 
