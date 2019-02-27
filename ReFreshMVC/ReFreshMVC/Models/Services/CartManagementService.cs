@@ -64,8 +64,13 @@ namespace ReFreshMVC.Models.Services
 
         public async Task<Cart> GetCartAsync(string username)
         {
-            var x = await _context.Carts.Where(c => c.UserName == username).FirstOrDefaultAsync();
-            return x;
+            return await _context.Carts.Where(c => c.UserName == username).Include("Orders").FirstOrDefaultAsync();
+        }
+
+        public async Task AddOrderToCart(Order order)
+        {
+            _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
         }
     }
 }
