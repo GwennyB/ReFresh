@@ -40,4 +40,6 @@ form > * {
 .navbarLink {
     color: black;
 }
-
+#addToCartButton {
+    display:inline-block;
+}

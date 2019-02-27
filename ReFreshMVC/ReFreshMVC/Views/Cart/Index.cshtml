@@ -1,0 +1,44 @@
+﻿@model ReFreshMVC.Models.Cart
+@using ReFreshMVC.Models;
+@{
+    int cartTotalPrice = 0;
+}
+<h1>Cart</h1>
+<form asp-action="" asp-controller="" method="post">
+    <table>
+        <thead>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(Order order in Model.Orders)
+            {
+                @(cartTotalPrice += order.ExtPrice)
+            <tr>
+                <th>@order.Product.Name</th>
+                <th>@order.Qty</th>
+                <th>@order.ExtPrice</th>
+
+
+                <a class="btn waves-effect waves-light" asp-action="Edit" asp-route-id="@order.ProductID">
+                    Edit
+                    <i class="material-icons">edit</i>
+                </a>
+                <a class="btn waves-effect waves-light" asp-action="Delete" asp-route-id="@order.ProductID">
+                    Delete
+                    <i class="material-icons">edit</i>
+                </a>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <h2>Order Total : </h2>
+            <p>@cartTotalPrice</p>
+        </tfoot>
+    </table>
+    <input class="waves-effect waves-light btn" type="submit" value="Submit"/>
+</form>
