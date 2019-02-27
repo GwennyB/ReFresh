@@ -122,7 +122,8 @@ namespace ReFreshMVC.Controllers
 
             order.CartID = cart.ID;
             order.ExtPrice = order.Qty * product.Price;
-            
+            await _cart.AddOrderToCart(order);
+
             return RedirectToAction("Index");
         }
     }
