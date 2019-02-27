@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models;
+using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.ViewModels;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -14,16 +15,18 @@ namespace ReFreshMVC.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private readonly ICartManager _cart;
 
         /// <summary>
         /// constructs UserController object to manager user account creation and sign-in
         /// </summary>
         /// <param name="userManager"> user manager service context </param>
         /// <param name="signInManager"> signIn manager service context </param>
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, ICartManager cart)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _cart = cart;
         }
 
         /// <summary>
@@ -64,6 +67,7 @@ namespace ReFreshMVC.Controllers
                     Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
                     await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore });
 
+                    await _cart.CreateCartAsync(user.Email);
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -91,6 +95,11 @@ namespace ReFreshMVC.Controllers
             if (ModelState.IsValid)
             {
                 var query = await _signInManager.PasswordSignInAsync(bag.Email, bag.Password, false, false);
+                var cart = await _cart.GetCartAsync(bag.Email);
+                if (  cart == null)
+                {
+                    await _cart.CreateCartAsync(bag.Email);
+                }
 
                 if (query.Succeeded)
                 {
