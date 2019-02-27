@@ -88,5 +88,8 @@ namespace ReFreshMVC.Controllers
         /// <returns></returns>
         [HttpGet]
         public IActionResult Create() => View();
+
+        [HttpGet]
+        public async Task<IActionResult> Landing(int id) => View(await _products.GetOneByIdAsync(id));
     }
 }

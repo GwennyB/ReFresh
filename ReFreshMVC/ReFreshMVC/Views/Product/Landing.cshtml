@@ -1,0 +1,35 @@
+﻿@model ReFreshMVC.Models.Product
+@{ 
+    Layout = "_Layout";
+}
+<div class="container">
+    <div class="row">
+        <div class="col s6 m6">
+            <img src="~/Img/@Model.Image" class="responsive-img" />
+        </div>
+        <div class="col s6 m6">
+            <div class="row">
+                <h1>@Model.Name</h1>
+                <p>Price: @Model.Price</p>
+                <p>SKU: @Model.Sku</p>
+                <p>Description:</p>
+                <p>@Model.Description</p>
+            </div>
+            <div class="row" >
+                <form method="post" asp-action="AddProduct" asp-controller="Cart" style="width:100%">
+                    <select >
+                        <option value="" disabled selected>Quantity</option>
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <option value="@i">@i</option>
+                        }
+                    </select>
+                    @*check if no items in qty*@
+                    <a class="waves-effect waves-light btn" style="display:inline-block">Add To Cart</a>
+                </form>
+            </div>
+
+        </div>
+   </div>
+</div>
+
