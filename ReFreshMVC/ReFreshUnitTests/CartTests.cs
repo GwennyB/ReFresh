@@ -25,115 +25,64 @@ namespace ReFreshUnitTests
             Assert.Equal("test", p.UserName);
         }
         [Fact]
-        public async void CreateAsync()
+        public void CompletedGetSet()
         {
-            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CreateCart").Options;
+            Cart p = new Cart();
+            var now = DateTime.Now;
+            p.Completed = now;
+            Assert.Equal(now, p.Completed);
+        }
+        [Fact]
+        public async void CreateCartAsync()
+        {
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CreateCartAsync").Options;
 
             using(ReFreshDbContext context = new ReFreshDbContext(options))
             {
-                Cart testCart = new Cart();
-                testCart.Sku = 1;
-                testCart.Name = "Test Cart";
-                testCart.Price = 5;
-                testCart.Description = "This is a test";
-                testCart.Image = "https://image-url.com";
+                var now = DateTime.Now;
 
-                InventoryManagementService ims = new InventoryManagementService(context);
-                await ims.CreateAsync(testCart);
-                var result = context.Inventory.FirstOrDefaultAsync(pr => pr.ID == testCart.ID);
+                CartManagementService cms = new CartManagementService(context);
+                await cms.CreateCartAsync("test");
+                var result = context.Carts.FirstOrDefaultAsync(pr => pr.UserName == "test");
 
-                Assert.True(testCart.Sku == result.Result.Sku);
+                Assert.Equal("test", result.Result.UserName);
             }
         }
         [Fact]
-        public async void DeleteAsync()
+        public async void CloseCartAsync()
         {
-            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("DeleteCart").Options;
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CloseCartAsync").Options;
 
             using (ReFreshDbContext context = new ReFreshDbContext(options))
             {
-                Cart testCart = new Cart();
-                testCart.Sku = 1;
-                testCart.Name = "Test Cart";
-                testCart.Price = 5;
-                testCart.Description = "This is a test";
-                testCart.Image = "https://image-url.com";
+                CartManagementService cms = new CartManagementService(context);
+                await cms.CreateCartAsync("test cart");
+                var testCart = await context.Carts.FirstOrDefaultAsync(pr => pr.UserName == "test cart");
+                await cms.CloseCartAsync(testCart);
+                var result = await context.Carts.FirstOrDefaultAsync(pr => pr.UserName == "test cart");
 
-                InventoryManagementService ims = new InventoryManagementService(context);
-                await ims.CreateAsync(testCart);
-                await ims.DeleteAsync(testCart.ID);
-
-                await Assert.ThrowsAsync<ArgumentNullException> (()=> ims.DeleteAsync(testCart.ID));
+                Assert.NotNull(result.Completed);
             }
         }
-        [Fact]
-        public async void GetAllAsync()
-        {
-            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetAllCart").Options;
 
-            using (ReFreshDbContext context = new ReFreshDbContext(options))
-            {
-                Cart testCart = new Cart();
-                testCart.Sku = 1;
-                testCart.Name = "Test Cart";
-                testCart.Price = 5;
-                testCart.Description = "This is a test";
-                testCart.Image = "https://image-url.com";
+        //[Fact]
+        //public async void CloseCartAsync_UpdatesProductQuantities()
+        //{
+        //    DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CloseCartAsync").Options;
 
-                InventoryManagementService ims = new InventoryManagementService(context);
-                await ims.CreateAsync(testCart);
+        //    using (ReFreshDbContext context = new ReFreshDbContext(options))
+        //    {
+        //        var now = DateTime.Now;
+        //        CartManagementService cms = new CartManagementService(context);
+        //        InventoryManagementService ims = new InventoryManagementService(context);
+        //        await cms.CreateCartAsync("test");
+        //        var testCart = await context.Carts.FirstOrDefaultAsync(pr => pr.UserName == "test");
+        //        await cms.CloseCartAsync(testCart);
+        //        var result = await context.Carts.FirstOrDefaultAsync(pr => pr.ID == testCart.ID);
 
-                List<Cart> result = await ims.GetAllAsync() as List<Cart>;
-                Assert.True(result.Count == 1);
-            }
-        }
-        [Fact]
-        public async void GetOneAsync()
-        {
-            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetOneCart").Options;
+        //        Assert.Equal(now, result.Completed);
+        //    }
+        //}
 
-            using (ReFreshDbContext context = new ReFreshDbContext(options))
-            {
-                Cart testCart = new Cart();
-                testCart.Sku = 1;
-                testCart.Name = "Test Cart";
-                testCart.Price = 5;
-                testCart.Description = "This is a test";
-                testCart.Image = "https://image-url.com";
-
-                InventoryManagementService ims = new InventoryManagementService(context);
-                await ims.CreateAsync(testCart);
-
-                Cart result = ims.GetOneByIdAsync(testCart.ID).Result;
-                Assert.True(result.ID == testCart.ID);
-            }
-        }
-        [Fact]
-        public async void UpdateAsync()
-        {
-            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("UpdateCart").Options;
-
-            using (ReFreshDbContext context = new ReFreshDbContext(options))
-            {
-                Cart testCart = new Cart();
-                testCart.ID = 1;
-                testCart.Sku = 1;
-                testCart.Name = "Test Cart";
-                testCart.Price = 5;
-                testCart.Description = "This is a test";
-                testCart.Image = "https://image-url.com";
-
-                InventoryManagementService ims = new InventoryManagementService(context);
-                await ims.CreateAsync(testCart);
-
-                Cart updateCart = testCart;
-                updateCart.Name = "Update Cart";
-
-                await ims.UpdateAsync(updateCart);
-                Cart p = await ims.GetOneByIdAsync(testCart.ID);
-
-                Assert.True(p.Name == "Update Cart");
-            }
-        }
     }
 }

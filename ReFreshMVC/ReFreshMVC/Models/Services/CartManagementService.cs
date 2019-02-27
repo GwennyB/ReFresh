@@ -42,16 +42,24 @@ namespace ReFreshMVC.Models.Services
         /// </summary>
         /// <param name="cart"> cart to close out </param>
         /// <returns> task completed </returns>
-        public async Task CloseCartAsync(Cart cart)
+        public async Task<bool> CloseCartAsync(Cart cart)
         {
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
-            foreach (Order item in cart.Orders)
-            {
-                item.Product.QtyAvail -= item.Qty;
-                await Task.Run(() => _context.Inventory.Update(item.Product));
-            }
+            //if(cart.Orders != null)
+            //{
+            //    foreach (Order item in cart.Orders)
+            //    {
+            //        if (item.Product.QtyAvail < item.Qty)
+            //        {
+            //            return false;
+            //        }
+            //        item.Product.QtyAvail -= item.Qty;
+            //        await Task.Run(() => _context.Inventory.Update(item.Product));
+            //    }
+            //}
             await _context.SaveChangesAsync();
+            return true;
         }
 
     }
