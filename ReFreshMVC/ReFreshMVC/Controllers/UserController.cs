@@ -230,7 +230,8 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("Login");
         }
 
-
+        [HttpGet]
+        public IActionResult Privacy() => View();
     }
 
        

@@ -11,6 +11,11 @@ using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Handler;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 
 namespace ReFreshMVC
 {
@@ -41,6 +46,18 @@ namespace ReFreshMVC
             services.AddScoped<IInventoryManager, InventoryManagementService>();
             services.AddScoped<ISearchBarManager, SearchBarManagementService>();
             services.AddScoped<ICartManager, CartManagementService>();
+
+
+            services.AddDefaultIdentity<IdentityUser>()
+                    .AddDefaultUI(UIFramework.Bootstrap4)
+                    .AddEntityFrameworkStores<UserDbContext>();
+
+            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
+                microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
+            });
+
 
             services.AddAuthorization(options =>
             {
