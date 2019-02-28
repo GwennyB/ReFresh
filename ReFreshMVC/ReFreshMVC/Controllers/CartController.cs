@@ -19,11 +19,22 @@ namespace ReFreshMVC.Controllers
             _userManager = userManager;
             _cart = cart;
         }
+
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             string username = User.Identity.Name;
-            Cart cart = await _cart.GetCartAsync(username);
 
+            if (username == null)
+            {
+                return RedirectToAction("Login", "User");
+            }
+            
+            Cart cart = await _cart.GetCartAsync(username);
+            if (cart == null)
+            {
+                cart = await _cart.CreateCartAsync(username);
+            }
             return View(cart);
         }
     }
