@@ -1,5 +1,41 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model ReFreshMVC.Models.ViewModels.ExtLoginViewModel
 @{
 }
+<form method="post" asp-controller="User" asp-action="ExtLoginConfirmation">
+
+    <div asp-validation-summary="All"></div>
+
+    <label asp-for="FirstName"></label>
+    <input asp-for="FirstName" />
+    <span asp-validation-for="FirstName"></span>
+
+    <label asp-for="LastName"></label>
+    <input asp-for="LastName" />
+    <span asp-validation-for="LastName"></span>
+
+    <label asp-for="Birthdate"></label>
+    <input asp-for="Birthdate" />
+    <span asp-validation-for="Birthdate"></span>
+
+    <label asp-for="Email"></label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email"></span>
+
+    <label asp-for="Password"></label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password"></span>
+
+    <label asp-for="ConfirmPassword"></label>
+    <input asp-for="ConfirmPassword" />
+    <span asp-validation-for="ConfirmPassword"></span>
+
+    <label asp-for="EatsMeat"></label>
+    <select asp-for="EatsMeat">
+        <option value="true">Of course I do!</option>
+        <option value="false">Ew. No.</option>
+    </select>
+    <span asp-validation-for="EatsMeat"></span>
+
+    <button type="submit">Register</button>
+
+</form>
