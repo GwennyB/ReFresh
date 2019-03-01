@@ -31,7 +31,7 @@
     {
         <h1> LOGIN PROVIDERS!!!</h1>
 
-        <form method="post" asp-controller="User" asp-action="OAuthLogin">
+        <form method="post" asp-controller="User" asp-action="ExtLogin">
             @foreach (var prov in oAuthProviders)
             {
                 <button type="submit" name="provider" value="@prov.Name" title="Sign in with @prov.DisplayName"> @prov.Name</button>

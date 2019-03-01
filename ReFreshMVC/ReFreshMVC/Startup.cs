@@ -16,6 +16,10 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.Authentication;
+using System;
+using System.Threading.Tasks;
 
 namespace ReFreshMVC
 {
@@ -48,14 +52,27 @@ namespace ReFreshMVC
             services.AddScoped<ICartManager, CartManagementService>();
 
 
-            services.AddDefaultIdentity<IdentityUser>()
-                    .AddDefaultUI(UIFramework.Bootstrap4)
-                    .AddEntityFrameworkStores<UserDbContext>();
+            //services.AddDefaultIdentity<IdentityUser>()
+            //        .AddDefaultUI(UIFramework.Bootstrap4)
+            //        .AddEntityFrameworkStores<UserDbContext>();
 
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
                 microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
+                microsoftOptions.SaveTokens = true;
+                microsoftOptions.Events.OnCreatingTicket = ctx =>
+                {
+                    List<AuthenticationToken> tokens = ctx.Properties.GetTokens()
+                    as List<AuthenticationToken>;
+                    tokens.Add(new AuthenticationToken()
+                    {
+                        Name = "TicketCreated",
+                        Value = DateTime.UtcNow.ToString()
+                    });
+                    ctx.Properties.StoreTokens(tokens);
+                    return Task.CompletedTask;
+                };
             });
 
 
