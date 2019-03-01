@@ -1,4 +1,9 @@
 ﻿@model ReFreshMVC.Models.ViewModels.LoginViewModel
+
+@using Microsoft.AspNetCore.Identity;
+@using ReFreshMVC.Models;
+@inject SignInManager<User> signInMgr
+
 @{
     Layout = "_Layout";
 }
@@ -18,3 +23,20 @@
     <button type="submit">Log in</button>
     <p>Not a user? <a asp-controller="User" asp-action="Register">Register</a> here.</p>
 </form>
+
+@{
+    var oAuthProviders = (await signInMgr.GetExternalAuthenticationSchemesAsync()).ToList();
+
+    if (oAuthProviders.Count > 0)
+    {
+        <h1> LOGIN PROVIDERS!!!</h1>
+
+        <form method="post" asp-controller="User" asp-action="ExtLogin">
+            @foreach (var prov in oAuthProviders)
+            {
+                <button type="submit" name="provider" value="@prov.Name" title="Sign in with @prov.DisplayName"> @prov.Name</button>
+            }
+        </form>
+
+    }
+}
