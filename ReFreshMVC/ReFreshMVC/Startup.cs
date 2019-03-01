@@ -6,25 +6,23 @@ using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.Services;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Handler;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Authentication;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authentication.AzureAD.UI;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ReFreshMVC
 {
     public class Startup
     {
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -75,8 +73,35 @@ namespace ReFreshMVC
                 };
             });
 
+            //services.Configure(options =>
+            //{
+            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
+            //    options.CheckConsentNeeded = context => true;
+            //    options.MinimumSameSitePolicy = SameSiteMode.None;
+            //});
 
-            services.AddAuthorization(options =>
+            //services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
+            //        .AddAzureAD(options => Configuration.Bind("AzureAd", options));
+
+            //services.Configure(AzureADDefaults.OpenIdScheme, options =>
+            //{
+            //    options.Authority = options.Authority + "/v2.0/";         // Azure AD v2.0
+
+            //    options.TokenValidationParameters.ValidateIssuer = false; // accept several tenants (here simplified)
+            //});
+
+            //services.AddMvc(options =>
+            //{
+            //    var policy = new AuthorizationPolicyBuilder()
+            //                    .RequireAuthenticatedUser()
+            //                    .Build();
+            //    options.Filters.Add(new AuthorizeFilter(policy));
+            //})
+            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        
+
+
+        services.AddAuthorization(options =>
             {
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
             });

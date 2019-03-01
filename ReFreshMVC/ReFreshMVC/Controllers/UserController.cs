@@ -186,7 +186,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <param name="bag"> ext user data </param>
         /// <returns> confirmation view with user data </returns>
-        [HttpGet]
+        [HttpPost]
         public async Task<IActionResult> ExtLoginConfirmation(ExtLoginViewModel bag)
         {
             if (ModelState.IsValid)
@@ -201,9 +201,9 @@ namespace ReFreshMVC.Controllers
                 {
                     UserName = bag.Email,
                     Email = bag.Email,
-                    //FirstName = login.FirstName,
-                    //LastName = login.LastName,
-                    //Birthdate = login.Birthdate,
+                    FirstName = bag.FirstName,
+                    LastName = bag.LastName,
+                    Birthdate = bag.Birthdate
                 };
 
                 IdentityResult query = await _userManager.CreateAsync(user);
@@ -211,12 +211,12 @@ namespace ReFreshMVC.Controllers
                 if (query.Succeeded)
                 {
                     // define and capture claims
-                    //Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
-                    //Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
-                    //Claim email = new Claim(ClaimTypes.Email, bag.Email, ClaimValueTypes.Email);
+                    Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
+                    Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
+                    Claim email = new Claim(ClaimTypes.Email, bag.Email, ClaimValueTypes.Email);
 
-                    //// add all claims to DB
-                    //await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
+                    // add all claims to DB
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
 
                     // start a cart for new user
                     await _cart.CreateCartAsync(bag.Email);
