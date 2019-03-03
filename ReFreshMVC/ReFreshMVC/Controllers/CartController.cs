@@ -42,5 +42,14 @@ namespace ReFreshMVC.Controllers
             }
             return View(cart);
         }
+        [HttpPost]
+        public async Task<IActionResult> Checkout()
+        {
+            Cart cart = await _cart.GetCartAsync(User.Identity.Name);
+            cart.Completed = DateTime.Now;
+            return RedirectToAction("Index", "Home");
+            // add cart to email
+            // send email
+        }
     }
 }
