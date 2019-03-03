@@ -27,6 +27,7 @@ namespace ReFreshMVC.Models
         [Required]
         [Display(Name = "Quantity Available")]
         public int QtyAvail { get; set; }
+
         public string Description { get; set; }
 
         [DataType(DataType.ImageUrl)]

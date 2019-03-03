@@ -46,18 +46,20 @@ namespace ReFreshMVC.Models.Services
         {
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
-            //if(cart.Orders != null)
-            //{
-            //    foreach (Order item in cart.Orders)
-            //    {
-            //        if (item.Product.QtyAvail < item.Qty)
-            //        {
-            //            return false;
-            //        }
-            //        item.Product.QtyAvail -= item.Qty;
-            //        await Task.Run(() => _context.Inventory.Update(item.Product));
-            //    }
-            //}
+            await _context.SaveChangesAsync();
+
+            if (cart.Orders != null)
+            {
+                foreach (Order item in cart.Orders)
+                {
+                    if (item.Product.QtyAvail < item.Qty)
+                    {
+                        return false;
+                    }
+                    item.Product.QtyAvail -= item.Qty;
+                    await Task.Run(() => _context.Inventory.Update(item.Product));
+                }
+            }
             await _context.SaveChangesAsync();
             return true;
         }
