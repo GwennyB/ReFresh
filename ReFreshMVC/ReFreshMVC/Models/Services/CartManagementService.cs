@@ -68,7 +68,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>Cart</returns>
         public async Task<Cart> GetCartAsync(string username)
         {
-            return await _context.Carts.Where(c => c.UserName == username).Include("Orders").FirstOrDefaultAsync();
+            return await _context.Carts.Where(c => c.UserName == username).Include("Orders.Product").FirstOrDefaultAsync();
         }
         /// <summary>
         /// Adds an order with a CartId to the Order Table
@@ -78,6 +78,15 @@ namespace ReFreshMVC.Models.Services
         public async Task AddOrderToCart(Order order)
         {
             _context.Orders.Add(order);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateOrderInCart(Order order)
+        {
+            Order orderToUpdate = await _context.Orders.Where(o => o.CartID == order.CartID && o.ProductID == order.ProductID).FirstOrDefaultAsync();
+            orderToUpdate.Qty += order.Qty;
+            orderToUpdate.ExtPrice += order.ExtPrice;
+            
             await _context.SaveChangesAsync();
         }
     }

@@ -119,13 +119,22 @@ namespace ReFreshMVC.Controllers
         {
             string username = User.Identity.Name;
             Cart cart = await _cart.GetCartAsync(username);
-
             Product product = await _products.GetOneByIdAsync(order.ProductID);
 
+            // Order object complete here
             order.CartID = cart.ID;
             order.ExtPrice = order.Qty * product.Price;
-            await _cart.AddOrderToCart(order);
 
+            // Check if order exists
+            
+            if (cart.Orders.Where(o => o.CartID == cart.ID && o.ProductID == order.ProductID).FirstOrDefault() != null)
+            {
+                await _cart.UpdateOrderInCart(order);
+            }
+            else
+            {
+                await _cart.AddOrderToCart(order);
+            }
             return RedirectToAction("Index");
         }
     }

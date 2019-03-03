@@ -18,7 +18,7 @@ namespace ReFreshMVC.Models
 
         // timestamp for cart closure / transaction complete
         public DateTime? Completed { get; set; }
-
+        
         // join collection
         public ICollection<Order> Orders { get; set; }
 
