@@ -14,13 +14,13 @@ namespace ReFreshMVC.Controllers
     {
         private readonly ICartManager _cart;
         private readonly UserManager<User> _userManager;
-        private readonly IEmailSender _mailManager;
+        private readonly IEmailSender _mail;
 
-        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mailManager)
+        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail)
         {
             _userManager = userManager;
             _cart = cart;
-            _mailManager = mailManager;
+            _mail = mail;
         }
 
         /// <summary>
