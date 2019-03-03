@@ -1,7 +1,12 @@
 ﻿@model ReFreshMVC.Models.Cart
 @using ReFreshMVC.Models;
 @{
+    Layout = "_Layout";
     int cartTotalPrice = 0;
+    foreach(Order order in Model.Orders)
+    {
+        cartTotalPrice += order.ExtPrice;
+    }
 }
 <h1>Cart</h1>
 <form asp-action="" asp-controller="" method="post">
@@ -17,28 +22,32 @@
         <tbody>
             @foreach(Order order in Model.Orders)
             {
-                @(cartTotalPrice += order.ExtPrice)
+                
             <tr>
                 <th>@order.Product.Name</th>
                 <th>@order.Qty</th>
-                <th>@order.ExtPrice</th>
-
-
-                <a class="btn waves-effect waves-light" asp-action="Edit" asp-route-id="@order.ProductID">
-                    Edit
-                    <i class="material-icons">edit</i>
-                </a>
-                <a class="btn waves-effect waves-light" asp-action="Delete" asp-route-id="@order.ProductID">
-                    Delete
-                    <i class="material-icons">edit</i>
-                </a>
+                <th>$ @order.ExtPrice</th>
+                <td>
+                    <a class="btn waves-effect waves-light" asp-action="" asp-route-id="@order.ProductID">
+                        Edit
+                        <i class="material-icons">edit</i>
+                    </a>
+                </td>
+                <td>
+                    <a class="btn waves-effect waves-light" asp-action="" asp-route-id="@order.ProductID">
+                        Delete
+                        <i class="material-icons">edit</i>
+                    </a>
+                </td>
             </tr>
             }
         </tbody>
         <tfoot>
-            <h2>Order Total : </h2>
-            <p>@cartTotalPrice</p>
+            <tr>
+                <th>Order Total </th>
+                <td>$ @cartTotalPrice</td>
+                <td><input class="waves-effect waves-light btn" type="submit" value="Check Out"/></td>
+            </tr>
         </tfoot>
     </table>
-    <input class="waves-effect waves-light btn" type="submit" value="Submit"/>
 </form>

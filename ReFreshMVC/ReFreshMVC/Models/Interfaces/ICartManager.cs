@@ -11,6 +11,6 @@ namespace ReFreshMVC.Models.Interfaces
         Task<bool> CloseCartAsync(Cart cart);
         Task<Cart> GetCartAsync(string username);
         Task AddOrderToCart(Order order);
-
+        Task UpdateOrderInCart(Order order);
     }
 }
