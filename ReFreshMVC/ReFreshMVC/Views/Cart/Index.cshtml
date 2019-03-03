@@ -26,7 +26,7 @@
             <tr>
                 <th>@order.Product.Name</th>
                 <th>@order.Qty</th>
-                <th>@order.ExtPrice</th>
+                <th>$ @order.ExtPrice</th>
                 <td>
                     <a class="btn waves-effect waves-light" asp-action="" asp-route-id="@order.ProductID">
                         Edit
@@ -45,7 +45,7 @@
         <tfoot>
             <tr>
                 <th>Order Total </th>
-                <td>@cartTotalPrice</td>
+                <td>$ @cartTotalPrice</td>
                 <td><input class="waves-effect waves-light btn" type="submit" value="Check Out"/></td>
             </tr>
         </tfoot>
