@@ -105,6 +105,8 @@ namespace ReFreshMVC.Controllers
             opvm.ProductID = product.ID;
             opvm.Sku = product.Sku;
             opvm.Name = product.Name;
+            opvm.Price = product.Price;
+            opvm.Description = product.Description;
             opvm.QtyAvail = product.QtyAvail;
             opvm.Image = product.Image;
             opvm.Category = product.Category;

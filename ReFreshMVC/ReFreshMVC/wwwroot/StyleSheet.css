@@ -43,3 +43,11 @@ form > * {
 #addToCartButton {
     display:inline-block;
 }
+#productLandingDetailsContainer{
+    background-color: white;
+}
+#orderProductFormContainer{
+    padding: 0%;
+    margin: 0%;
+    display: inline-block;
+}

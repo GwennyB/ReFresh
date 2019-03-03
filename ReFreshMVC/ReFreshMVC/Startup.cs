@@ -11,6 +11,12 @@ using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Handler;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ReFreshMVC
 {
@@ -38,6 +44,7 @@ namespace ReFreshMVC
 
             services.AddDbContext<ReFreshDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
+
             services.AddScoped<IInventoryManager, InventoryManagementService>();
             services.AddScoped<ISearchBarManager, SearchBarManagementService>();
             services.AddScoped<ICartManager, CartManagementService>();
@@ -57,13 +64,17 @@ namespace ReFreshMVC
             {
                 app.UseDeveloperExceptionPage();
             }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+                app.UseHsts();
+            }
 
             app.UseStaticFiles();
-
             app.UseAuthentication();
 
             // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
+             app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseMvc(route =>
             {

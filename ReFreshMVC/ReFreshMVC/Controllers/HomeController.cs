@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +16,11 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> Homepage view </returns>
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult Error()
         {
             return View();
         }
