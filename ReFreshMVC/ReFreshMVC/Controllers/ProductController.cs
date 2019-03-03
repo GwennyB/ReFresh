@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ReFreshMVC.Controllers
 {
@@ -19,14 +20,16 @@ namespace ReFreshMVC.Controllers
         private readonly IInventoryManager _products;
         private readonly ISearchBarManager _search;
         private readonly ICartManager _cart;
+        private readonly IEmailSender _mailManager;
         private readonly UserManager<User> _userManager;
 
-        public ProductController(UserManager<User> userManager, IInventoryManager products, ISearchBarManager search, ICartManager cart)
+        public ProductController(UserManager<User> userManager, IInventoryManager products, ISearchBarManager search, ICartManager cart, IEmailSender mailManager)
         {
             _userManager = userManager;
             _products = products;
             _search = search;
             _cart = cart;
+            _mailManager = mailManager;
         }
 
         /// <summary>
