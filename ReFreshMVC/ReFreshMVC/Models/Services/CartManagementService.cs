@@ -68,7 +68,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>Cart</returns>
         public async Task<Cart> GetCartAsync(string username)
         {
-            return await _context.Carts.Where(c => c.UserName == username).Include("Orders.Product").FirstOrDefaultAsync();
+            return await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
         }
         /// <summary>
         /// Adds an order with a CartId to the Order Table
