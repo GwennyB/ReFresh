@@ -65,11 +65,18 @@ namespace ReFreshMVC.Controllers
 
                 if (query.Succeeded)
                 {
+                    // define and capture claims
                     Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
                     Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
-                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore });
+                    Claim email = new Claim(ClaimTypes.Email, bag.Email, ClaimValueTypes.Email);
 
+                    // add all claims to DB
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
+
+                    // start a cart for new user
                     await _cart.CreateCartAsync(user.Email);
+
+                    // sign in new user and send to Home/Index
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
                 }
@@ -124,8 +131,110 @@ namespace ReFreshMVC.Controllers
             await _signInManager.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
+
+        /// <summary>
+        /// POST: User/ExtLogin
+        /// requests login auth from external provider
+        /// </summary>
+        /// <param name="provider"> name of OAuth provider </param>
+        /// <returns> challenge result </returns>
+        [HttpPost]
+        public IActionResult ExtLogin(string provider)
+        {
+            var redirectUrl = Url.Action("ExtLoginCallback", "User");
+            var properties = _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return Challenge(properties, provider);
+        }
+
+        /// <summary>
+        /// GET: User/ExtLoginCallback
+        /// redirect target following external login challenge
+        /// </summary>
+        /// <param name="error"> external login error status from query string </param>
+        /// <returns> home page (or return to login page if unsuccessful) </returns>
+        [HttpGet]
+        public async Task<IActionResult> ExtLoginCallback(string error = null)
+        {
+            if (error != null)
+            {
+                TempData["Error"] = "Oops...external login was unsuccessful. Would you like to try another method?";
+                return RedirectToAction("Login");
+            }
+
+            var confirm = await _signInManager.GetExternalLoginInfoAsync();
+
+            if (confirm == null)
+            {
+                return RedirectToAction("Login");
+            }
+
+            var login = await _signInManager.ExternalLoginSignInAsync(confirm.LoginProvider, confirm.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+
+            if (login.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            var email = confirm.Principal.FindFirstValue(ClaimTypes.Email);
+
+            return View("ExtLogin", new ExtLoginViewModel { Email = email });
+
+        }
+
+        /// <summary>
+        /// GET: User/ExtLoginConfirmation
+        /// confirms login for user, and registers user for local account using OAuth data
+        /// </summary>
+        /// <param name="bag"> ext user data </param>
+        /// <returns> confirmation view with user data </returns>
+        [HttpPost]
+        public async Task<IActionResult> ExtLoginConfirmation(ExtLoginViewModel bag)
+        {
+            if (ModelState.IsValid)
+            {
+                ExternalLoginInfo info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    TempData["Error"] = "Oops...external login info didn't load.";
+                }
+
+                User user = new User()
+                {
+                    UserName = bag.Email,
+                    Email = bag.Email,
+                    FirstName = bag.FirstName,
+                    LastName = bag.LastName,
+                    Birthdate = bag.Birthdate
+                };
+
+                IdentityResult query = await _userManager.CreateAsync(user);
+
+                if (query.Succeeded)
+                {
+                    // define and capture claims
+                    Claim fullNameClaim = new Claim("FullName", $"{user.FirstName} {user.LastName}");
+                    Claim carnivore = new Claim("Carnivore", $"{bag.EatsMeat}");
+                    Claim email = new Claim(ClaimTypes.Email, bag.Email, ClaimValueTypes.Email);
+
+                    // add all claims to DB
+                    await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
+
+                    // start a cart for new user
+                    await _cart.CreateCartAsync(bag.Email);
+
+                    // sign in new user and send to Home/Index
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return RedirectToAction("Index", "Home");
+                }
+
+            }
+            return RedirectToAction("Login");
+        }
+
+        [HttpGet]
+        public IActionResult Privacy() => View();
     }
 
-
-
+       
 }
