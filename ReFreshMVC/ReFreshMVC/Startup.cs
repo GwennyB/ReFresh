@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.AzureAD.UI;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ReFreshMVC
 {
@@ -50,55 +51,24 @@ namespace ReFreshMVC
             services.AddScoped<ICartManager, CartManagementService>();
 
 
-            //services.AddDefaultIdentity<IdentityUser>()
-            //        .AddDefaultUI(UIFramework.Bootstrap4)
-            //        .AddEntityFrameworkStores<UserDbContext>();
-
             services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
                 microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
-                microsoftOptions.SaveTokens = true;
-                microsoftOptions.Events.OnCreatingTicket = ctx =>
-                {
-                    List<AuthenticationToken> tokens = ctx.Properties.GetTokens()
-                    as List<AuthenticationToken>;
-                    tokens.Add(new AuthenticationToken()
-                    {
-                        Name = "TicketCreated",
-                        Value = DateTime.UtcNow.ToString()
-                    });
-                    ctx.Properties.StoreTokens(tokens);
-                    return Task.CompletedTask;
-                };
+                //microsoftOptions.SaveTokens = true;
+                //microsoftOptions.Events.OnCreatingTicket = ctx =>
+                //{
+                //    List<AuthenticationToken> tokens = ctx.Properties.GetTokens()
+                //    as List<AuthenticationToken>;
+                //    tokens.Add(new AuthenticationToken()
+                //    {
+                //        Name = "TicketCreated",
+                //        Value = DateTime.UtcNow.ToString()
+                //    });
+                //    ctx.Properties.StoreTokens(tokens);
+                //    return Task.CompletedTask;
+                //};
             });
-
-            //services.Configure(options =>
-            //{
-            //    // This lambda determines whether user consent for non-essential cookies is needed for a given request.
-            //    options.CheckConsentNeeded = context => true;
-            //    options.MinimumSameSitePolicy = SameSiteMode.None;
-            //});
-
-            //services.AddAuthentication(AzureADDefaults.AuthenticationScheme)
-            //        .AddAzureAD(options => Configuration.Bind("AzureAd", options));
-
-            //services.Configure(AzureADDefaults.OpenIdScheme, options =>
-            //{
-            //    options.Authority = options.Authority + "/v2.0/";         // Azure AD v2.0
-
-            //    options.TokenValidationParameters.ValidateIssuer = false; // accept several tenants (here simplified)
-            //});
-
-            //services.AddMvc(options =>
-            //{
-            //    var policy = new AuthorizationPolicyBuilder()
-            //                    .RequireAuthenticatedUser()
-            //                    .Build();
-            //    options.Filters.Add(new AuthorizeFilter(policy));
-            //})
-            //.SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-        
 
 
         services.AddAuthorization(options =>
@@ -107,6 +77,7 @@ namespace ReFreshMVC
             });
 
             services.AddScoped<IAuthorizationHandler, DietRestriction>();
+            services.AddScoped<IEmailSender, MailManager>();
 
         }
 

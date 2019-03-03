@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models;
@@ -8,8 +9,6 @@ using ReFreshMVC.Models.ViewModels;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ReFreshMVC.Controllers
 {
@@ -18,17 +17,19 @@ namespace ReFreshMVC.Controllers
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
         private readonly ICartManager _cart;
+        private readonly IEmailSender _mail;
 
         /// <summary>
         /// constructs UserController object to manager user account creation and sign-in
         /// </summary>
         /// <param name="userManager"> user manager service context </param>
         /// <param name="signInManager"> signIn manager service context </param>
-        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, ICartManager cart)
+        public UserController(UserManager<User> userManager, SignInManager<User> signInManager, ICartManager cart, IEmailSender mail)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _cart = cart;
+            _mail = mail;
         }
 
         /// <summary>
