@@ -206,7 +206,7 @@ namespace ReFreshMVC.Controllers
                     Birthdate = bag.Birthdate
                 };
 
-                IdentityResult query = await _userManager.CreateAsync(user);
+                IdentityResult query = await _userManager.CreateAsync(user, bag.Password);
 
                 if (query.Succeeded)
                 {
@@ -218,12 +218,16 @@ namespace ReFreshMVC.Controllers
                     // add all claims to DB
                     await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
 
+                    // create external login association
+                    await _userManager.AddLoginAsync(user, info);
+
                     // start a cart for new user
                     await _cart.CreateCartAsync(bag.Email);
 
                     // sign in new user and send to Home/Index
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
+
                 }
 
             }
