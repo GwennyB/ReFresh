@@ -3,10 +3,13 @@
 }
 
 <div class="row">
+    @if(User.Identity.Name != null)
+    {
+        <div id="ShoppingCartComponent" hidden="hidden">
+            @await Component.InvokeAsync("ShoppingCart", new { userID = User.Identity.Name })
+        </div>
+    }
     <partial name="../Shared/_SearchPartial.cshtml" />
-
-    @*<partial name="../Shared/_CarouselPartial.cshtml" />*@
-
 </div>
 
 

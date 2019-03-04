@@ -1,0 +1,63 @@
+﻿@model ReFreshMVC.Models.Cart
+@using ReFreshMVC.Models;
+@{
+    int cartTotalPrice = 0;
+    if (Model.Orders != null && Model.Orders.Count > 0)
+    {
+        foreach (Order order in Model.Orders)
+        {
+            cartTotalPrice += order.ExtPrice;
+        }
+    }
+}
+<form method="post">
+    <table>
+        <thead>
+            <tr>
+                <th><a class="btn waves-effect waves-light " asp-controller="Cart" asp-action="Index">View Cart</a></th>
+                <th><a id="hideCartComponent" class="btn waves-effect waves-light ">Hide Cart</a></th>
+
+            </tr>
+            <tr>
+                <th>Product Name</th>
+                <th>Quantity</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        @if (Model.Orders != null)
+        {
+            <tbody>
+                @foreach (Order order in Model.Orders)
+                {
+                    <tr>
+
+                        <th>@order.Product.Name"</th>
+                        <th>@order.Qty"</th>
+                        <th>$ @order.ExtPrice</th>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+
+                <tr>
+                    <th>Order Total </th>
+                    <td>$ @cartTotalPrice</td>
+                    <td>
+                        @{
+                            if (Model.Orders.Count != 0)
+                            {
+                                <a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                            }
+                            else
+                            {
+                                <a class="waves-effect waves-light btn disabled" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            </tfoot>
+        }
+
+    </table>
+</form>
