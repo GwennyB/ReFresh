@@ -91,7 +91,7 @@ namespace ReFreshMVC
             app.UseAuthentication();
 
             // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
-           // app.UseStatusCodePagesWithReExecute("/error/{0}");
+           app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseMvc(route =>
             {

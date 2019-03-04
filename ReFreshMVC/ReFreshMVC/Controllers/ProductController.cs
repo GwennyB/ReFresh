@@ -58,6 +58,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> view with all products displayed </returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> NonMeatProducts() => View("Index", await _products.GetAllNonMeatAsync());
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="searchString"> string to search </param>
         /// <returns> view with filtered products list </returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> NonMeatProducts(string searchString, int searchCategory) => View("Index", await _search.SearchProducts(searchString, searchCategory, false));
 
         /// <summary>
@@ -74,32 +76,39 @@ namespace ReFreshMVC.Controllers
         /// <returns> redirect to NonMeatProducts route </returns>
         // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
         [Route("error/404")]
+        [AllowAnonymous]
         public IActionResult Error404()
         {
             return RedirectToAction("NonMeatProducts", "Product");
         }
+        
         /// <summary>
         /// displays a list of all products to the Iventory View
         /// </summary>
         /// <returns>View of Product List</returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Inventory()
         {
             IEnumerable<Product> list = await _products.GetAllAsync();
             return View(list);
         }
+        
         /// <summary>
         /// displays creation page for Inventory
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [Authorize]
         public IActionResult Create() => View();
+        
         /// <summary>
         /// displays landing page for product by product id
         /// </summary>
         /// <param name="id"></param>
         /// <returns>View with product details</returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Landing(int id)
         {
             Product product = await _products.GetOneByIdAsync(id);
@@ -116,8 +125,15 @@ namespace ReFreshMVC.Controllers
             opvm.Meaty = product.Meaty;
 
             return View(opvm);
-        } 
+        }
+
+        /// <summary>
+        /// adds item to logged-in user's valid cart
+        /// </summary>
+        /// <param name="order"> order to create/add to Orders table </param>
+        /// <returns> redirect to Product/Index </returns>
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> AddToCart([Bind("ProductID, Qty, ExtPrice, Product")] Order order)
         {
             string username = User.Identity.Name;
@@ -129,7 +145,6 @@ namespace ReFreshMVC.Controllers
             order.ExtPrice = order.Qty * product.Price;
 
             // Check if order exists
-            
             if (cart.Orders.Where(o => o.CartID == cart.ID && o.ProductID == order.ProductID).FirstOrDefault() != null)
             {
                 await _cart.UpdateOrderInCart(order);

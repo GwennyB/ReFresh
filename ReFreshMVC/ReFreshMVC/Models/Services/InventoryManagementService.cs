@@ -16,6 +16,7 @@ namespace ReFreshMVC.Models.Services
         {
             _context = context;
         }
+
         /// <summary>
         /// Add product to DB with Product model
         /// </summary>
@@ -26,6 +27,7 @@ namespace ReFreshMVC.Models.Services
             _context.Inventory.Add(product);
             await _context.SaveChangesAsync();
         }
+
         /// <summary>
         /// Deletes Product from DB by ProductID
         /// </summary>
@@ -44,6 +46,7 @@ namespace ReFreshMVC.Models.Services
                 throw;
             }
         }
+        
         /// <summary>
         /// Get all Products from DB
         /// </summary>
@@ -52,6 +55,7 @@ namespace ReFreshMVC.Models.Services
         {
             return await _context.Inventory.ToListAsync();
         }
+        
         /// <summary>
         /// Get all Non-Meat Products from DB
         /// </summary>
@@ -60,6 +64,7 @@ namespace ReFreshMVC.Models.Services
         {
             return await _context.Inventory.Where(p => p.Meaty == false).ToListAsync();
         }
+        
         /// <summary>
         /// Get one Product by the ProductID
         /// </summary>
@@ -69,6 +74,7 @@ namespace ReFreshMVC.Models.Services
         {
             return await _context.Inventory.FindAsync(id);
         }
+        
         /// <summary>
         /// Update a Product in the DB by the Product Object
         /// </summary>

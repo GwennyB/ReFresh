@@ -2,7 +2,7 @@
 @using ReFreshMVC.Models;
 @{
     int cartTotalPrice = 0;
-    if (Model.Orders != null && Model.Orders.Count > 0)
+    if (Model != null && Model.Orders != null && Model.Orders.Count > 0)
     {
         foreach (Order order in Model.Orders)
         {
@@ -25,7 +25,7 @@
                 <th></th>
             </tr>
         </thead>
-        @if (Model.Orders != null)
+        @if (Model != null && Model.Orders != null)
         {
             <tbody>
                 @foreach (Order order in Model.Orders)

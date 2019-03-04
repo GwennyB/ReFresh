@@ -11,10 +11,6 @@ namespace ReFreshMVC.Models.Services
 {
     public class CartManagementService : ICartManager
     {
-        //-----------------------------------------
-        //TODO: Remove commented code for master
-        //-----------------------------------------
-
         private ReFreshDbContext _context { get; }
 
         public CartManagementService(ReFreshDbContext context)
@@ -37,7 +33,9 @@ namespace ReFreshMVC.Models.Services
             await _context.Carts.AddAsync(cart);
             await _context.SaveChangesAsync();
             return await _context.Carts.FirstOrDefaultAsync(c => c.UserName == user && c.Completed == null);
+
         }
+
         /// <summary>
         /// closes cart at checkout
         /// applies checkout timestamp to Cart
@@ -50,7 +48,7 @@ namespace ReFreshMVC.Models.Services
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
             await _context.SaveChangesAsync();
-
+            // TODO in Sprint 3: Turn on this feature to update Inventory quantities
             //if (cart.Orders != null)
             //{
             //    foreach (Order item in cart.Orders)
@@ -85,6 +83,7 @@ namespace ReFreshMVC.Models.Services
             }
             return cart;
         }
+
         /// <summary>
         /// Adds an order with a CartId to the Order Table
         /// </summary>
@@ -133,6 +132,7 @@ namespace ReFreshMVC.Models.Services
             Cart cart = await _context.Carts.Where(c => c.ID == cartId).Include("Orders.Product").FirstOrDefaultAsync();
             return cart;
         }
+
         /// <summary>
         /// Get: Order
         /// finds order by CartID and ProductID
@@ -140,6 +140,6 @@ namespace ReFreshMVC.Models.Services
         /// <param name="cartId"></param>
         /// <param name="productId"></param>
         /// <returns>Order order</returns>
-        public async Task<Order> getOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
+        public async Task<Order> GetOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
     }
 }
