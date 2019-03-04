@@ -11,6 +11,10 @@ namespace ReFreshMVC.Models.Services
 {
     public class CartManagementService : ICartManager
     {
+        //-----------------------------------------
+        //TODO: Remove commented code for master
+        //-----------------------------------------
+
         private ReFreshDbContext _context { get; }
 
         public CartManagementService(ReFreshDbContext context)
@@ -99,10 +103,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns> completed task </returns>
         public async Task UpdateOrderInCart(Order order)
         {
-            Order orderToUpdate = await _context.Orders.Where(o => o.CartID == order.CartID && o.ProductID == order.ProductID).FirstOrDefaultAsync();
-            orderToUpdate.Qty += order.Qty;
-            orderToUpdate.ExtPrice += order.ExtPrice;
-            
+            _context.Orders.Update(order);
             await _context.SaveChangesAsync();
         }
 
@@ -132,5 +133,13 @@ namespace ReFreshMVC.Models.Services
             Cart cart = await _context.Carts.Where(c => c.ID == cartId).Include("Orders.Product").FirstOrDefaultAsync();
             return cart;
         }
+        /// <summary>
+        /// Get: Order
+        /// finds order by CartID and ProductID
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <param name="productId"></param>
+        /// <returns>Order order</returns>
+        public async Task<Order> getOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
     }
 }

@@ -12,7 +12,7 @@
     }
 }
 <h1>Cart</h1>
-<form asp-action="" asp-controller="" method="post">
+<form method="post">
     <table>
         <thead>
             <tr>
@@ -22,44 +22,48 @@
                 <th></th>
             </tr>
         </thead>
-            @if (Model.Orders != null)
+        @if (Model.Orders != null)
+        {
+        <tbody>
+            @foreach (Order order in Model.Orders)
             {
-                <tbody>
-                        @foreach (Order order in Model.Orders)
-                        {
+            <form asp-action="Edit" asp-controller="Cart" method="post">
+                <input type="hidden" asp-for="@order.CartID" />
+                <input type="hidden" asp-for="@order.ProductID" />
+                <tr>
 
-                            <tr>
-                                <th>@order.Product.Name</th>
-                                <th>@order.Qty</th>
-                                <th>$ @order.ExtPrice</th>
-                                <td>
-                                    <a class="btn waves-effect waves-light" asp-action="Delete" asp-route-id="@order.ProductID">
-                                        Delete
-                                        <i class="material-icons">edit</i>
-                                    </a>
-                                </td>
-                            </tr>
-                        }
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <th>Order Total </th>
-                        <td>$ @cartTotalPrice</td>
-                        <td>
-                            @{
-                                if (Model.Orders.Count != 0)
-                                {
-                                    <a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Checkout">Check Out</a>
-                                }
-                                else
-                                {
-                                    <a class="waves-effect waves-light btn disabled" asp-controller="Cart" asp-action="Checkout">Check Out</a>
-                                }
-                            }
-                        </td>
-                    </tr>
-                </tfoot>
+                    <th>@order.Product.Name"</th>
+                    <th><input asp-for="@order.Qty" /></th>
+                    <th>$ @order.ExtPrice</th>
+                    <td>
+                        <a class=" btn waves-effect waves-light" asp-action="Delete" asp-route-id="@order.ProductID">
+                            Delete
+                            <i class="material-icons">edit</i>
+                        </a>
+                    </td>
+                </tr>
+            </form>
             }
+        </tbody>
+            <tfoot>
+                <tr>
+                    <th>Order Total </th>
+                    <td>$ @cartTotalPrice</td>
+                    <td>
+                        @{
+                            if (Model.Orders.Count != 0)
+                            {
+                                <a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                            }
+                            else
+                            {
+                                <a class="waves-effect waves-light btn disabled" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                            }
+                        }
+                    </td>
+                </tr>
+            </tfoot>
+        }
 
     </table>
 </form>
