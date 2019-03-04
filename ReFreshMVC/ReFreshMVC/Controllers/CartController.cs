@@ -3,9 +3,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace ReFreshMVC.Controllers
@@ -45,6 +43,11 @@ namespace ReFreshMVC.Controllers
             }
             return View(cart);
         }
+
+        /// <summary>
+        /// closes cart and calls /Receipt with closed cart
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IActionResult> Checkout()
         {
@@ -52,8 +55,14 @@ namespace ReFreshMVC.Controllers
             await _cart.CloseCartAsync(cart);
             // add cart to email
             // send email
-            return RedirectToAction("Recipt", "Cart", cart);
+            return RedirectToAction("Receipt", "Cart", cart);
         }
+
+        /// <summary>
+        /// remove an item from the cart
+        /// </summary>
+        /// <param name="id"> product ID to remove </param>
+        /// <returns> loads Cart/Index page </returns>
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {
@@ -62,11 +71,37 @@ namespace ReFreshMVC.Controllers
             await _cart.DeleteOrderFromCart(username, id);
             return RedirectToAction("Index");
         }
+
+        /// <summary>
+        /// sends an email receipt and loads a receipt view
+        /// </summary>
+        /// <param name="cart"> closed cart to show receipt </param>
+        /// <returns> receipt view for cart </returns>
         [HttpGet]
-        public async Task<IActionResult> Recipt(Cart cart)
+        public async Task<IActionResult> Receipt(Cart cart)
         {
-            Cart recipt = await _cart.GetCartByIdAsync(cart.ID);
-            return View(recipt);
+            Cart receipt = await _cart.GetCartByIdAsync(cart.ID);
+
+            // send receipt email
+            string subject = "ReFresh Foods Registration";
+
+            StringBuilder message = new StringBuilder();
+
+            message.Append("<p>Thanks for your order! Here's a summary:\n</p>");
+            message.Append($"<p>Order #{cart.ID}</p>");
+            message.Append($"<p>Order date: {cart.Completed}</p>");
+            int total = 0;
+            foreach (var order in receipt.Orders)
+            {
+                message.Append($"<p>{order.Product.Name} (qty {order.Qty}): ${order.ExtPrice}</p>");
+                total += order.ExtPrice;
+            }
+            message.Append($"<p>Order total: ${total}</p>");
+
+
+            await _mail.SendEmailAsync(User.Identity.Name, subject, message.ToString());
+
+            return View(receipt);
         }
     }
 }
