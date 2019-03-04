@@ -5,6 +5,9 @@
 }
 
 <div class="row">
+    <div id="ShoppingCartComponent" hidden="hidden">
+        @await Component.InvokeAsync("ShoppingCart", new { userID = User.Identity.Name })
+    </div>
     <partial name="../Shared/_SearchPartial.cshtml" />
 
     @foreach (Product product in Model)

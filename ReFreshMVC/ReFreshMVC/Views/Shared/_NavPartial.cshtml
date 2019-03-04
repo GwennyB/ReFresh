@@ -4,13 +4,16 @@
 @{
 }
 
+
+
 <nav class="navbar">
     <ul>
         <li><a class="navbarLink" asp-controller="Home" asp-action="Index">Home</a></li>
         <li><a class="navbarLink" asp-controller="Product" asp-action="Index">Products</a></li>
         @if (signInManager.IsSignedIn(User))
         {
-            <li><a class="navbarLink" asp-controller="Cart" asp-action="Index"><i class="material-icons">shopping_cart</i></a></li>
+            @*<li><a class="navbarLink" asp-controller="Cart" asp-action="Index"><i class="material-icons">shopping_cart</i></a></li>*@
+            <li><a class="navbarLink " id="showCartComponent"><i class="material-icons">shopping_cart</i></a></li>
             <li><a class="navbarLink" asp-controller="User" asp-action="Logout">Sign Out</a></li>
         }
         else
@@ -20,3 +23,9 @@
         }
     </ul>
 </nav>
+@if (User.Identity.Name != null)
+{
+    <div id="ShoppingCartComponent" hidden="hidden">
+        @await Component.InvokeAsync("ShoppingCart", new { userID = User.Identity.Name })
+    </div>
+}
