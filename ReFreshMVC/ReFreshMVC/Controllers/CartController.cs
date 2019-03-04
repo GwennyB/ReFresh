@@ -52,7 +52,21 @@ namespace ReFreshMVC.Controllers
             await _cart.CloseCartAsync(cart);
             // add cart to email
             // send email
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Recipt", "Cart", cart);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
+        {
+            string username = User.Identity.Name;
+
+            await _cart.DeleteOrderFromCart(username, id);
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> Recipt(Cart cart)
+        {
+            Cart recipt = await _cart.GetCartByIdAsync(cart.ID);
+            return View(recipt);
         }
     }
 }
