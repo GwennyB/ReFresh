@@ -34,7 +34,6 @@ namespace ReFreshMVC.Models.Services
             await _context.SaveChangesAsync();
             return await _context.Carts.FirstOrDefaultAsync(c => c.UserName == user && c.Completed == null);
         }
-
         /// <summary>
         /// closes cart at checkout
         /// applies checkout timestamp to Cart
@@ -64,6 +63,7 @@ namespace ReFreshMVC.Models.Services
             await CreateCartAsync(cart.UserName);
             return true;
         }
+
         /// <summary>
         /// Gets a user's cart
         /// </summary>
@@ -92,6 +92,11 @@ namespace ReFreshMVC.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// updates an item in cart
+        /// </summary>
+        /// <param name="order"> item in cart to update </param>
+        /// <returns> completed task </returns>
         public async Task UpdateOrderInCart(Order order)
         {
             Order orderToUpdate = await _context.Orders.Where(o => o.CartID == order.CartID && o.ProductID == order.ProductID).FirstOrDefaultAsync();
@@ -101,6 +106,12 @@ namespace ReFreshMVC.Models.Services
             await _context.SaveChangesAsync();
         }
 
+        /// <summary>
+        /// removes an item from cart
+        /// </summary>
+        /// <param name="username"> cart owner's email address </param>
+        /// <param name="productId"> item to remove from cart </param>
+        /// <returns> completed task </returns>
         public async Task DeleteOrderFromCart(string username, int productId)
         {
             Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
@@ -111,6 +122,11 @@ namespace ReFreshMVC.Models.Services
 
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cartId"></param>
+        /// <returns></returns>
         public async Task<Cart> GetCartByIdAsync(int cartId)
         {
             Cart cart = await _context.Carts.Where(c => c.ID == cartId).Include("Orders.Product").FirstOrDefaultAsync();
