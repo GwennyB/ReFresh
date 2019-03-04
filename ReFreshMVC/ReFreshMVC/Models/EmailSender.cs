@@ -2,25 +2,29 @@
 using Microsoft.Extensions.Configuration;
 using SendGrid;
 using SendGrid.Helpers.Mail;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace ReFreshMVC.Models
 {
-    public class MailManager : IEmailSender
+    public class EmailSender : IEmailSender
     {
         private IConfiguration _configuration;
 
-        public MailManager(IConfiguration configuration)
+        public EmailSender(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
+        /// <summary>
+        /// assembles and sends an email
+        /// </summary>
+        /// <param name="email"> recipient email address </param>
+        /// <param name="subject"> email subject </param>
+        /// <param name="message">email contents </param>
+        /// <returns> task completed </returns>
         public async Task SendEmailAsync(string email, string subject, string message)
         {
-            SendGridClient client = new SendGridClient(_configuration["SendGridAPIKey"]);
+            SendGridClient client = new SendGridClient(_configuration.GetConnectionString("SendGridAPIKey"));
             SendGridMessage msg = new SendGridMessage();
             msg.SetFrom("refreshfoods401@gmail.com", "ReFresh Foods");
 
@@ -28,7 +32,7 @@ namespace ReFreshMVC.Models
             msg.SetSubject(subject);
             msg.AddContent(MimeType.Html, message);
 
-            await client.SendEmailAsync(msg);
+            var status = await client.SendEmailAsync(msg);
 
         }
     }
