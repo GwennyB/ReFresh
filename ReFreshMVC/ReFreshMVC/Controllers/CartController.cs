@@ -13,12 +13,14 @@ namespace ReFreshMVC.Controllers
         private readonly ICartManager _cart;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _mail;
+        private readonly IInventoryManager _inventory;
 
-        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail)
+        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail , IInventoryManager i)
         {
             _userManager = userManager;
             _cart = cart;
             _mail = mail;
+            _inventory = i;
         }
 
         /// <summary>
@@ -69,6 +71,18 @@ namespace ReFreshMVC.Controllers
             string username = User.Identity.Name;
 
             await _cart.DeleteOrderFromCart(username, id);
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([Bind("CartID, ProductID, Qty, Product")] Order order)
+        {
+            Product product = await _inventory.GetOneByIdAsync(order.ProductID);
+            Order orderToUpdate = await _cart.getOrderByCK(order.CartID, order.ProductID);
+
+            orderToUpdate.Qty = order.Qty;
+            orderToUpdate.ExtPrice = order.Qty * product.Price;
+            await _cart.UpdateOrderInCart(orderToUpdate);
             return RedirectToAction("Index");
         }
 

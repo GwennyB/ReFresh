@@ -15,5 +15,6 @@ namespace ReFreshMVC.Models.Interfaces
         Task UpdateOrderInCart(Order order);
         Task DeleteOrderFromCart(string username, int productId);
         Task<Cart> GetCartByIdAsync(int cartId);
+        Task<Order> getOrderByCK(int cartId, int productId);
     }
 }

@@ -118,7 +118,7 @@ namespace ReFreshMVC.Controllers
             return View(opvm);
         } 
         [HttpPost]
-        public async Task<IActionResult> AddToCart([Bind("ProductID, Qty, ExtPrice")] Order order)
+        public async Task<IActionResult> AddToCart([Bind("ProductID, Qty, ExtPrice, Product")] Order order)
         {
             string username = User.Identity.Name;
             Cart cart = await _cart.GetCartAsync(username);
