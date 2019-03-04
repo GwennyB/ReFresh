@@ -44,7 +44,8 @@ namespace ReFreshMVC
             services.AddScoped<ICartManager, CartManagementService>();
 
 
-            services.AddAuthentication().AddMicrosoftAccount(microsoftOptions =>
+            services.AddAuthentication()
+            .AddMicrosoftAccount(microsoftOptions =>
             {
                 microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
                 microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
@@ -61,6 +62,11 @@ namespace ReFreshMVC
                 //    ctx.Properties.StoreTokens(tokens);
                 //    return Task.CompletedTask;
                 //};
+            })
+            .AddFacebook(facebookOptions => 
+            {
+                facebookOptions.ClientId = Configuration.GetConnectionString("Authentication:Facebook:ApplicationId");
+                facebookOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Facebook:Password");
             });
 
             services.AddAuthorization(options =>
