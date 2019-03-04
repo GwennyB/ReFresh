@@ -48,19 +48,19 @@ namespace ReFreshMVC.Models.Services
             await Task.Run(() => _context.Update(cart));
             await _context.SaveChangesAsync();
 
-            if (cart.Orders != null)
-            {
-                foreach (Order item in cart.Orders)
-                {
-                    if (item.Product.QtyAvail < item.Qty)
-                    {
-                        return false;
-                    }
-                    item.Product.QtyAvail -= item.Qty;
-                    await Task.Run(() => _context.Inventory.Update(item.Product));
-                }
-            }
-            await _context.SaveChangesAsync();
+            //if (cart.Orders != null)
+            //{
+            //    foreach (Order item in cart.Orders)
+            //    {
+            //        if (item.Product.QtyAvail < item.Qty)
+            //        {
+            //            return false;
+            //        }
+            //        item.Product.QtyAvail -= item.Qty;
+            //        await Task.Run(() => _context.Inventory.Update(item.Product));
+            //    }
+            //}
+            //await _context.SaveChangesAsync();
             return true;
         }
         /// <summary>
@@ -70,7 +70,15 @@ namespace ReFreshMVC.Models.Services
         /// <returns>Cart</returns>
         public async Task<Cart> GetCartAsync(string username)
         {
-            return await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
+            Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
+            //if (cart != null)
+            //    cart.Orders = _context.Orders.Where(o => o.CartID == cart.ID) as ICollection<Order>;
+            if(cart != null)
+            {
+                _context.Carts.Update(cart);
+                await _context.SaveChangesAsync();
+            }
+            return cart;
         }
         /// <summary>
         /// Adds an order with a CartId to the Order Table
@@ -90,6 +98,22 @@ namespace ReFreshMVC.Models.Services
             orderToUpdate.ExtPrice += order.ExtPrice;
             
             await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteOrderFromCart(string username, int productId)
+        {
+            Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
+            Order order = await _context.Orders.Where(o => o.CartID == cart.ID && o.ProductID == productId).FirstOrDefaultAsync();
+
+            _context.Orders.Remove(order);
+            await _context.SaveChangesAsync();
+
+        }
+
+        public async Task<Cart> GetCartByIdAsync(int cartId)
+        {
+            Cart cart = await _context.Carts.Where(c => c.ID == cartId).Include("Orders.Product").FirstOrDefaultAsync();
+            return cart;
         }
     }
 }
