@@ -78,7 +78,7 @@ namespace ReFreshMVC.Controllers
         public async Task<IActionResult> Edit([Bind("CartID, ProductID, Qty, Product")] Order order)
         {
             Product product = await _inventory.GetOneByIdAsync(order.ProductID);
-            Order orderToUpdate = await _cart.getOrderByCK(order.CartID, order.ProductID);
+            Order orderToUpdate = await _cart.GetOrderByCK(order.CartID, order.ProductID);
 
             orderToUpdate.Qty = order.Qty;
             orderToUpdate.ExtPrice = order.Qty * product.Price;

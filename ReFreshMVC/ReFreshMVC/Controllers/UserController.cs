@@ -38,6 +38,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> blank registration page </returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Register() => View();
 
         /// <summary>
@@ -49,6 +50,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="bag"> data submitted by user on Registration form </param>
         /// <returns> Home page if successful account creation, Registration page (with sent data) if not </returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(RegisterViewModel bag)
         {
             if(ModelState.IsValid)
@@ -96,6 +98,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> login view </returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Login() => View();
 
         /// <summary>
@@ -105,6 +108,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="bag"> login data submitted by user </param>
         /// <returns> View (home or login) </returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginViewModel bag)
         {
             if (ModelState.IsValid)
@@ -132,6 +136,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns> redirects to Home </returns>
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
@@ -145,6 +150,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="provider"> name of OAuth provider </param>
         /// <returns> challenge result </returns>
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult ExtLogin(string provider)
         {
             var redirectUrl = Url.Action("ExtLoginCallback", "User");
@@ -160,6 +166,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="error"> external login error status from query string </param>
         /// <returns> home page (or return to login page if unsuccessful) </returns>
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> ExtLoginCallback(string error = null)
         {
             if (error != null)
@@ -195,6 +202,7 @@ namespace ReFreshMVC.Controllers
         /// <param name="bag"> ext user data </param>
         /// <returns> confirmation view with user data </returns>
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> ExtLoginConfirmation(ExtLoginViewModel bag)
         {
             if (ModelState.IsValid)
@@ -243,6 +251,7 @@ namespace ReFreshMVC.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Privacy() => View();
     }
 
