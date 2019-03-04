@@ -6,16 +6,17 @@ using Microsoft.Extensions.DependencyInjection;
 using ReFreshMVC.Data;
 using ReFreshMVC.Models.Interfaces;
 using ReFreshMVC.Models.Services;
-using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Handler;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ReFreshMVC
 {
     public class Startup
     {
+
         public IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration)
@@ -40,12 +41,41 @@ namespace ReFreshMVC
                 options.UseSqlServer(Configuration.GetConnectionString("ProductionConnection")));
             services.AddScoped<IInventoryManager, InventoryManagementService>();
             services.AddScoped<ISearchBarManager, SearchBarManagementService>();
+            services.AddScoped<ICartManager, CartManagementService>();
+
+
+            services.AddAuthentication()
+            .AddMicrosoftAccount(microsoftOptions =>
+            {
+                microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
+                microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
+                //microsoftOptions.SaveTokens = true;
+                //microsoftOptions.Events.OnCreatingTicket = ctx =>
+                //{
+                //    List<AuthenticationToken> tokens = ctx.Properties.GetTokens()
+                //    as List<AuthenticationToken>;
+                //    tokens.Add(new AuthenticationToken()
+                //    {
+                //        Name = "TicketCreated",
+                //        Value = DateTime.UtcNow.ToString()
+                //    });
+                //    ctx.Properties.StoreTokens(tokens);
+                //    return Task.CompletedTask;
+                //};
+            })
+            .AddFacebook(facebookOptions => 
+            {
+                facebookOptions.ClientId = Configuration.GetConnectionString("Authentication:Facebook:ApplicationId");
+                facebookOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Facebook:Password");
+            });
+
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
             });
 
             services.AddScoped<IAuthorizationHandler, DietRestriction>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
         }
 
@@ -61,7 +91,7 @@ namespace ReFreshMVC
             app.UseAuthentication();
 
             // error handling thanks to https://www.devtrends.co.uk/blog/handling-404-not-found-in-asp.net-core
-            app.UseStatusCodePagesWithReExecute("/error/{0}");
+           app.UseStatusCodePagesWithReExecute("/error/{0}");
 
             app.UseMvc(route =>
             {

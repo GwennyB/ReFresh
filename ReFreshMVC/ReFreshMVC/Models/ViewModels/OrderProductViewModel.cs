@@ -4,12 +4,15 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReFreshMVC.Models
+namespace ReFreshMVC.Models.ViewModels
 {
-    public class Product
+    public class OrderProductViewModel
     {
         [Required]
-        public int ID { get; set; }
+        public int ProductID { get; set; }
+
+        [Required]
+        public int CartID { get; set; }
 
         [Required]
         [Display(Name = "Product SKU")]
@@ -27,7 +30,6 @@ namespace ReFreshMVC.Models
         [Required]
         [Display(Name = "Quantity Available")]
         public int QtyAvail { get; set; }
-
         public string Description { get; set; }
 
         [DataType(DataType.ImageUrl)]
@@ -40,13 +42,11 @@ namespace ReFreshMVC.Models
         [Required]
         [Display(Name = "Contains Meat?")]
         public bool Meaty { get; set; }
-    }
 
-    public enum Categories
-    {
-        entrees,
-        sides,
-        desserts,
-        snacks
+        [Required]
+        [Display(Name = "Quantity")]
+        [DataType(DataType.Currency)]
+        public int Qty { get; set; }
+
     }
 }

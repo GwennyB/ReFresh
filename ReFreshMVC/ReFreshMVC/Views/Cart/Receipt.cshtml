@@ -1,0 +1,42 @@
+﻿@model ReFreshMVC.Models.Cart
+@using ReFreshMVC.Models;
+@{
+    Layout = "_Layout";
+    int cartTotalPrice = 0;
+    if (Model.Orders != null)
+    {
+        foreach (Order order in Model.Orders)
+        {
+            cartTotalPrice += order.ExtPrice;
+        }
+    }
+}
+
+<div>Receipt</div>
+<div>Order number: #@Model.ID</div>
+<div>Order Date: @Model.Completed</div>
+
+<table class="striped">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Price</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach(Order order in Model.Orders)
+        {
+            <tr>
+                <td>@order.Product.Name</td>        
+                <td>@order.Qty</td>
+                <td>@order.Product.Price</td>
+                <td>@order.ExtPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>
+<div>Total: $@cartTotalPrice</div>
+<a class=""asp-action="Index" asp-controller="Home">Continue Shopping</a>

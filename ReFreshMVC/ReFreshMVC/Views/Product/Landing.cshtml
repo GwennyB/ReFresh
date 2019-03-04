@@ -1,0 +1,36 @@
+﻿@model ReFreshMVC.Models.ViewModels.OrderProductViewModel
+@{ 
+    Layout = "_Layout";
+}
+<div class="container">
+    <div class="row" id="productLandingDetailsContainer">
+        <div class="col s6 m6">
+            <img src="~/Img/@Model.Image" class="responsive-img" />
+        </div>
+        <div class="col s6 m6" >
+            <div class="row">
+                <h1>@Model.Name</h1>
+                <p>Price: @Model.Price</p>
+                <p>SKU: @Model.Sku</p>
+                <p>Description:</p>
+                <p>@Model.Description</p>
+            </div>
+            <div class="row" >
+                <form method="post" asp-action="AddToCart" asp-controller="Product" id="orderProductFormContainer">
+                    <input hidden="hidden" asp-for="@Model.CartID" />
+                    <input hidden="hidden" asp-for="@Model.ProductID" />
+                    <select asp-for="@Model.Qty">
+                        @for (int i = 1; i <= 10; i++)
+                        {
+                            <option name="qty" value="@i">@i</option>
+                        }
+                    </select>
+                    <input id="addToCartButton"class="waves-effect waves-light btn" type="submit" value="Submit"/>
+                </form>
+            </div>
+
+        </div>
+   </div>
+</div>
+
+

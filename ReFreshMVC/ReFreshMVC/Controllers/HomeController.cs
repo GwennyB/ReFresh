@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace ReFreshMVC.Controllers
 {
@@ -13,10 +11,9 @@ namespace ReFreshMVC.Controllers
         /// displays splash page
         /// </summary>
         /// <returns> Homepage view </returns>
-        public IActionResult Index()
-        {
-            return View();
-        }
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult Index() => View();
 
     }
 }

@@ -1,13 +1,13 @@
 ﻿@model ReFreshMVC.Models.Product
 
 <div class="col s12 m3">
-    <div class="card modal-trigger" href="#@Model.ID">
+    <div class="card modal-trigger" >
         <div class="card-image">
-            <div >
-                <img src="~/Img/@Model.Image">
+            <div href="#@Model.ID">
+                <img src="~/Img/@Model.Image"/>
             </div>
             <span class="card-title">@Model.Name</span>
-            <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
+            <a class="btn-floating halfway-fab waves-effect waves-light red" asp-action="Landing" asp-controller="Product" asp-route-id="@Model.ID"><i class="material-icons">add</i></a>
         </div>
         <div class="card-content">
             <p>@Model.Description</p>

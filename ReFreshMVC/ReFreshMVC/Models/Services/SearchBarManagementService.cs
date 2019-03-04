@@ -16,6 +16,7 @@ namespace ReFreshMVC.Models.Services
         {
             _context = context;
         }
+
         /// <summary>
         /// Get products based on search string, product category, and meat user claim. 
         /// </summary>
