@@ -61,6 +61,7 @@ namespace ReFreshMVC.Models.Services
             //    }
             //}
             //await _context.SaveChangesAsync();
+            await CreateCartAsync(cart.UserName);
             return true;
         }
         /// <summary>
