@@ -10,13 +10,6 @@ using Microsoft.AspNetCore.Identity;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Handler;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.Authentication;
-using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authentication.AzureAD.UI;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace ReFreshMVC
@@ -70,14 +63,13 @@ namespace ReFreshMVC
                 //};
             });
 
-
-        services.AddAuthorization(options =>
+            services.AddAuthorization(options =>
             {
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
             });
 
             services.AddScoped<IAuthorizationHandler, DietRestriction>();
-            services.AddScoped<IEmailSender, MailManager>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
         }
 

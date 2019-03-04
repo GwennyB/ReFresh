@@ -77,6 +77,11 @@ namespace ReFreshMVC.Controllers
                     // start a cart for new user
                     await _cart.CreateCartAsync(user.Email);
 
+                    // send registration email
+                    string subject = "ReFresh Foods Registration";
+                    string message = $"Thanks for registering, {user.FirstName}!";
+                    await _mail.SendEmailAsync(user.Email.ToString(), subject, message);
+
                     // sign in new user and send to Home/Index
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return RedirectToAction("Index", "Home");
