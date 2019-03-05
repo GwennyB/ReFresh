@@ -55,8 +55,6 @@ namespace ReFreshMVC.Controllers
         {
             Cart cart = await _cart.GetCartAsync(User.Identity.Name);
             await _cart.CloseCartAsync(cart);
-            // add cart to email
-            // send email
             return RedirectToAction("Receipt", "Cart", cart);
         }
 
@@ -97,7 +95,7 @@ namespace ReFreshMVC.Controllers
             Cart receipt = await _cart.GetCartByIdAsync(cart.ID);
 
             // send receipt email
-            string subject = "ReFresh Foods Registration";
+            string subject = "ReFresh Foods Order Confirmation";
 
             StringBuilder message = new StringBuilder();
 
