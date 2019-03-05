@@ -175,7 +175,7 @@ namespace ReFreshMVC.Controllers
                 return RedirectToAction("Login");
             }
 
-            var confirm = await _signInManager.GetExternalLoginInfoAsync();
+            ExternalLoginInfo confirm = await _signInManager.GetExternalLoginInfoAsync();
 
             if (confirm == null)
             {
@@ -189,10 +189,18 @@ namespace ReFreshMVC.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            // check for existing local account
             var email = confirm.Principal.FindFirstValue(ClaimTypes.Email);
-
-            return View("ExtLogin", new ExtLoginViewModel { Email = email });
-
+            var getUser = await _userManager.FindByEmailAsync(email);
+            // if no local account, prompt for registration
+            if (getUser == null)
+            {
+                return View("ExtLogin", new ExtLoginViewModel { Email = email });
+            }
+            // if local account exists, create association and log in
+            await _userManager.AddLoginAsync(getUser, confirm);
+            await _signInManager.ExternalLoginSignInAsync(confirm.LoginProvider, confirm.ProviderKey, isPersistent: false, bypassTwoFactor: true);
+            return RedirectToAction("Index", "Home");
         }
 
         /// <summary>

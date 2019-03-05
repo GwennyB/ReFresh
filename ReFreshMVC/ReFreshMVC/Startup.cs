@@ -49,19 +49,6 @@ namespace ReFreshMVC
             {
                 microsoftOptions.ClientId = Configuration.GetConnectionString("Authentication:Microsoft:ApplicationId");
                 microsoftOptions.ClientSecret = Configuration.GetConnectionString("Authentication:Microsoft:Password");
-                //microsoftOptions.SaveTokens = true;
-                //microsoftOptions.Events.OnCreatingTicket = ctx =>
-                //{
-                //    List<AuthenticationToken> tokens = ctx.Properties.GetTokens()
-                //    as List<AuthenticationToken>;
-                //    tokens.Add(new AuthenticationToken()
-                //    {
-                //        Name = "TicketCreated",
-                //        Value = DateTime.UtcNow.ToString()
-                //    });
-                //    ctx.Properties.StoreTokens(tokens);
-                //    return Task.CompletedTask;
-                //};
             })
             .AddFacebook(facebookOptions => 
             {
