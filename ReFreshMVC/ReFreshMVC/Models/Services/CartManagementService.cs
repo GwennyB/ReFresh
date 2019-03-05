@@ -32,7 +32,8 @@ namespace ReFreshMVC.Models.Services
             };
             await _context.Carts.AddAsync(cart);
             await _context.SaveChangesAsync();
-            return await _context.Carts.FirstOrDefaultAsync(c => c.UserName == user && c.Completed == null);
+            var query = await _context.Carts.FirstOrDefaultAsync(c => c.UserName == user && c.Completed == null);
+            return query;
 
         }
 
@@ -74,8 +75,6 @@ namespace ReFreshMVC.Models.Services
         public async Task<Cart> GetCartAsync(string username)
         {
             Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
-            //if (cart != null)
-            //    cart.Orders = _context.Orders.Where(o => o.CartID == cart.ID) as ICollection<Order>;
             if(cart != null)
             {
                 _context.Carts.Update(cart);
@@ -114,10 +113,12 @@ namespace ReFreshMVC.Models.Services
         /// <returns> completed task </returns>
         public async Task DeleteOrderFromCart(string username, int productId)
         {
-            Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
-            Order order = await _context.Orders.Where(o => o.CartID == cart.ID && o.ProductID == productId).FirstOrDefaultAsync();
-
-            _context.Orders.Remove(order);
+            Cart cart = await _context.Carts.FirstOrDefaultAsync(c => c.UserName == username && c.Completed == null);
+            Order order = await _context.Orders.FirstOrDefaultAsync(o => o.CartID == cart.ID && o.ProductID == productId);
+            if(cart != null && order != null)
+            {
+                await Task.Run(() => _context.Orders.Remove(order));
+            }
             await _context.SaveChangesAsync();
 
         }
