@@ -74,8 +74,6 @@ namespace ReFreshMVC.Models.Services
         public async Task<Cart> GetCartAsync(string username)
         {
             Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
-            //if (cart != null)
-            //    cart.Orders = _context.Orders.Where(o => o.CartID == cart.ID) as ICollection<Order>;
             if(cart != null)
             {
                 _context.Carts.Update(cart);
