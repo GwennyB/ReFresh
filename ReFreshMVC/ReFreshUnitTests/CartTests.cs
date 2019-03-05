@@ -144,7 +144,7 @@ namespace ReFreshUnitTests
                 await context.Carts.AddAsync(cart);
                 await context.SaveChangesAsync();
 
-                var result = await cms.GetCartByIdAsync(1);
+                var result = await cms.GetCartByIdAsync(cart.ID);
                 Assert.Equal("test", result.UserName);
             }
         }
