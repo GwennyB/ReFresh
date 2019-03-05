@@ -10,6 +10,8 @@ namespace ReFreshMVC.Models.Interfaces
         Task<Cart> CreateCartAsync(string user);
         Task<bool> CloseCartAsync(Cart cart);
         Task<Cart> GetCartAsync(string username);
+        Task<List<Cart>> GetLastTenCarts();
+        Task<List<Cart>> GetOpenCarts();
 
         Task AddOrderToCart(Order order);
         Task UpdateOrderInCart(Order order);

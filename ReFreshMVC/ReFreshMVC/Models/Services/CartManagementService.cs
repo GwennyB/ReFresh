@@ -142,5 +142,16 @@ namespace ReFreshMVC.Models.Services
         /// <param name="productId"></param>
         /// <returns>Order order</returns>
         public async Task<Order> GetOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
+
+
+
+
+
+
+
+        public Task<List<Cart>> GetLastTenCarts() => _context.Carts.OrderByDescending(c => c.Completed).Take(10).ToListAsync();
+
+
+        public Task<List<Cart>> GetOpenCarts() => _context.Carts.Where(c => c.Completed == null).ToListAsync();
     }
 }
