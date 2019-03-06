@@ -1,26 +1,34 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using AuthorizeNet.Api.Contracts.V1;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Interfaces;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace ReFreshMVC.Controllers
 {
+    //name = _config.GetConnectionString("ApiLoginID"),
+    //ItemElementName = ItemChoiceType.transactionKey,
+    //Item = _config.GetConnectionString("ApiTransactionKey"),
+
     public class CartController : Controller
     {
         private readonly ICartManager _cart;
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _mail;
         private readonly IInventoryManager _inventory;
+        private readonly IConfiguration _config;
 
-        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail , IInventoryManager i)
+        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail , IInventoryManager inventory, IConfiguration config)
         {
             _userManager = userManager;
             _cart = cart;
             _mail = mail;
-            _inventory = i;
+            _inventory = inventory;
+            _config = config;
         }
 
         /// <summary>
@@ -54,8 +62,19 @@ namespace ReFreshMVC.Controllers
         public async Task<IActionResult> Checkout()
         {
             Cart cart = await _cart.GetCartAsync(User.Identity.Name);
-            await _cart.CloseCartAsync(cart);
-            return RedirectToAction("Receipt", "Cart", cart);
+            AuthorizeNetModel authorizeNet = new AuthorizeNetModel(_config.GetConnectionString("AuthorizeNet:ClientId"), _config.GetConnectionString("Authorize:TransactionKey"));
+
+            createTransactionResponse response = authorizeNet.RunCard();
+            if (response.messages.resultCode == messageTypeEnum.Ok)
+            {
+                await _cart.CloseCartAsync(cart);
+                return RedirectToAction("Receipt", "Cart", cart);
+            }
+            else
+            {
+                TempData["paymentResponse"] = response.messages.resultCode;
+                return RedirectToAction("Index", "Cart");
+            }
         }
 
         /// <summary>
