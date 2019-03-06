@@ -10,11 +10,11 @@ namespace ReFreshMVC.Models.Services
 {
     public class InventoryManagementService : IInventoryManager
     {
-        private ReFreshDbContext _context { get; }
+        private ReFreshDbContext _db { get; }
 
         public InventoryManagementService(ReFreshDbContext context)
         {
-            _context = context;
+            _db = context;
         }
 
         /// <summary>
@@ -24,8 +24,8 @@ namespace ReFreshMVC.Models.Services
         /// <returns></returns>
         public async Task CreateAsync(Product product)
         {
-            _context.Inventory.Add(product);
-            await _context.SaveChangesAsync();
+            _db.Inventory.Add(product);
+            await _db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -37,9 +37,9 @@ namespace ReFreshMVC.Models.Services
         {
             try
             {
-                Product productToDelete = await _context.Inventory.FindAsync(id);
-                _context.Inventory.Remove(productToDelete);
-                await _context.SaveChangesAsync();
+                Product productToDelete = await _db.Inventory.FindAsync(id);
+                _db.Inventory.Remove(productToDelete);
+                await _db.SaveChangesAsync();
             }
             catch (Exception)
             {
@@ -53,7 +53,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>List of Products</returns>
         public async Task<List<Product>> GetAllAsync()
         {
-            return await _context.Inventory.ToListAsync();
+            return await _db.Inventory.ToListAsync();
         }
         
         /// <summary>
@@ -62,7 +62,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>List of Non-Meats Products</returns>
         public async Task<List<Product>> GetAllNonMeatAsync()
         {
-            return await _context.Inventory.Where(p => p.Meaty == false).ToListAsync();
+            return await _db.Inventory.Where(p => p.Meaty == false).ToListAsync();
         }
         
         /// <summary>
@@ -72,7 +72,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>Product Object</returns>
         public async Task<Product> GetOneByIdAsync(int id)
         {
-            return await _context.Inventory.FindAsync(id);
+            return await _db.Inventory.FindAsync(id);
         }
         
         /// <summary>
@@ -82,8 +82,8 @@ namespace ReFreshMVC.Models.Services
         /// <returns></returns>
         public async Task UpdateAsync(Product product)
         {
-            _context.Inventory.Update(product);
-            await _context.SaveChangesAsync();
+            _db.Inventory.Update(product);
+            await _db.SaveChangesAsync();
         }
     }
 }

@@ -1,9 +1,10 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using ReFreshMVC.Models.Interfaces;
 using Microsoft.AspNetCore.Identity;
-using ReFreshMVC.Models;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using ReFreshMVC.Models;
+using ReFreshMVC.Models.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReFreshMVC.Pages.Admin
 {
@@ -12,26 +13,33 @@ namespace ReFreshMVC.Pages.Admin
         /// <summary>
         /// create a local context implementing needed interfaces
         /// </summary>
-        private readonly IInventoryManager _inv;
         private readonly ICartManager _cart;
+        private IInventoryManager _inv;
         private readonly IEmailSender _mail;
         private UserManager<User> _user;
-        public IndexModel(IInventoryManager inv, ICartManager cart, UserManager<User> user, IEmailSender mail)
+        public IndexModel(ICartManager cart, IInventoryManager inv, IEmailSender mail, UserManager<User> user)
         {
-            _inv = inv;
             _cart = cart;
-            _user = user;
+            _inv = inv;
             _mail = mail;
+            _user = user;
         }
-
 
         public List<Cart> CartsClosed { get; set; }
         public List<Cart> CartsOpen { get; set; }
 
-        public async void OnGet()
+        public List<Product> CurrentInventory { get; set; }
+
+        public IList<User> Admins { get; set; }
+
+        public async Task OnGet()
         {
             CartsClosed = await _cart.GetLastTenCarts();
             CartsOpen = await _cart.GetOpenCarts();
+            CurrentInventory = await _inv.GetAllAsync();
+            Admins = await _user.GetUsersInRoleAsync(AppRoles.Admin);
         }
+
+
     }
 }

@@ -1,0 +1,21 @@
+﻿@model ReFreshMVC.Models.Product
+
+<div class="col s12 m3">
+    <div class="card modal-trigger" >
+        <div class="card-image">
+            <div href="#@Model.ID" width="200" height="160">
+                @*<img src="~/Img/@Model.Image" max-height ="100%" max-width="100%">*@
+            </div>
+            <span class="card-title">@Model.Name</span>
+            @*<a class="btn-floating halfway-fab waves-effect waves-light red" asp-action="Landing" asp-controller="Product" asp-route-id="@Model.ID"><i class="material-icons">add</i></a>*@
+        </div>
+        <div class="card-content">
+            <p>@Model.Name</p>
+            <p>SKU: @Model.Sku</p>
+            <p>$@Model.Price each</p>
+            <p>Stock: @Model.QtyAvail units</p>
+        </div>
+    </div>
+</div>
+
+

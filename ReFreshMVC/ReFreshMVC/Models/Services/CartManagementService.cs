@@ -147,11 +147,28 @@ namespace ReFreshMVC.Models.Services
 
 
 
+        //public async Task<List<Cart>> GetAllTheCarts()
+        //{
+        //    List<Cart> listOne = new List<Cart>();
+        //    List<Cart> listTwo = new List<Cart>();
+        //    listOne = await GetLastTenCarts();
+        //    listTwo = await GetOpenCarts();
+        //    foreach (var item in listTwo)
+        //    {
+        //        listOne.Add(item);
+        //    }
+        //    return listOne;
+        //}
+
+        public async Task<List<Cart>> GetLastTenCarts()
+        {
+            return await _context.Carts.OrderByDescending(c => c.Completed).Include("Orders.Product").Take(10).ToListAsync();
+        }
 
 
-        public Task<List<Cart>> GetLastTenCarts() => _context.Carts.OrderByDescending(c => c.Completed).Take(10).ToListAsync();
-
-
-        public Task<List<Cart>> GetOpenCarts() => _context.Carts.Where(c => c.Completed == null).ToListAsync();
+        public async Task<List<Cart>> GetOpenCarts()
+        {
+            return await _context.Carts.Where(c => c.Completed == null).Include("Orders.Product").ToListAsync();
+        }
     }
 }
