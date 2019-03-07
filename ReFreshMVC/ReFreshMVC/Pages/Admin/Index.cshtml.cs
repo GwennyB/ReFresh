@@ -27,11 +27,14 @@ namespace ReFreshMVC.Pages.Admin
 
         public List<Cart> CartsClosed { get; set; }
         public List<Cart> CartsOpen { get; set; }
-
         public List<Product> CurrentInventory { get; set; }
-
         public IList<User> Admins { get; set; }
 
+        /// <summary>
+        /// GET: /Admin
+        /// populates backing stores and loads Admin Dashboard
+        /// </summary>
+        /// <returns> Admin Dashboard view </returns>
         public async Task OnGet()
         {
             CartsClosed = await _cart.GetLastTenCarts();

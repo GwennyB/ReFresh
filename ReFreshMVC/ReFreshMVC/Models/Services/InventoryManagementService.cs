@@ -16,36 +16,6 @@ namespace ReFreshMVC.Models.Services
         {
             _db = context;
         }
-
-        /// <summary>
-        /// Add product to DB with Product model
-        /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
-        public async Task CreateAsync(Product product)
-        {
-            _db.Inventory.Add(product);
-            await _db.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Deletes Product from DB by ProductID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task DeleteAsync(int id)
-        {
-            try
-            {
-                Product productToDelete = await _db.Inventory.FindAsync(id);
-                _db.Inventory.Remove(productToDelete);
-                await _db.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
-        }
         
         /// <summary>
         /// Get all Products from DB
@@ -84,6 +54,36 @@ namespace ReFreshMVC.Models.Services
         {
             _db.Inventory.Update(product);
             await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Add product to DB with Product model
+        /// </summary>
+        /// <param name="product"></param>
+        /// <returns></returns>
+        public async Task CreateAsync(Product product)
+        {
+            _db.Inventory.Add(product);
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Deletes Product from DB by ProductID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                Product productToDelete = await _db.Inventory.FindAsync(id);
+                _db.Inventory.Remove(productToDelete);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
