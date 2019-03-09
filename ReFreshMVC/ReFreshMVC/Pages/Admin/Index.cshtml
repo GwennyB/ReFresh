@@ -1,95 +1,117 @@
 ﻿@page
 @model ReFreshMVC.Pages.Admin.IndexModel
 @using ReFreshMVC.Models
-@{
-    //Layout = "_Layout";
-}
 
-@*ADMIN DASHBOARD*@
+<!DOCTYPE html>
 
-<h3>INVENTORY</h3>
-<div overflow="auto">
-    <table>
-        <tbody>
-            @foreach (var product in Model.CurrentInventory)
-            {
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="~/reset.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/StyleSheet_Admin.css" rel="stylesheet" />
+</head>
+<body>
+
+    @*ADMIN DASHBOARD*@
+
+    <h3>INVENTORY</h3>
+    <div class="inventory-container" overflow="auto">
+        @foreach (var product in Model.CurrentInventory)
+        {
+            <partial name="~/Views/Shared/_InventoryPartial.cshtml" model="product" />
+        }
+    </div>
+
+
+    @*add order viewing section*@
+    <h3>OPEN ORDERS</h3>
+    <div class="admincard" overflow="auto">
+        <table>
+            <thead>
                 <tr>
-                    <td>@product.Name</td>
-                    <td>SKU: @product.Sku</td>
-                    <td>$@product.Price each</td>
-                    <td>Stock: @product.QtyAvail units</td>
+                    <th>CART NO.</th>
+                    <th>CUSTOMER</th>
+                    <th>ITEMS ORDERED</th>
+                    <th>CART TOTAL</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
-</div>
-
-@*add order viewing section*@
-<h3>OPEN ORDERS</h3>
-<div overflow="auto">
-    <table>
-        <tbody>
-            @foreach (var cart in Model.CartsOpen)
-            {
-            <tr>
-                <td>Cart #@cart.ID</td>
-                <td>@cart.UserName</td>
-                <td>
-                    @if (cart.Orders != null)
-                    {
-                        @foreach (Order order in cart.Orders)
-                        {
-                            <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
-                        }
-                    }
-                </td>
-                <td>Total: @cart.Total</td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
-
-<h3>CLOSED ORDERS</h3>
-<div overflow="auto">
-    <table>
-        <tbody>
-            @foreach (var cart in Model.CartsClosed)
-            {
-                <tr>
-                    <td>Cart #@cart.ID</td>
-                    <td>@cart.UserName</td>
-                    <td>
-                        @if (cart.Orders != null)
-                        {
-                            @foreach (Order order in cart.Orders)
+            </thead>
+            <tbody>
+                @foreach (var cart in Model.CartsOpen)
+                {
+                    <tr>
+                        <td>Cart #@cart.ID</td>
+                        <td>@cart.UserName</td>
+                        <td>
+                            @if (cart.Orders != null)
                             {
-                                <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
+                                @foreach (Order order in cart.Orders)
+                                {
+                                    <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
+                                }
                             }
-                        }
-                    </td>
-                    <td>Total: @cart.Total</td>
-                    <td>Closed: @cart.Completed</td>
+                        </td>
+                        <td>Total: $@cart.Total</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <h3>CLOSED ORDERS</h3>
+    <div class="admincard" overflow="auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>CART NO.</th>
+                    <th>CUSTOMER</th>
+                    <th>ITEMS ORDERED</th>
+                    <th>CART TOTAL</th>
+                    <th>PURCHASE COMPLETED</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var cart in Model.CartsClosed)
+                {
+                    <tr>
+                        <td>Cart #@cart.ID</td>
+                        <td>@cart.UserName</td>
+                        <td>
+                            @if (cart.Orders != null)
+                            {
+                                @foreach (Order order in cart.Orders)
+                                {
+                                    <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>cart empty</p>
+                            }
+                        </td>
+                        <td>$@cart.Total</td>
+                        <td>@cart.Completed</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
 
 
-@*add admin user management section*@
-<h3>ADMINISTRATORS</h3>
-<div overflow="auto">
-    @foreach (User admin in Model.Admins)
-    {
-        <p>
-            <span>@admin.FirstName</span>
-            <span>@admin.LastName</span>
-            <span>@admin.UserName</span>
-        </p>
-    }
-</div>
+    @*add admin user management section*@
+    <h3>ADMINISTRATORS</h3>
+    <div class="admincard" overflow="auto">
+        @foreach (User admin in Model.Admins)
+        {
+            <p>
+                <span>@admin.FirstName</span>
+                <span>@admin.LastName</span>
+                <span>@admin.UserName</span>
+            </p>
+        }
+    </div>
 
-
+</body>
+</html>
 
