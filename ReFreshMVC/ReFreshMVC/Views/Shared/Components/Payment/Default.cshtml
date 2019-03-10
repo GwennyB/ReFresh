@@ -1,0 +1,76 @@
+﻿@*THIS IS THE PAYMENT MODAL
+    IT TRIGGERS WHEN THE CHECKOUT BUTTON IS FIRED
+    THE USER ENTERS THEIR PAYMENT INFO
+    THE USER CAN CANCEL AND CLOSE THE MODAL
+    THE USER CAN SUBMIT WITH A BUTTON AND BE SENT TO THE RECIPT PAGE*@
+
+
+
+@model ReFreshMVC.Models.Cart
+
+
+@*THIS IS THE MODAL BOX*@
+<div id="paymentModal" class="modal">
+    <div class="modal-content">
+        <div class="container">
+            <div class="row">
+                <a class="Default btn waves-effect"><i class="material-icons right">exit_to_app</i>Cancel Payment</a>
+            </div>
+            <div class="row">
+                <div class="col s6">
+                    <h4>Payment Details</h4>
+                    <form asp-action="Checkout" asp-controller="Cart" method="post">
+                        @*<input hidden="hidden" asp-for="" />
+                        <input hidden="hidden" asp-for="" />*@
+
+                        <div class="input-field col s8">
+                            <select>
+                                <option value="" disabled selected>Choose your Credit Card</option>
+                                <option value="1"></option>
+                            </select>
+                            <label>Credit Card</label>
+                        </div>
+
+                        <div class="input-field col s8">
+                            <label>Expiration Date</label>
+                            <input type="text" class="datepicker">
+                        </div>
+                    </form>
+                </div>
+                <div class="col s6">
+                    <h4>Order Summary</h4>
+                    <table>
+                        <thead>
+                            <tr>
+                                <td><a class="Default btn waves-effect"><i class="material-icons right">exit_to_app</i>Cancel Payment</a></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @* Start foreach(Order order in Cart) *@
+                            <tr>
+                                <td>Product Name</td>
+                                <td>Qty</td>
+                                <td>Product Total Price</td>
+                            </tr>
+                            @* End foreach loop *@
+                            <tr>
+                                <th>Total</th>
+                                <td>Cart Total</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>
+</div>
+
+@*THIS IS THE SELECT BOX FOR THE CC NUMBERS*@
+
+
+@*THIS IS SUBMIT PAYMENT BUTTON*@
+

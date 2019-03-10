@@ -26,6 +26,6 @@
 @if (User.Identity.Name != null)
 {
     <div id="ShoppingCartComponent" hidden="hidden">
-        @await Component.InvokeAsync("ShoppingCart", new { userID = User.Identity.Name })
+        @await Component.InvokeAsync("ShoppingCart")
     </div>
 }
