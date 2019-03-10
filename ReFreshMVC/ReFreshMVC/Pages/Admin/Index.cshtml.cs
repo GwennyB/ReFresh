@@ -58,17 +58,11 @@ namespace ReFreshMVC.Pages.Admin
         /// <summary>
         /// updates existing inventory entry or creates a new one
         /// </summary>
-        /// <returns> redirect to Admin page </returns>
+        /// <returns> reloads Admin page </returns>
         public async Task<IActionResult> OnPost()
         {
             Product query = await _inv.GetOneByIdAsync(Product.ID);
             Product.ID = 0;
-            //if (query == null)
-            //{
-            //    ID = query.ID;
-            //    query = Product;
-            //    query.ID = Product.ID;
-            //}
 
             //if (Image != null)
             //{
@@ -101,7 +95,7 @@ namespace ReFreshMVC.Pages.Admin
                 query.Description = Product.Description;
                 query.Meaty = Product.Meaty;
                 query.Category = Product.Category;
-                query = await _inv.UpdateAsync(query);
+                await _inv.UpdateAsync(query);
             }
 
             return RedirectToPage("../Admin/Index");
