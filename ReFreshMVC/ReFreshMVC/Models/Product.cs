@@ -30,6 +30,7 @@ namespace ReFreshMVC.Models
 
         public string Description { get; set; }
 
+        [Display(Name = "Product Photo")]
         [DataType(DataType.ImageUrl)]
         public string Image { get; set; }
 
@@ -38,7 +39,7 @@ namespace ReFreshMVC.Models
         public Categories Category { get; set; }
 
         [Required]
-        [Display(Name = "Contains Meat?")]
+        [Display(Name = "Contains Meat")]
         public bool Meaty { get; set; }
     }
 

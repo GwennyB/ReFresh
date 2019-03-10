@@ -7,16 +7,20 @@
 <html>
 <head>
     <meta name="viewport" content="width=device-width" />
-    <title>@ViewBag.Title</title>
+    <title>Dashboard</title>
     <link href="~/reset.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="~/StyleSheet_Admin.css" rel="stylesheet" />
 </head>
 <body>
+    <h2>Administrator's Dashboard</h2>
 
-    @*ADMIN DASHBOARD*@
+    <h3>ADD NEW PRODUCT</h3>
+    <div class="inventory-container">
+        <partial name="~/Views/Shared/_InventoryPartial.cshtml" model="new Product()" />
+    </div>
 
-    <h3>INVENTORY</h3>
+    <h3>CURRENT INVENTORY</h3>
     <div class="inventory-container" overflow="auto">
         @foreach (var product in Model.CurrentInventory)
         {
@@ -24,8 +28,6 @@
         }
     </div>
 
-
-    @*add order viewing section*@
     <h3>OPEN ORDERS</h3>
     <div class="admincard" overflow="auto">
         <table>
@@ -98,8 +100,6 @@
         </table>
     </div>
 
-
-    @*add admin user management section*@
     <h3>ADMINISTRATORS</h3>
     <div class="admincard" overflow="auto">
         @foreach (User admin in Model.Admins)

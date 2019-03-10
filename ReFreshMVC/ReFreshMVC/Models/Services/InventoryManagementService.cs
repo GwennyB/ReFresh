@@ -50,10 +50,11 @@ namespace ReFreshMVC.Models.Services
         /// </summary>
         /// <param name="product"></param>
         /// <returns></returns>
-        public async Task UpdateAsync(Product product)
+        public async Task<Product> UpdateAsync(Product product)
         {
             _db.Inventory.Update(product);
             await _db.SaveChangesAsync();
+            return await _db.Inventory.FindAsync(product.ID);
         }
 
         /// <summary>

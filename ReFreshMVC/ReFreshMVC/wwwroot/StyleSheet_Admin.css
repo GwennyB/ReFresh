@@ -6,8 +6,16 @@
     background-attachment: fixed;*/
 }
 
+
+h2 {
+    margin: 40px;
+    font-size: 40px;
+    color: darkred;
+    text-align: center;
+}
+
 h3 {
-    margin-left: 40px;
+    margin: 80px 0px 0px 40px;
     font-size: 25px;
     color: darkred;
 }
@@ -82,3 +90,4 @@ td, th {
 .navbarLink {
     color: black;
 }
+

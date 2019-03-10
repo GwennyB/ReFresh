@@ -16,7 +16,7 @@ namespace ReFreshMVC.Models.Interfaces
 
         Task<Product> GetOneByIdAsync(int id);
         
-        Task UpdateAsync(Product product);
+        Task<Product> UpdateAsync(Product product);
         
         Task DeleteAsync(int id);
     }
