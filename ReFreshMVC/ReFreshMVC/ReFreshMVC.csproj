@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Models\Services\AuthorizeNetService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Product\Create.cshtml" />
+    <Content Remove="Views\Product\Inventory.cshtml" />
+    <Content Remove="Views\Shared\_CarouselPartial.cshtml" />
+    <Content Remove="Views\Shared\_ProductModalPartial.cshtml" />
     <Content Remove="Views\User\Index.cshtml" />
   </ItemGroup>
 

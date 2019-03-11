@@ -20,9 +20,9 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// Get products based on search string, product category, and meat user claim. 
         /// </summary>
-        /// <param name="search"></param>
-        /// <param name="category"></param>
-        /// <param name="meat"></param>
+        /// <param name="search"> string to search </param>
+        /// <param name="category"> filter by product category </param>
+        /// <param name="meat"> filter by meat or meatless</param>
         /// <returns>IEnumerable<Product>Filtered Products</returns>
         public async Task<IEnumerable<Product>> SearchProducts(string search, int category, bool meat)
         {

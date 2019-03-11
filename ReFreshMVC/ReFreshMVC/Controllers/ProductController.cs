@@ -83,26 +83,7 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("NonMeatProducts", "Product");
         }
 
-        /// <summary>
-        /// displays a list of all products to the Iventory View
-        /// </summary>
-        /// <returns>View of Product List</returns>
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Inventory()
-        {
-            IEnumerable<Product> list = await _products.GetAllAsync();
-            return View(list);
-        }
-        
-        /// <summary>
-        /// displays creation page for Inventory
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Authorize]
-        public IActionResult Create() => View();
-        
+       
         /// <summary>
         /// displays landing page for product by product id
         /// </summary>

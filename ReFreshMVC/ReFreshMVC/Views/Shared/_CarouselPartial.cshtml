@@ -1,7 +1,8 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using ReFreshMVC.Models.Services
+@inject InventoryManagementService _inv
+
 @{
+    var products = await _inv.GetAllAsync();
 }
 <div class="row">
     <div class="col s12">
@@ -11,9 +12,12 @@
             <div class="input-field col s8">
                 <div class="carousel carousel-slider">
                     <a class="carousel-item">
-                        <div>
-                            <img src="~/Img/penne.jpeg"/>
-                        </div>
+                        @foreach (var item in products)
+                        {
+                            <div>
+                                <img src="@item.Image" />
+                            </div>
+                        }
                     </a>
                 </div>
             </div>
