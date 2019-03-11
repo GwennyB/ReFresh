@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ReFreshMVC.Pages.Admin
 {
+    [Authorize("AdminOnly")]
     public class IndexModel : PageModel
     {
         /// <summary>
@@ -41,6 +43,8 @@ namespace ReFreshMVC.Pages.Admin
         //public IFormFile Image { get; set; }
         //public Blob ImageBlob { get; }
 
+        [BindProperty]
+        public string Email { get; set; }
 
         /// <summary>
         /// GET: /Admin
@@ -104,6 +108,16 @@ namespace ReFreshMVC.Pages.Admin
         public async Task<IActionResult> OnPostDelete()
         {
             await _inv.DeleteAsync(Product.ID);
+            return RedirectToPage("../Admin/Index");
+        }
+
+        public async Task<IActionResult> OnPostMakeAdmin()
+        {
+            User user = await _user.FindByEmailAsync(Email);
+            if (user != null)
+            {
+                await _user.AddToRoleAsync(user, AppRoles.Admin);
+            }
             return RedirectToPage("../Admin/Index");
         }
 

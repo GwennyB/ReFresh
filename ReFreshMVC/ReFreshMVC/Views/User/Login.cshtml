@@ -29,7 +29,7 @@
 
     if (oAuthProviders.Count > 0)
     {
-        <h1> LOGIN PROVIDERS!!!</h1>
+        <h3> Want to log in using your Microsoft or Facebook account?</h3>
 
         <form method="post" asp-controller="User" asp-action="ExtLogin">
             @foreach (var prov in oAuthProviders)

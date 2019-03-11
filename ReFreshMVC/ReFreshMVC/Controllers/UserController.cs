@@ -76,6 +76,13 @@ namespace ReFreshMVC.Controllers
                     // add all claims to DB
                     await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
 
+                    // apply user role(s)
+                    await _userManager.AddToRoleAsync(user, AppRoles.Member);
+                    if(user.Email == "amanda@codefellows.com")
+                    {
+                        await _userManager.AddToRoleAsync(user, AppRoles.Admin);
+                    }
+
                     // start a cart for new user
                     await _cart.CreateCartAsync(user.Email);
 
@@ -115,6 +122,7 @@ namespace ReFreshMVC.Controllers
             {
                 var query = await _signInManager.PasswordSignInAsync(bag.Email, bag.Password, false, false);
                 var cart = await _cart.GetCartAsync(bag.Email);
+
                 if (  cart == null)
                 {
                     await _cart.CreateCartAsync(bag.Email);
@@ -122,6 +130,10 @@ namespace ReFreshMVC.Controllers
 
                 if (query.Succeeded)
                 {
+                    if (await _userManager.IsInRoleAsync(await _userManager.FindByEmailAsync(bag.Email), AppRoles.Admin))
+                    {
+                        return RedirectToPage("../Admin/Index");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -186,6 +198,10 @@ namespace ReFreshMVC.Controllers
 
             if (login.Succeeded)
             {
+                if (await _userManager.IsInRoleAsync(await _userManager.FindByLoginAsync(confirm.LoginProvider, confirm.ProviderKey), AppRoles.Admin))
+                {
+                    return RedirectToPage("/Admin/Index");
+                }
                 return RedirectToAction("Index", "Home");
             }
 

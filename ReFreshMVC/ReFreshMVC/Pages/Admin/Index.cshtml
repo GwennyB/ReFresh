@@ -101,13 +101,20 @@
     </div>
 
     <h3>ADMINISTRATORS</h3>
-    <div class="admincard" overflow="auto">
+    <div class="admincard" id="admins" overflow="auto">
+        <form method="post">
+            <label asp-for="Email">Email of user to make 'Admin': </label>
+            <input type="email" asp-for="Email" />
+            <fieldset>
+                <button type="submit" asp-page-handler="MakeAdmin">Make Admin</button>
+            </fieldset>
+        </form>
         @foreach (User admin in Model.Admins)
         {
             <p>
                 <span>@admin.FirstName</span>
                 <span>@admin.LastName</span>
-                <span>@admin.UserName</span>
+                <span> (@admin.UserName)</span>
             </p>
         }
     </div>
