@@ -8,8 +8,6 @@
 
 @model ReFreshMVC.Models.ViewModels.CreditCardViewModel
 
-
-@*THIS IS THE MODAL BOX*@
 <div id="paymentModal" class="modal" style="height: 500px;">
     <div class="modal-content">
         <div class="container">
@@ -17,8 +15,6 @@
                 <div class="col s6">
                     <h4>Payment Details</h4>
                     <form id="PaymentForm" asp-action="Checkout" asp-controller="Cart" method="post">
-                        @*<input hidden="hidden" asp-for="" />
-                        <input hidden="hidden" asp-for="" />*@
 
                         <div class="input-field col s12">
                             <select asp-for="@Model.Number" asp-items="ViewBag.CreditCardNumbers"></select>
@@ -43,7 +39,6 @@
                                 <td>Quantity</td>
                                 <td>Product Total Price</td>
                             </tr>
-                            @* Start foreach(Order order in Cart) *@
                             @foreach(var item in Model.Cart.Orders)
                             {
                                 <tr>
@@ -53,7 +48,6 @@
                                 </tr>
 
                             }
-                            @* End foreach loop *@
                             <tr>
                                 <th>Total</th>
                                 <td>@Model.Cart.Total</td>

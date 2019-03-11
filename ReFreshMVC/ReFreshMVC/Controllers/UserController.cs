@@ -258,9 +258,41 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Get Privacy Policy Page
+        /// </summary>
+        /// <returns>Privacy Policy Page</returns>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Privacy() => View();
+
+        /// <summary>
+        /// Get Profile View
+        /// </summary>
+        /// <returns>Profile View fo rUser in Context</returns>
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            return View(await _userManager.FindByEmailAsync(User.Identity.Name));
+        }
+
+        /// <summary>
+        /// Post User Profile Names
+        /// Updates the User's First and Last Name
+        /// </summary>
+        /// <param name="userProfile">User object from Identity API</param>
+        /// <returns>Profile View</returns>
+        [HttpPost]
+        public async Task<IActionResult> ProfileUpdate([Bind("FirstName, LastName")] User userProfile)
+        {
+            User user = await _userManager.FindByEmailAsync(User.Identity.Name);
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Profile");
+        }
     }
 
        
