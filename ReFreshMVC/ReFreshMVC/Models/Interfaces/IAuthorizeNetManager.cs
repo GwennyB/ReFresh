@@ -8,6 +8,6 @@ namespace ReFreshMVC.Models.Interfaces
 {
     public interface IAuthorizeNetManager
     {
-        createTransactionResponse RunCard(int amount, int expDate);
+        createTransactionResponse RunCard(int amount, string expDate, string number);
     }
 }

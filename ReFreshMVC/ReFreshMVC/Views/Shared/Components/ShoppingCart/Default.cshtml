@@ -48,10 +48,11 @@
                             if (Model.Orders.Count != 0)
                             {
                                 @*<a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Payment">Check Out</a>*@
-                                <a class="waves-effect waves-light btn modal-trigger" href="#paymentModal">Checkout</a>
-                                <div id="PaymentComponent" hidden="hidden">
-                                    @await Component.InvokeAsync("Payment")
-                                </div>
+                        @*<div id="ShoppingCartComponent" class="waves-effect waves-light btn modal-trigger" data-target="paymentModal">
+                            Checkout
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </div>*@
+                                <a class="waves-effect waves-light btn modal-trigger" data-target="paymentModal">Checkout</a>
                             }
                             else
                             {
@@ -65,3 +66,6 @@
 
     </table>
 </form>
+<div id="PaymentComponent">
+    @await Component.InvokeAsync("Payment", Model)
+</div>

@@ -6,56 +6,57 @@
 
 
 
-@model ReFreshMVC.Models.Cart
+@model ReFreshMVC.Models.ViewModels.CreditCardViewModel
 
 
 @*THIS IS THE MODAL BOX*@
-<div id="paymentModal" class="modal">
+<div id="paymentModal" class="modal" style="height: 500px;">
     <div class="modal-content">
         <div class="container">
             <div class="row">
-                <a class="Default btn waves-effect"><i class="material-icons right">exit_to_app</i>Cancel Payment</a>
-            </div>
-            <div class="row">
                 <div class="col s6">
                     <h4>Payment Details</h4>
-                    <form asp-action="Checkout" asp-controller="Cart" method="post">
+                    <form id="PaymentForm" asp-action="Checkout" asp-controller="Cart" method="post">
                         @*<input hidden="hidden" asp-for="" />
                         <input hidden="hidden" asp-for="" />*@
 
-                        <div class="input-field col s8">
-                            <select>
-                                <option value="" disabled selected>Choose your Credit Card</option>
-                                <option value="1"></option>
-                            </select>
+                        <div class="input-field col s12">
+                            <select asp-for="@Model.Number" asp-items="ViewBag.CreditCardNumbers"></select>
                             <label>Credit Card</label>
                         </div>
 
-                        <div class="input-field col s8">
+                        <div class="input-field col s12">
                             <label>Expiration Date</label>
-                            <input type="text" class="datepicker">
+                            <input type="text" class="datepicker" asp-for="@Model.ExpDate"/>
                         </div>
+
+                        <button class="waves-effect waves-light btn" value="submit" >Confirm Payment</button>
                     </form>
                 </div>
                 <div class="col s6">
                     <h4>Order Summary</h4>
                     <table>
-                        <thead>
-                            <tr>
-                                <td><a class="Default btn waves-effect"><i class="material-icons right">exit_to_app</i>Cancel Payment</a></td>
-                            </tr>
-                        </thead>
+                        <thead></thead>
                         <tbody>
-                            @* Start foreach(Order order in Cart) *@
                             <tr>
                                 <td>Product Name</td>
-                                <td>Qty</td>
+                                <td>Quantity</td>
                                 <td>Product Total Price</td>
                             </tr>
+                            @* Start foreach(Order order in Cart) *@
+                            @foreach(var item in Model.Cart.Orders)
+                            {
+                                <tr>
+                                    <td>@item.Product.Name</td>
+                                    <td>@item.Qty</td>
+                                    <td>@(item.Qty * item.Product.Price)</td>
+                                </tr>
+
+                            }
                             @* End foreach loop *@
                             <tr>
                                 <th>Total</th>
-                                <td>Cart Total</td>
+                                <td>##Cart Total##</td>
                             </tr>
                         </tbody>
                     </table>
@@ -64,13 +65,5 @@
             
         </div>
     </div>
-    <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-    </div>
 </div>
-
-@*THIS IS THE SELECT BOX FOR THE CC NUMBERS*@
-
-
-@*THIS IS SUBMIT PAYMENT BUTTON*@
 

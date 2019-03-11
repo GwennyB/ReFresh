@@ -54,3 +54,8 @@ form > * {
     width: 35%;
     background-color: white;
 }
+#PaymentForm {
+    padding: 0%;
+    margin: 0%;
+    width:100%;
+}

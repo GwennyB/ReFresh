@@ -7,6 +7,7 @@ using ReFreshMVC.Models.Interfaces;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
+using ReFreshMVC.Models.ViewModels;
 
 namespace ReFreshMVC.Controllers
 {
@@ -47,6 +48,10 @@ namespace ReFreshMVC.Controllers
             {
                 cart = await _cart.CreateCartAsync(username);
             }
+            //if(TempData["paymentResponse"]. != null)
+            //{
+            //    ViewBag["paymentResponse"] = TempData["paymentResponse"];
+            //}
             return View(cart);
         }
 
@@ -55,7 +60,7 @@ namespace ReFreshMVC.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Checkout()
+        public async Task<IActionResult> Checkout([Bind("Number, ExpDate")] CreditCardViewModel ccvm)
         {
             Cart cart = await _cart.GetCartAsync(User.Identity.Name);
 
@@ -66,10 +71,7 @@ namespace ReFreshMVC.Controllers
                 amount += o.ExtPrice;
             }
 
-            // Get CC info
-            int expDate = 0719;
-
-            createTransactionResponse response = _payment.RunCard(amount, expDate);
+            createTransactionResponse response = _payment.RunCard(amount, ccvm.ExpDate, ccvm.Number);
             if (response.messages.resultCode == messageTypeEnum.Ok)
             {
                 await _cart.CloseCartAsync(cart);

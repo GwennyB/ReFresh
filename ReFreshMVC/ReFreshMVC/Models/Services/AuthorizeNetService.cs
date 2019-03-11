@@ -19,32 +19,24 @@ namespace ReFreshMVC.Models.Services
             _configuration = configuration;
         }
 
-        public createTransactionResponse RunCard(int amount, int expDate)
+        public createTransactionResponse RunCard(int amount, string expDate, string number)
         {
-            string expDateString = "";
-            if(!(expDate - 1000 > 0))
-            {
-                expDateString = $"0{expDate}";
-            }
-            else
-            {
-                expDateString = $"{expDate}";
-            }
-
             ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+
+
 
             // define the merchant information (authentication / transaction id)
             ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType()
             {
-                name = _configuration.GetConnectionString("AuthorizeNet: ClientId"),
+                name = _configuration.GetConnectionString("AuthorizeNet:ClientId"),
                 ItemElementName = ItemChoiceType.transactionKey,
                 Item = _configuration.GetConnectionString("Authorize:TransactionKey"),
             };
 
             var creditCard = new creditCardType
             {
-                cardNumber = "4111111111111111",
-                expirationDate = expDateString
+                cardNumber = number,
+                expirationDate = expDate
 
             };
 
