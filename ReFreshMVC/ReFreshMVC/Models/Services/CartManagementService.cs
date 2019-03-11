@@ -44,27 +44,27 @@ namespace ReFreshMVC.Models.Services
         /// </summary>
         /// <param name="cart"> cart to close out </param>
         /// <returns> task completed </returns>
-        public async Task<bool> CloseCartAsync(Cart cart)
+        public async Task CloseCartAsync(Cart cart)
         {
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
             await _context.SaveChangesAsync();
             // TODO in Sprint 3: Turn on this feature to update Inventory quantities
-            //if (cart.Orders != null)
-            //{
-            //    foreach (Order item in cart.Orders)
-            //    {
-            //        if (item.Product.QtyAvail < item.Qty)
-            //        {
-            //            return false;
-            //        }
-            //        item.Product.QtyAvail -= item.Qty;
-            //        await Task.Run(() => _context.Inventory.Update(item.Product));
-            //    }
-            //}
-            //await _context.SaveChangesAsync();
+            cart.Orders = await _context.Orders.Where(o => o.CartID == cart.ID).ToListAsync();
+            if (cart.Orders != null)
+            {
+                foreach (Order item in cart.Orders)
+                {
+                    if (item.Product.QtyAvail < item.Qty)
+                    {
+                        item.Qty = item.Product.QtyAvail;
+                    }
+                    item.Product.QtyAvail -= item.Qty;
+                    await Task.Run(() => _context.Inventory.Update(item.Product));
+                }
+            }
+            await _context.SaveChangesAsync();
             await CreateCartAsync(cart.UserName);
-            return true;
         }
 
         /// <summary>
