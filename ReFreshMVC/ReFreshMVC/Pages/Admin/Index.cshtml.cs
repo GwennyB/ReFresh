@@ -41,6 +41,8 @@ namespace ReFreshMVC.Pages.Admin
         //public IFormFile Image { get; set; }
         //public Blob ImageBlob { get; }
 
+        [BindProperty]
+        public string Email { get; set; }
 
         /// <summary>
         /// GET: /Admin
@@ -104,6 +106,16 @@ namespace ReFreshMVC.Pages.Admin
         public async Task<IActionResult> OnPostDelete()
         {
             await _inv.DeleteAsync(Product.ID);
+            return RedirectToPage("../Admin/Index");
+        }
+
+        public async Task<IActionResult> OnPostMakeAdmin()
+        {
+            User user = await _user.FindByEmailAsync(Email);
+            if (user != null)
+            {
+                await _user.AddToRoleAsync(user, AppRoles.Admin);
+            }
             return RedirectToPage("../Admin/Index");
         }
 
