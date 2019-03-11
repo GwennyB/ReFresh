@@ -66,6 +66,8 @@ The Order data model is a join between an entry in the Inventory (ie - Products)
 Dependency injection is used to isolate the data storage from its point of use (ie - the CRUD logic in the page routes). The Identity API includes interfaces and services for the user - those services have been injected into pages where user data is needed to change the displayed content (such as displaying a login link if no user is logged in). Additionally, the app contains an interface package for products to avoid direct coupling between page route logic and the Products database. Interfaces and associated services are built for Cart (to manage Cart and Orders CRUD, checkout steps, receipts and notifications), Inventory (to manage Inventory CRUD).
 
 ## Credit
-This project is a collaborative effort by:
-  Sean Miller - https://github.com/deliman206
-  Gwen Zubatch - https://github.com/GwennyB
+This project is a collaborative effort by:  
+  Sean Miller - https://github.com/deliman206  
+  Gwen Zubatch - https://github.com/GwennyB  
+  
+Third-party HTML/CSS content from (TBD).
