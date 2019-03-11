@@ -1,0 +1,63 @@
+﻿@*THIS IS THE PAYMENT MODAL
+    IT TRIGGERS WHEN THE CHECKOUT BUTTON IS FIRED
+    THE USER ENTERS THEIR PAYMENT INFO
+    THE USER CAN CANCEL AND CLOSE THE MODAL
+    THE USER CAN SUBMIT WITH A BUTTON AND BE SENT TO THE RECIPT PAGE*@
+
+
+
+@model ReFreshMVC.Models.ViewModels.CreditCardViewModel
+
+<div id="paymentModal" class="modal" style="height: 500px;">
+    <div class="modal-content">
+        <div class="container">
+            <div class="row">
+                <div class="col s6">
+                    <h4>Payment Details</h4>
+                    <form id="PaymentForm" asp-action="Checkout" asp-controller="Cart" method="post">
+
+                        <div class="input-field col s12">
+                            <select asp-for="@Model.Number" asp-items="ViewBag.CreditCardNumbers"></select>
+                            <label>Credit Card</label>
+                        </div>
+
+                        <div class="input-field col s12">
+                            <label>Expiration Date</label>
+                            <input type="text" class="datepicker" asp-for="@Model.ExpDate"/>
+                        </div>
+
+                        <button class="waves-effect waves-light btn" value="submit" >Confirm Payment</button>
+                    </form>
+                </div>
+                <div class="col s6">
+                    <h4>Order Summary</h4>
+                    <table>
+                        <thead></thead>
+                        <tbody>
+                            <tr>
+                                <td>Product Name</td>
+                                <td>Quantity</td>
+                                <td>Product Total Price</td>
+                            </tr>
+                            @foreach(var item in Model.Cart.Orders)
+                            {
+                                <tr>
+                                    <td>@item.Product.Name</td>
+                                    <td>@item.Qty</td>
+                                    <td>@(item.Qty * item.Product.Price)</td>
+                                </tr>
+
+                            }
+                            <tr>
+                                <th>Total</th>
+                                <td>@Model.Cart.Total</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+

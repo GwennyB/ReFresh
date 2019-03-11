@@ -42,6 +42,7 @@ namespace ReFreshMVC
             services.AddScoped<IInventoryManager, InventoryManagementService>();
             services.AddScoped<ISearchBarManager, SearchBarManagementService>();
             services.AddScoped<ICartManager, CartManagementService>();
+            services.AddScoped<IAuthorizeNetManager, AuthorizeNetService>();
 
 
             services.AddAuthentication()
@@ -59,6 +60,11 @@ namespace ReFreshMVC
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
+            });
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole(AppRoles.Admin));
             });
 
             services.AddScoped<IAuthorizationHandler, DietRestriction>();

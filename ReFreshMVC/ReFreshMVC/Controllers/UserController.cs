@@ -76,6 +76,13 @@ namespace ReFreshMVC.Controllers
                     // add all claims to DB
                     await _userManager.AddClaimsAsync(user, new List<Claim> { fullNameClaim, carnivore, email });
 
+                    // apply user role(s)
+                    await _userManager.AddToRoleAsync(user, AppRoles.Member);
+                    if(user.Email == "amanda@codefellows.com")
+                    {
+                        await _userManager.AddToRoleAsync(user, AppRoles.Admin);
+                    }
+
                     // start a cart for new user
                     await _cart.CreateCartAsync(user.Email);
 
@@ -115,6 +122,7 @@ namespace ReFreshMVC.Controllers
             {
                 var query = await _signInManager.PasswordSignInAsync(bag.Email, bag.Password, false, false);
                 var cart = await _cart.GetCartAsync(bag.Email);
+
                 if (  cart == null)
                 {
                     await _cart.CreateCartAsync(bag.Email);
@@ -122,6 +130,10 @@ namespace ReFreshMVC.Controllers
 
                 if (query.Succeeded)
                 {
+                    if (await _userManager.IsInRoleAsync(await _userManager.FindByEmailAsync(bag.Email), AppRoles.Admin))
+                    {
+                        return RedirectToPage("../Admin/Index");
+                    }
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -186,6 +198,10 @@ namespace ReFreshMVC.Controllers
 
             if (login.Succeeded)
             {
+                if (await _userManager.IsInRoleAsync(await _userManager.FindByLoginAsync(confirm.LoginProvider, confirm.ProviderKey), AppRoles.Admin))
+                {
+                    return RedirectToPage("/Admin/Index");
+                }
                 return RedirectToAction("Index", "Home");
             }
 
@@ -258,9 +274,41 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("Login");
         }
 
+        /// <summary>
+        /// Get Privacy Policy Page
+        /// </summary>
+        /// <returns>Privacy Policy Page</returns>
         [HttpGet]
         [AllowAnonymous]
         public IActionResult Privacy() => View();
+
+        /// <summary>
+        /// Get Profile View
+        /// </summary>
+        /// <returns>Profile View fo rUser in Context</returns>
+        [HttpGet]
+        public async Task<IActionResult> Profile()
+        {
+            return View(await _userManager.FindByEmailAsync(User.Identity.Name));
+        }
+
+        /// <summary>
+        /// Post User Profile Names
+        /// Updates the User's First and Last Name
+        /// </summary>
+        /// <param name="userProfile">User object from Identity API</param>
+        /// <returns>Profile View</returns>
+        [HttpPost]
+        public async Task<IActionResult> ProfileUpdate([Bind("FirstName, LastName")] User userProfile)
+        {
+            User user = await _userManager.FindByEmailAsync(User.Identity.Name);
+            user.FirstName = userProfile.FirstName;
+            user.LastName = userProfile.LastName;
+
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("Profile");
+        }
     }
 
        

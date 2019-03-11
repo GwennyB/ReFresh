@@ -1,13 +1,23 @@
 ﻿@model ReFreshMVC.Models.Product
+@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+@inject SignInManager<User> signInManager
 
 <div class="col s12 m3">
-    <div class="card modal-trigger" >
+    <div class="card modal-trigger">
         <div class="card-image">
             <div href="#@Model.ID">
-                <img src="~/Img/@Model.Image"/>
+                <img src="@Model.Image" />
             </div>
             <span class="card-title">@Model.Name</span>
-            <a class="btn-floating halfway-fab waves-effect waves-light red" asp-action="Landing" asp-controller="Product" asp-route-id="@Model.ID"><i class="material-icons">add</i></a>
+            @if (signInManager.IsSignedIn(User))
+            {
+                <a class="btn-floating halfway-fab waves-effect waves-light red" asp-action="Landing" asp-controller="Product" asp-route-id="@Model.ID"><i class="material-icons">add</i></a>
+            }
+            else
+            {
+                <a class="btn-floating halfway-fab waves-effect waves-light red disabled" asp-action="Landing" asp-controller="Product" asp-route-id="@Model.ID"><i class="material-icons">add</i></a>
+            }
         </div>
         <div class="card-content">
             <p>@Model.Description</p>

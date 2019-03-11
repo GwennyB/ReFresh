@@ -1,0 +1,124 @@
+﻿@page
+@model ReFreshMVC.Pages.Admin.IndexModel
+@using ReFreshMVC.Models
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Dashboard</title>
+    <link href="~/reset.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/StyleSheet_Admin.css" rel="stylesheet" />
+</head>
+<body>
+    <h2>Administrator's Dashboard</h2>
+
+    <h3>ADD NEW PRODUCT</h3>
+    <div class="inventory-container">
+        <partial name="~/Views/Shared/_InventoryPartial.cshtml" model="new Product()" />
+    </div>
+
+    <h3>CURRENT INVENTORY</h3>
+    <div class="inventory-container" overflow="auto">
+        @foreach (var product in Model.CurrentInventory)
+        {
+            <partial name="~/Views/Shared/_InventoryPartial.cshtml" model="product" />
+        }
+    </div>
+
+    <h3>OPEN ORDERS</h3>
+    <div class="admincard" overflow="auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>CART NO.</th>
+                    <th>CUSTOMER</th>
+                    <th>ITEMS ORDERED</th>
+                    <th>CART TOTAL</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cart in Model.CartsOpen)
+                {
+                    <tr>
+                        <td>Cart #@cart.ID</td>
+                        <td>@cart.UserName</td>
+                        <td>
+                            @if (cart.Orders != null)
+                            {
+                                @foreach (Order order in cart.Orders)
+                                {
+                                    <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
+                                }
+                            }
+                        </td>
+                        <td>Total: $@cart.Total</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <h3>CLOSED ORDERS</h3>
+    <div class="admincard" overflow="auto">
+        <table>
+            <thead>
+                <tr>
+                    <th>CART NO.</th>
+                    <th>CUSTOMER</th>
+                    <th>ITEMS ORDERED</th>
+                    <th>CART TOTAL</th>
+                    <th>PURCHASE COMPLETED</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cart in Model.CartsClosed)
+                {
+                    <tr>
+                        <td>Cart #@cart.ID</td>
+                        <td>@cart.UserName</td>
+                        <td>
+                            @if (cart.Orders != null)
+                            {
+                                @foreach (Order order in cart.Orders)
+                                {
+                                    <p>@order.Product.Name (@order.Qty at $@order.ExtPrice each)</p>
+                                }
+                            }
+                            else
+                            {
+                                <p>cart empty</p>
+                            }
+                        </td>
+                        <td>$@cart.Total</td>
+                        <td>@cart.Completed</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <h3>ADMINISTRATORS</h3>
+    <div class="admincard" id="admins" overflow="auto">
+        <form method="post">
+            <label asp-for="Email">Email of user to make 'Admin': </label>
+            <input type="email" asp-for="Email" />
+            <fieldset>
+                <button type="submit" asp-page-handler="MakeAdmin">Make Admin</button>
+            </fieldset>
+        </form>
+        @foreach (User admin in Model.Admins)
+        {
+            <p>
+                <span>@admin.FirstName</span>
+                <span>@admin.LastName</span>
+                <span> (@admin.UserName)</span>
+            </p>
+        }
+    </div>
+
+</body>
+</html>
+

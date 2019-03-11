@@ -7,35 +7,35 @@ Deployed in Azure at: https://refreshfoods.azurewebsites.net
 To build and run this page locally (using Visual Studio and SQL Server):
 1. Clone the repo locally and compile it. There are no additional external dependencies or data sources to load/access.
 2. This application uses User Secrets. You will need to register the application with Microsoft, Facebook, and SendGrid, and choose a location for 2 databases (one for products, one for users).
-    - Copy this into your secrets.json and replace secrets where indicated:
-    {
-      "ConnectionStrings": {
-        // PRODUCTS DB (SQL)
-        // If you choose to use a local products DB:
-        "ProductionConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ReFreshFoodsDB;Trusted_Connection=True;MultipleActiveResultSets=true",
+    - Copy this into your secrets.json and replace secrets where indicated:  
+    {  
+      "ConnectionStrings": {  
+        // PRODUCTS DB (SQL)  
+        // If you choose to use a local products DB:  
+        "ProductionConnection": "Server=(localdb)\\MSSQLLocalDB;Database=ReFreshFoodsDB;Trusted_Connection=True;MultipleActiveResultSets=true",  
         // Alternately, if you choose to set up a remote products DB:
-        "ProductionConnection": "<enter your remote products DB connection string here>",
+        "ProductionConnection": "<enter your remote products DB connection string here>",  
 
-        // USER DB (SQL) - This uses Microsoft.AspNetCore.Identity API.
-        // If you choose to use a local User DB:
-        "UserConnection: "Server=(localdb)\\MSSQLLocalDB;Database=UserDB;Trusted_Connection=True;MultipleActiveResultSets=true",
-        // Alternately, if you choose to set up a remote User DB:
-        "UserConnection": "<enter your remote User DB (MS Identity) connection string here>",
+        // USER DB (SQL) - This uses Microsoft.AspNetCore.Identity API.  
+        // If you choose to use a local User DB:  
+        "UserConnection: "Server=(localdb)\\MSSQLLocalDB;Database=UserDB;Trusted_Connection=True;MultipleActiveResultSets=true", 
+        // Alternately, if you choose to set up a remote User DB:  
+        "UserConnection": "<enter your remote User DB (MS Identity) connection string here>",  
 
-        // Register the application with Microsoft OAuth at: https://apps.dev.microsoft.com
-        // Setup instructions at: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/microsoft-logins?view=aspnetcore-2.2
-        "Authentication:Microsoft:ApplicationId": "<enter your Microsoft OAuth application ID here>",
-        "Authentication:Microsoft:Password": "<enter your Microsoft OAuth application password here>",
+        // Register the application with Microsoft OAuth at: https://apps.dev.microsoft.com  
+        // Setup instructions at: https://docs.microsoft.com/en-us/aspnet/core/security/authentication/social/microsoft-logins?view=aspnetcore-2.2  
+        "Authentication:Microsoft:ApplicationId": "<enter your Microsoft OAuth application ID here>",  
+        "Authentication:Microsoft:Password": "<enter your Microsoft OAuth application password here>",  
 
-        // Register the application with Facebook OAuth at: 
-        // Setup instructions at: 
-        "Authentication:Facebook:ApplicationId": "<enter your Facebook OAuth application ID here>",
-        "Authentication:Facebook:Password": "enter your Facebook OAuth application password here>",
+        // Register the application with Facebook OAuth at:  
+        // Setup instructions at:  
+        "Authentication:Facebook:ApplicationId": "<enter your Facebook OAuth application ID here>",  
+        "Authentication:Facebook:Password": "enter your Facebook OAuth application password here>",  
 
-        // EMAIL NOTIFICATIONS
-        // Register the application with SendGrid and get an API key at https://signup.sendgrid.com/?id=71713987-9f01-4dea-b3d4-8d0bcd9d53ed
-        "SendGridAPIKey": "<enter your SendGrid API key here>"
-      }
+        // EMAIL NOTIFICATIONS  
+        // Register the application with SendGrid and get an API key at https://signup.sendgrid.com/?id=71713987-9f01-4dea-b3d4-8d0bcd9d53ed  
+        "SendGridAPIKey": "<enter your SendGrid API key here>"  
+      }  
     }  
 
 3. Build the product database using existing migration (Update-Database -Context ReFreshDbContext).
@@ -61,7 +61,7 @@ The Cart data model associates a grouping of 'Orders' (see below) with a user.  
 
 The Order data model is a join between an entry in the Inventory (ie - Products) table and an entry in the Carts table; that is, it 'puts' a Product into a Cart. It also carries Qty and ExtPrice as payload. Each entry is identified by a composite of the cart's primary key and the product's primary key. Since a 'check out' action closes the cart and disallows future changes, the cart ID serves as the order ID for future reference - all items associated with a CartID become a completed purchase.  
 
-    ![Products DB schema](assets/schema.png)  
+![Products DB schema](assets/schema.png)  
 
 Dependency injection is used to isolate the data storage from its point of use (ie - the CRUD logic in the page routes). The Identity API includes interfaces and services for the user - those services have been injected into pages where user data is needed to change the displayed content (such as displaying a login link if no user is logged in). Additionally, the app contains an interface package for products to avoid direct coupling between page route logic and the Products database. Interfaces and associated services are built for Cart (to manage Cart and Orders CRUD, checkout steps, receipts and notifications), Inventory (to manage Inventory CRUD).
 

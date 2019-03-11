@@ -7,15 +7,22 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Views\Product\Create.cshtml" />
+    <Content Remove="Views\Product\Inventory.cshtml" />
+    <Content Remove="Views\Shared\_CarouselPartial.cshtml" />
+    <Content Remove="Views\Shared\_ProductModalPartial.cshtml" />
     <Content Remove="Views\User\Index.cshtml" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AuthorizeNet" Version="2.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.AzureAD.UI" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.2.0" PrivateAssets="All" />
     <PackageReference Include="Sendgrid" Version="9.10.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+    <PackageReference Include="WindowsAzure.Storage" Version="9.3.3" />
   </ItemGroup>
 
 </Project>

@@ -5,6 +5,7 @@ using ReFreshMVC.Models.Services;
 using ReFreshMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReFreshUnitTests
 {
@@ -53,7 +54,7 @@ namespace ReFreshUnitTests
             Assert.True(p.Image == "https://image-url.com");
         }
         [Fact]
-        public async void CreateAsync()
+        public async Task CreateAsync()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CreateProduct").Options;
 
@@ -74,7 +75,7 @@ namespace ReFreshUnitTests
             }
         }
         [Fact]
-        public async void DeleteAsync()
+        public async Task DeleteAsync()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("DeleteProduct").Options;
 
@@ -95,7 +96,7 @@ namespace ReFreshUnitTests
             }
         }
         [Fact]
-        public async void GetAllAsync()
+        public async Task GetAllAsync()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetAllProduct").Options;
 
@@ -116,7 +117,7 @@ namespace ReFreshUnitTests
             }
         }
         [Fact]
-        public async void GetOneAsync()
+        public async Task GetOneAsync()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetOneProduct").Options;
 
@@ -137,7 +138,7 @@ namespace ReFreshUnitTests
             }
         }
         [Fact]
-        public async void UpdateAsync()
+        public async Task UpdateAsync()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("UpdateProduct").Options;
 

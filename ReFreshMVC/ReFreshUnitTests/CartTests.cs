@@ -5,6 +5,7 @@ using ReFreshMVC.Models.Services;
 using ReFreshMVC.Data;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ReFreshUnitTests
 {
@@ -36,7 +37,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanCreateCart()
+        public async Task CanCreateCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CreateCartAsync").Options;
 
@@ -53,7 +54,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanCloseCart()
+        public async Task CanCloseCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("CloseCartAsync").Options;
 
@@ -70,7 +71,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanGetCart()
+        public async Task CanGetCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetCartAsync").Options;
 
@@ -86,7 +87,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanAddOrderToCart()
+        public async Task CanAddOrderToCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("AddOrderToCart").Options;
 
@@ -108,7 +109,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanDeleteOrderFromCart()
+        public async Task CanDeleteOrderFromCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("RemoveOrderFromCart").Options;
 
@@ -123,14 +124,14 @@ namespace ReFreshUnitTests
                 order.ExtPrice = 25;
                 await cms.AddOrderToCart(order);
                 await cms.DeleteOrderFromCart("test", 1);
-                var result = await context.Orders.FirstOrDefaultAsync(o => o.CartID == 1 && o.ProductID == 1);
 
-                Assert.Null(result);
+                Assert.Null(await context.Orders.FirstOrDefaultAsync(o => o.CartID == 1 && o.ProductID == 1));
+
             }
         }
 
         [Fact]
-        public async void CanGetCartByID()
+        public async Task CanGetCartByID()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetCartByID").Options;
             using (ReFreshDbContext context = new ReFreshDbContext(options))
@@ -150,7 +151,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanUpdateOrderInCart()
+        public async Task CanUpdateOrderInCart()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("UpdateOrderInCart").Options;
 
@@ -176,7 +177,7 @@ namespace ReFreshUnitTests
         }
 
         [Fact]
-        public async void CanGetOrderByCK()
+        public async Task CanGetOrderByCK()
         {
             DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetOrderByCK").Options;
 
@@ -194,6 +195,55 @@ namespace ReFreshUnitTests
                 var result = await cms.GetOrderByCK(1, 1);
 
                 Assert.Equal(25, result.ExtPrice);
+            }
+        }
+
+        [Fact]
+        public async Task CanGetLastTen()
+        {
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetLastTen").Options;
+
+            using (ReFreshDbContext context = new ReFreshDbContext(options))
+            {
+                CartManagementService cms = new CartManagementService(context);
+                List<Cart> carts = new List<Cart>();
+                for(int i = 0; i < 10; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+
+                var result = await cms.GetLastTenCarts();
+
+                Assert.Equal(carts, result);
+            }
+        }
+
+        [Fact]
+        public async Task CanGetOpenCarts()
+        {
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetLastTen").Options;
+
+            using (ReFreshDbContext context = new ReFreshDbContext(options))
+            {
+                CartManagementService cms = new CartManagementService(context);
+                List<Cart> carts = new List<Cart>();
+                for (int i = 1; i <= 5; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+                for (int i = 6; i <= 10; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    Cart cart = await cms.GetCartAsync($"test{i}");
+                    await cms.CloseCartAsync(cart);
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+
+                var result = await cms.GetOpenCarts();
+
+                Assert.Equal(carts, result);
             }
         }
     }

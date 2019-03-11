@@ -8,9 +8,11 @@ namespace ReFreshMVC.Models.Interfaces
     public interface ICartManager
     {
         Task<Cart> CreateCartAsync(string user);
-        Task<bool> CloseCartAsync(Cart cart);
+        Task CloseCartAsync(Cart cart);
         Task<Cart> GetCartAsync(string username);
-
+        Task<List<Cart>> GetLastTenCarts();
+        Task<List<Cart>> GetOpenCarts();
+        Task UpdateCart(Cart cart);
         Task AddOrderToCart(Order order);
         Task UpdateOrderInCart(Order order);
         Task DeleteOrderFromCart(string username, int productId);

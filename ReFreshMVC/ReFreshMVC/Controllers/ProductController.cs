@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Collections;
 
 namespace ReFreshMVC.Controllers
 {
@@ -81,27 +82,8 @@ namespace ReFreshMVC.Controllers
         {
             return RedirectToAction("NonMeatProducts", "Product");
         }
-        
-        /// <summary>
-        /// displays a list of all products to the Iventory View
-        /// </summary>
-        /// <returns>View of Product List</returns>
-        [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Inventory()
-        {
-            IEnumerable<Product> list = await _products.GetAllAsync();
-            return View(list);
-        }
-        
-        /// <summary>
-        /// displays creation page for Inventory
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet]
-        [Authorize]
-        public IActionResult Create() => View();
-        
+
+       
         /// <summary>
         /// displays landing page for product by product id
         /// </summary>
@@ -143,6 +125,10 @@ namespace ReFreshMVC.Controllers
             // Order object complete here
             order.CartID = cart.ID;
             order.ExtPrice = order.Qty * product.Price;
+
+            // add order total to cart total and update cart
+            cart.Total = order.ExtPrice;
+            await _cart.UpdateCart(cart);
 
             // Check if order exists
             if (cart.Orders.Where(o => o.CartID == cart.ID && o.ProductID == order.ProductID).FirstOrDefault() != null)

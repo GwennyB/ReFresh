@@ -21,7 +21,6 @@ form, .navbar {
     border: darkred solid 5px;
     border-radius: 10px;
     padding-left: 50px;
-
 }
 #searchForm {
     margin: auto; 
@@ -50,4 +49,13 @@ form > * {
     padding: 0%;
     margin: 0%;
     display: inline-block;
+}
+.CartOrders {
+    width: 35%;
+    background-color: white;
+}
+#PaymentForm {
+    padding: 0%;
+    margin: 0%;
+    width:100%;
 }

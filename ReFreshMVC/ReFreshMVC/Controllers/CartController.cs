@@ -1,10 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using AuthorizeNet.Api.Contracts.V1;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Interfaces;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using ReFreshMVC.Models.ViewModels;
 
 namespace ReFreshMVC.Controllers
 {
@@ -14,13 +17,15 @@ namespace ReFreshMVC.Controllers
         private readonly UserManager<User> _userManager;
         private readonly IEmailSender _mail;
         private readonly IInventoryManager _inventory;
+        private readonly IAuthorizeNetManager _payment;
 
-        public CartController(UserManager<User> userManager, ICartManager cart, IEmailSender mail , IInventoryManager i)
+        public CartController(UserManager<User> userManager, IAuthorizeNetManager payment, ICartManager cart, IEmailSender mail, IInventoryManager inventory)
         {
             _userManager = userManager;
             _cart = cart;
             _mail = mail;
-            _inventory = i;
+            _inventory = inventory;
+            _payment = payment;
         }
 
         /// <summary>
@@ -43,6 +48,11 @@ namespace ReFreshMVC.Controllers
             {
                 cart = await _cart.CreateCartAsync(username);
             }
+            //if(TempData["paymentResponse"] != null)
+            //{
+            //    ViewBag["paymentResponse"] = TempData["paymentResponse"];
+            //}
+
             return View(cart);
         }
 
@@ -50,12 +60,42 @@ namespace ReFreshMVC.Controllers
         /// closes cart and calls /Receipt with closed cart
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<IActionResult> Checkout()
+        [HttpPost]
+        public async Task<IActionResult> Checkout([Bind("Number, ExpDate")] CreditCardViewModel ccvm)
         {
             Cart cart = await _cart.GetCartAsync(User.Identity.Name);
-            await _cart.CloseCartAsync(cart);
-            return RedirectToAction("Receipt", "Cart", cart);
+
+            // Get cart total
+            int amount = 0;
+            foreach(Order o in cart.Orders)
+            {
+                amount += o.ExtPrice;
+            }
+
+            createTransactionResponse response = _payment.RunCard(amount, ccvm.ExpDate, ccvm.Number);
+            if (response.messages.resultCode == messageTypeEnum.Ok)
+            {
+                await _cart.CloseCartAsync(cart);
+                return RedirectToAction("Receipt", "Cart", cart);
+            }
+            else
+            {
+                TempData["paymentResponse"] = response.messages.resultCode;
+                return RedirectToAction("Index", "Cart");
+            }
+        }
+
+        /// <summary>
+        /// GET: Cart
+        /// Renders Payment View
+        /// </summary>
+        /// <returns>Payment View with Cart object</returns>
+        [HttpGet]
+        public async Task<IActionResult> Payment()
+        {
+            Cart cart = await _cart.GetCartAsync(User.Identity.Name);
+
+            return View(cart);
         }
 
         /// <summary>
@@ -72,6 +112,12 @@ namespace ReFreshMVC.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Post: Order
+        /// updates an order quantity
+        /// </summary>
+        /// <param name="order"></param>
+        /// <returns>Cart View</returns>
         [HttpPost]
         public async Task<IActionResult> Edit([Bind("CartID, ProductID, Qty, Product")] Order order)
         {

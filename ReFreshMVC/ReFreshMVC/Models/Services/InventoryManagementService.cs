@@ -10,41 +10,11 @@ namespace ReFreshMVC.Models.Services
 {
     public class InventoryManagementService : IInventoryManager
     {
-        private ReFreshDbContext _context { get; }
+        private ReFreshDbContext _db { get; }
 
         public InventoryManagementService(ReFreshDbContext context)
         {
-            _context = context;
-        }
-
-        /// <summary>
-        /// Add product to DB with Product model
-        /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
-        public async Task CreateAsync(Product product)
-        {
-            _context.Inventory.Add(product);
-            await _context.SaveChangesAsync();
-        }
-
-        /// <summary>
-        /// Deletes Product from DB by ProductID
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task DeleteAsync(int id)
-        {
-            try
-            {
-                Product productToDelete = await _context.Inventory.FindAsync(id);
-                _context.Inventory.Remove(productToDelete);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            _db = context;
         }
         
         /// <summary>
@@ -53,7 +23,7 @@ namespace ReFreshMVC.Models.Services
         /// <returns>List of Products</returns>
         public async Task<List<Product>> GetAllAsync()
         {
-            return await _context.Inventory.ToListAsync();
+            return await _db.Inventory.ToListAsync();
         }
         
         /// <summary>
@@ -62,28 +32,58 @@ namespace ReFreshMVC.Models.Services
         /// <returns>List of Non-Meats Products</returns>
         public async Task<List<Product>> GetAllNonMeatAsync()
         {
-            return await _context.Inventory.Where(p => p.Meaty == false).ToListAsync();
+            return await _db.Inventory.Where(p => p.Meaty == false).ToListAsync();
         }
         
         /// <summary>
         /// Get one Product by the ProductID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Product Object</returns>
+        /// <param name="id"> ID of product to return </param>
+        /// <returns> Product Object </returns>
         public async Task<Product> GetOneByIdAsync(int id)
         {
-            return await _context.Inventory.FindAsync(id);
+            return await _db.Inventory.FindAsync(id);
         }
-        
+
         /// <summary>
         /// Update a Product in the DB by the Product Object
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product"> product to update </param>
+        /// <returns> task completed </returns>
         public async Task UpdateAsync(Product product)
         {
-            _context.Inventory.Update(product);
-            await _context.SaveChangesAsync();
+            _db.Inventory.Update(product);
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Add product to DB with Product model
+        /// </summary>
+        /// <param name="product"> product to create </param>
+        /// <returns> task completed </returns>
+        public async Task CreateAsync(Product product)
+        {
+            _db.Inventory.Add(product);
+            await _db.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// Deletes Product from DB by ProductID
+        /// </summary>
+        /// <param name="id"> ID of product to delete </param>
+        /// <returns> task completed </returns>
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                Product productToDelete = await _db.Inventory.FindAsync(id);
+                _db.Inventory.Remove(productToDelete);
+                await _db.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
