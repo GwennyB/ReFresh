@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace ReFreshMVC.Pages.Admin
 {
+    [Authorize("AdminOnly")]
     public class IndexModel : PageModel
     {
         /// <summary>
