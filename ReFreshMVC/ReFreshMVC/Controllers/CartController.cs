@@ -48,10 +48,11 @@ namespace ReFreshMVC.Controllers
             {
                 cart = await _cart.CreateCartAsync(username);
             }
-            //if(TempData["paymentResponse"]. != null)
+            //if(TempData["paymentResponse"] != null)
             //{
             //    ViewBag["paymentResponse"] = TempData["paymentResponse"];
             //}
+
             return View(cart);
         }
 
