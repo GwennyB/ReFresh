@@ -19,6 +19,10 @@ namespace ReFreshMVC.Models.Components
             _cart = cart;
             _inventory = inventory;
         }
+        /// <summary>
+        /// Get: Payment Modal View
+        /// </summary>
+        /// <returns>Payment Modal View with CreditCardViewModel</returns>
         [HttpGet]
         public async Task<IViewComponentResult> InvokeAsync()
         {

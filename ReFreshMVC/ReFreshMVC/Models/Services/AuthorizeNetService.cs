@@ -65,24 +65,6 @@ namespace ReFreshMVC.Models.Services
 
             return response;
 
-            //if (response.messages.resultCode == messageTypeEnum.Ok)
-            //{
-            //    if (response.transactionResponse != null)
-            //    {
-            //        Console.WriteLine("Success, Auth Code : " + response.transactionResponse.authCode);
-            //        return response.transactionResponse.authCode;
-            //    }
-            //    return "false";
-            //}
-            //else
-            //{
-            //    if (response.transactionResponse != null)
-            //    {
-            //        return "Transaction Error : " + response.transactionResponse.errors[0].errorCode + " " + response.transactionResponse.errors[0].errorText;
-            //    }
-            //    return "Error: " + response.messages.message[0].code + "  " + response.messages.message[0].text;
-            //}
-
         }
     }
 }
