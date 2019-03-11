@@ -38,18 +38,18 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// Get one Product by the ProductID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns>Product Object</returns>
+        /// <param name="id"> ID of product to return </param>
+        /// <returns> Product Object </returns>
         public async Task<Product> GetOneByIdAsync(int id)
         {
             return await _db.Inventory.FindAsync(id);
         }
-        
+
         /// <summary>
         /// Update a Product in the DB by the Product Object
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product"> product to update </param>
+        /// <returns> task completed </returns>
         public async Task UpdateAsync(Product product)
         {
             _db.Inventory.Update(product);
@@ -59,8 +59,8 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// Add product to DB with Product model
         /// </summary>
-        /// <param name="product"></param>
-        /// <returns></returns>
+        /// <param name="product"> product to create </param>
+        /// <returns> task completed </returns>
         public async Task CreateAsync(Product product)
         {
             _db.Inventory.Add(product);
@@ -70,8 +70,8 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// Deletes Product from DB by ProductID
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id"> ID of product to delete </param>
+        /// <returns> task completed </returns>
         public async Task DeleteAsync(int id)
         {
             try

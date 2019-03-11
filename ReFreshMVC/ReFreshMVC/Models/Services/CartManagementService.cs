@@ -49,7 +49,6 @@ namespace ReFreshMVC.Models.Services
             cart.Completed = DateTime.Now;
             await Task.Run(() => _context.Update(cart));
             await _context.SaveChangesAsync();
-            // TODO in Sprint 3: Turn on this feature to update Inventory quantities
             cart.Orders = await _context.Orders.Where(o => o.CartID == cart.ID).ToListAsync();
             if (cart.Orders != null)
             {
@@ -71,7 +70,7 @@ namespace ReFreshMVC.Models.Services
         /// Gets a user's cart
         /// </summary>
         /// <param name="username"></param>
-        /// <returns>Cart</returns>
+        /// <returns> open Cart belonging to 'username' </returns>
         public async Task<Cart> GetCartAsync(string username)
         {
             Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
@@ -92,8 +91,8 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// Adds an order with a CartId to the Order Table
         /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
+        /// <param name="order"> order object to add </param>
+        /// <returns> task completed </returns>
         public async Task AddOrderToCart(Order order)
         {
             _context.Orders.Add(order);
@@ -154,8 +153,6 @@ namespace ReFreshMVC.Models.Services
         /// <returns>Order order</returns>
         public async Task<Order> GetOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
 
-        // TODO: add tests
-
         /// <summary>
         /// queries Carts table for last 10 'closed' carts
         /// </summary>
@@ -200,7 +197,7 @@ namespace ReFreshMVC.Models.Services
         /// update the database with a cart object
         /// </summary>
         /// <param name="cart">Cart object</param>
-        /// <returns>Task.Completed</returns>
+        /// <returns> task completed </returns>
         public async Task UpdateCart(Cart cart)
         {
             _context.Carts.Update(cart);

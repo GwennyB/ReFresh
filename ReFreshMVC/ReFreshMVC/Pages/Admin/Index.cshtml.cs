@@ -41,10 +41,9 @@ namespace ReFreshMVC.Pages.Admin
         public List<Product> CurrentInventory { get; set; }
         public IList<User> Admins { get; set; }
 
-        //[FromRoute]
-        //public int? ID { get; set; }
         [BindProperty]
         public Product Product { get; set; }
+
         [BindProperty]
         public IFormFile Image { get; set; }
 
@@ -65,7 +64,8 @@ namespace ReFreshMVC.Pages.Admin
         }
 
         /// <summary>
-        /// updates existing inventory entry or creates a new one
+        /// POST: /Admin
+        /// updates existing inventory product in inventory or creates a new one
         /// </summary>
         /// <returns> reloads Admin page </returns>
         public async Task<IActionResult> OnPost()
@@ -111,12 +111,22 @@ namespace ReFreshMVC.Pages.Admin
             return RedirectToPage("../Admin/Index");
         }
 
+        /// <summary>
+        /// DELETE: /Admin
+        /// Deletes a product from inventory
+        /// </summary>
+        /// <returns> reloads Admin page </returns>
         public async Task<IActionResult> OnPostDelete()
         {
             await _inv.DeleteAsync(Product.ID);
             return RedirectToPage("../Admin/Index");
         }
 
+        /// <summary>
+        /// POST: /Admin
+        /// adds a user to 'Admin' role if email found in UserDB
+        /// </summary>
+        /// <returns> reloads Admin page </returns>
         public async Task<IActionResult> OnPostMakeAdmin()
         {
             User user = await _user.FindByEmailAsync(Email);
