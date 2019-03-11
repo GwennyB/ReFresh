@@ -91,3 +91,10 @@ td, th {
     color: black;
 }
 
+#admins > form {
+    border: none;
+}
+
+#admins {
+    flex-flow: column;
+}

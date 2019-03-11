@@ -12,6 +12,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using System.Collections;
 
 namespace ReFreshMVC.Controllers
 {
@@ -81,7 +82,7 @@ namespace ReFreshMVC.Controllers
         {
             return RedirectToAction("NonMeatProducts", "Product");
         }
-        
+
         /// <summary>
         /// displays a list of all products to the Iventory View
         /// </summary>

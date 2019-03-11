@@ -62,6 +62,11 @@ namespace ReFreshMVC
                 options.AddPolicy("Carnivore", policy => policy.Requirements.Add(new DietRestriction()));
             });
 
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AdminOnly", policy => policy.RequireRole(AppRoles.Admin));
+            });
+
             services.AddScoped<IAuthorizationHandler, DietRestriction>();
             services.AddScoped<IEmailSender, EmailSender>();
 

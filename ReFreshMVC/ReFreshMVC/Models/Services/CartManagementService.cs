@@ -123,7 +123,7 @@ namespace ReFreshMVC.Models.Services
             Order order = await _context.Orders.FirstOrDefaultAsync(o => o.CartID == cart.ID && o.ProductID == productId);
             if(cart != null && order != null)
             {
-                await Task.Run(() => _context.Orders.Remove(order));
+                _context.Orders.Remove(order);
             }
             await _context.SaveChangesAsync();
 

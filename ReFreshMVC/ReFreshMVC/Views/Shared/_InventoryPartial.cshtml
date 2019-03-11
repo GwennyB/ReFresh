@@ -3,11 +3,9 @@
 
 
 <form class="postform" method="post" enctype="multipart/form-data">
-    @*<label asp-for="Image"></label>*@
     <input asp-for="ID" type="hidden" />
     <div class="productimage">
-        <img src="~/Img/@Model.Image" alt="Name" />
-        <label asp-for="Image"></label>
+        <img src="@Model.Image" alt="Name" />
         <input asp-for="Image" type="file" />
     </div>
     <div class="inventory">
@@ -32,4 +30,5 @@
         </fieldset>
     </div>
 </form>
+
 
