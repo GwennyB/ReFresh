@@ -4,8 +4,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 using ReFreshMVC.Models;
 using ReFreshMVC.Models.Interfaces;
+using ReFreshMVC.Models.Util;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -22,12 +25,15 @@ namespace ReFreshMVC.Pages.Admin
         private IInventoryManager _inv;
         private readonly IEmailSender _mail;
         private UserManager<User> _user;
-        public IndexModel(ICartManager cart, IInventoryManager inv, IEmailSender mail, UserManager<User> user)
+        public Blob ImageBlob { get; }
+        public IndexModel(ICartManager cart, IInventoryManager inv, IEmailSender mail, UserManager<User> user, IConfiguration config)
         {
             _cart = cart;
             _inv = inv;
             _mail = mail;
             _user = user;
+            ImageBlob = new Blob(config);
+
         }
 
         public List<Cart> CartsClosed { get; set; }
@@ -39,9 +45,8 @@ namespace ReFreshMVC.Pages.Admin
         //public int? ID { get; set; }
         [BindProperty]
         public Product Product { get; set; }
-        //[BindProperty]
-        //public IFormFile Image { get; set; }
-        //public Blob ImageBlob { get; }
+        [BindProperty]
+        public IFormFile Image { get; set; }
 
         [BindProperty]
         public string Email { get; set; }
@@ -68,23 +73,23 @@ namespace ReFreshMVC.Pages.Admin
             Product query = await _inv.GetOneByIdAsync(Product.ID);
             Product.ID = 0;
 
-            //if (Image != null)
-            //{
-            //    // do all the blob stuff
-            //    // 1. make a filepath
-            //    var filePath = Path.GetTempFileName();
-            //    // 2. open stream
-            //    using (var stream = new FileStream(filePath, FileMode.Create))
-            //    {
-            //        await Image.CopyToAsync(stream);
-            //    }
-            //    // 3. get container and blob
-            //    var container = await ImageBlob.GetContainer("userpics");
-            //    CloudBlob blob = await ImageBlob.GetBlob(Image.FileName, container.Name);
-            //    // 4. upload image
-            //    ImageBlob.UploadFile(container, Image.FileName, filePath);
-            //    query.Photo = blob.Uri.ToString();
-            //}
+            if (Image != null)
+            {
+                // do all the blob stuff
+                // 1. make a filepath
+                var filePath = Path.GetTempFileName();
+                // 2. open stream
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await Image.CopyToAsync(stream);
+                }
+                // 3. get container and blob
+                var container = await ImageBlob.GetContainer("products");
+                CloudBlob blob = await ImageBlob.GetBlob(Image.FileName, container.Name);
+                // 4. upload image
+                ImageBlob.UploadFile(container, Image.FileName, filePath);
+                Product.Image = blob.Uri.ToString();
+            }
 
             if (query == null || query.ID == 0)
             {
@@ -99,9 +104,10 @@ namespace ReFreshMVC.Pages.Admin
                 query.Description = Product.Description;
                 query.Meaty = Product.Meaty;
                 query.Category = Product.Category;
+                query.Image = Product.Image;
                 await _inv.UpdateAsync(query);
             }
-
+            CurrentInventory = await _inv.GetAllAsync();
             return RedirectToPage("../Admin/Index");
         }
 
