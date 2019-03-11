@@ -75,8 +75,14 @@ namespace ReFreshMVC.Models.Services
         public async Task<Cart> GetCartAsync(string username)
         {
             Cart cart = await _context.Carts.Where(c => c.UserName == username && c.Completed == null).Include("Orders.Product").FirstOrDefaultAsync();
+
+
             if(cart != null)
             {
+                cart.Total = 0;
+                foreach (Order order in cart.Orders)
+                    cart.Total += order.ExtPrice;
+
                 _context.Carts.Update(cart);
                 await _context.SaveChangesAsync();
             }
@@ -109,7 +115,7 @@ namespace ReFreshMVC.Models.Services
         /// removes an item from cart
         /// </summary>
         /// <param name="username"> cart owner's email address </param>
-        /// <param name="productId"> item to remove from cart </param>
+        /// <param name="productId"> Product Id property </param>
         /// <returns> completed task </returns>
         public async Task DeleteOrderFromCart(string username, int productId)
         {
@@ -126,11 +132,16 @@ namespace ReFreshMVC.Models.Services
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="cartId"></param>
-        /// <returns></returns>
+        /// <param name="cartId">Cart Id property</param>
+        /// <returns>Cart Object</returns>
         public async Task<Cart> GetCartByIdAsync(int cartId)
         {
             Cart cart = await _context.Carts.Where(c => c.ID == cartId).Include("Orders.Product").FirstOrDefaultAsync();
+            foreach(Order order in cart.Orders)
+                    cart.Total += order.ExtPrice;
+
+            _context.Carts.Update(cart);
+            await _context.SaveChangesAsync();
             return cart;
         }
 
@@ -138,8 +149,8 @@ namespace ReFreshMVC.Models.Services
         /// Get: Order
         /// finds order by CartID and ProductID
         /// </summary>
-        /// <param name="cartId"></param>
-        /// <param name="productId"></param>
+        /// <param name="cartId">Cart Id property</param>
+        /// <param name="productId">Product Id property</param>
         /// <returns>Order order</returns>
         public async Task<Order> GetOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
 
@@ -183,6 +194,17 @@ namespace ReFreshMVC.Models.Services
                 }
             }
             return carts;
+        }
+
+        /// <summary>
+        /// update the database with a cart object
+        /// </summary>
+        /// <param name="cart">Cart object</param>
+        /// <returns>Task.Completed</returns>
+        public async Task UpdateCart(Cart cart)
+        {
+            _context.Carts.Update(cart);
+            await _context.SaveChangesAsync();
         }
     }
 }

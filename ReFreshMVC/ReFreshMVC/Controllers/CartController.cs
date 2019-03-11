@@ -85,6 +85,11 @@ namespace ReFreshMVC.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: Cart
+        /// Renders Payment View
+        /// </summary>
+        /// <returns>Payment View with Cart object</returns>
         [HttpGet]
         public async Task<IActionResult> Payment()
         {

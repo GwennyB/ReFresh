@@ -19,7 +19,7 @@ namespace ReFreshMVC.Models.Services
             _configuration = configuration;
         }
 
-        public createTransactionResponse RunCard(int amount, string expDate, string number)
+        public createTransactionResponse RunCard(int orderAmount, string expDate, string number)
         {
             ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
 
@@ -46,7 +46,7 @@ namespace ReFreshMVC.Models.Services
             var transactionRequest = new transactionRequestType
             {
                 transactionType = transactionTypeEnum.authCaptureTransaction.ToString(),   // charge the card
-                amount = amount,
+                amount = orderAmount,
                 payment = paymentType
             };
 
