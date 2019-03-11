@@ -61,7 +61,7 @@ The Cart data model associates a grouping of 'Orders' (see below) with a user.  
 
 The Order data model is a join between an entry in the Inventory (ie - Products) table and an entry in the Carts table; that is, it 'puts' a Product into a Cart. It also carries Qty and ExtPrice as payload. Each entry is identified by a composite of the cart's primary key and the product's primary key. Since a 'check out' action closes the cart and disallows future changes, the cart ID serves as the order ID for future reference - all items associated with a CartID become a completed purchase.  
 
-    ![Products DB schema](assets/schema.png)  
+![Products DB schema](assets/schema.png)  
 
 Dependency injection is used to isolate the data storage from its point of use (ie - the CRUD logic in the page routes). The Identity API includes interfaces and services for the user - those services have been injected into pages where user data is needed to change the displayed content (such as displaying a login link if no user is logged in). Additionally, the app contains an interface package for products to avoid direct coupling between page route logic and the Products database. Interfaces and associated services are built for Cart (to manage Cart and Orders CRUD, checkout steps, receipts and notifications), Inventory (to manage Inventory CRUD).
 
