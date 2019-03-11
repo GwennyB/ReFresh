@@ -1,0 +1,21 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ReFreshMVC.Models
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="~/reset.css" rel="stylesheet" />
+    @*<link href="___ADD_CUSTOM_FONT_HERE___" rel="stylesheet">*@
+    <link href="~/StyleSheet_Admin.css" rel="stylesheet" />
+</head>
+<body>
+    @*<partial name="../Shared/_NavPartial.cshtml" />*@
+    <div class="contents">
+        @RenderBody()
+    </div>
+</body>
+</html>

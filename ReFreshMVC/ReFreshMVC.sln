@@ -5,7 +5,7 @@ VisualStudioVersion = 15.0.28307.421
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReFreshMVC", "ReFreshMVC\ReFreshMVC.csproj", "{56FF0773-564E-4018-9FBA-2973FD44BC05}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReFreshUnitTests", "ReFreshUnitTests\ReFreshUnitTests.csproj", "{97D965EA-C6BA-486F-A11D-4F39567AE35A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ReFreshUnitTests", "ReFreshUnitTests\ReFreshUnitTests.csproj", "{97D965EA-C6BA-486F-A11D-4F39567AE35A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

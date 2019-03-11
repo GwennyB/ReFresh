@@ -142,5 +142,47 @@ namespace ReFreshMVC.Models.Services
         /// <param name="productId"></param>
         /// <returns>Order order</returns>
         public async Task<Order> GetOrderByCK(int cartId, int productId) => await _context.Orders.Where(o => o.CartID == cartId && o.ProductID == productId).FirstOrDefaultAsync();
+
+        // TODO: add tests
+
+        /// <summary>
+        /// queries Carts table for last 10 'closed' carts
+        /// </summary>
+        /// <returns> List of closed carts </returns>
+        public async Task<List<Cart>> GetLastTenCarts()
+        {
+            List<Cart> carts = await _context.Carts.OrderByDescending(c => c.Completed).Take(10).ToListAsync();
+            foreach (Cart cart in carts)
+            {
+                if (cart.Orders != null)
+                {
+                    foreach (Order item in cart.Orders)
+                    {
+                        cart.Total += item.ExtPrice;
+                    }
+                }
+            }
+            return carts;
+        }
+
+        /// <summary>
+        /// queries Carts table for all 'open' carts
+        /// </summary>
+        /// <returns> List of open carts </returns>
+        public async Task<List<Cart>> GetOpenCarts()
+        {
+            List<Cart> carts = await _context.Carts.Where(c => c.Completed == null).Include("Orders.Product").ToListAsync();
+            foreach (Cart cart in carts)
+            {
+                if (cart.Orders != null)
+                {
+                    foreach (Order item in cart.Orders)
+                    {
+                        cart.Total += item.ExtPrice;
+                    }
+                }
+            }
+            return carts;
+        }
     }
 }

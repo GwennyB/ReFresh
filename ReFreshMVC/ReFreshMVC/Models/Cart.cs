@@ -22,5 +22,8 @@ namespace ReFreshMVC.Models
         // join collection
         public ICollection<Order> Orders { get; set; }
 
+        // total cost for all orders
+        public int Total { get; set; }
+
     }
 }
