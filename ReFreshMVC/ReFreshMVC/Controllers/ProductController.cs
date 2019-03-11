@@ -145,6 +145,10 @@ namespace ReFreshMVC.Controllers
             order.CartID = cart.ID;
             order.ExtPrice = order.Qty * product.Price;
 
+            // add order total to cart total and update cart
+            cart.Total = order.ExtPrice;
+            await _cart.UpdateCart(cart);
+
             // Check if order exists
             if (cart.Orders.Where(o => o.CartID == cart.ID && o.ProductID == order.ProductID).FirstOrDefault() != null)
             {

@@ -32,8 +32,8 @@
                 {
                     <tr>
 
-                        <th>@order.Product.Name"</th>
-                        <th>@order.Qty"</th>
+                        <th>@order.Product.Name</th>
+                        <th>@order.Qty</th>
                         <th>$ @order.ExtPrice</th>
                     </tr>
                 }
@@ -47,11 +47,16 @@
                         @{
                             if (Model.Orders.Count != 0)
                             {
-                                <a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                                @*<a class="waves-effect waves-light btn" asp-controller="Cart" asp-action="Payment">Check Out</a>*@
+                        @*<div id="ShoppingCartComponent" class="waves-effect waves-light btn modal-trigger" data-target="paymentModal">
+                            Checkout
+                            @await Component.InvokeAsync("ShoppingCart")
+                        </div>*@
+                                <a class="waves-effect waves-light btn modal-trigger" data-target="paymentModal">Checkout</a>
                             }
                             else
                             {
-                                <a class="waves-effect waves-light btn disabled" asp-controller="Cart" asp-action="Checkout">Check Out</a>
+                                <a class="waves-effect waves-light btn disabled" asp-controller="Cart" asp-action="Payment">Check Out</a>
                             }
                         }
                     </td>
@@ -61,3 +66,6 @@
 
     </table>
 </form>
+<div id="PaymentComponent">
+    @await Component.InvokeAsync("Payment", Model)
+</div>

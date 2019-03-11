@@ -40,6 +40,9 @@
     <script>
         $(document).ready(function () {
             $('.collapsible').collapsible();
+            $('.datepicker').datepicker({
+                format: "mmyy",
+            });
             $("#showCartComponent").click(function () {
                 $("#ShoppingCartComponent").show();
             });
@@ -47,11 +50,12 @@
                 $("#ShoppingCartComponent").hide();
             });
             $('select').formSelect();
-            $('.modal').modal({
-                preventScrolling: true,
+            $('.modal').modal(
+            {
                 startingTop: '4%',
                 endingTop:'30%'
-            });
+            }
+            );
             $('.carousel.carousel-slider').carousel({
                 indicators: true,
                 duration: 10,

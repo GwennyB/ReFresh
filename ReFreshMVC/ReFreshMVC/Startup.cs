@@ -42,6 +42,7 @@ namespace ReFreshMVC
             services.AddScoped<IInventoryManager, InventoryManagementService>();
             services.AddScoped<ISearchBarManager, SearchBarManagementService>();
             services.AddScoped<ICartManager, CartManagementService>();
+            services.AddScoped<IAuthorizeNetManager, AuthorizeNetService>();
 
 
             services.AddAuthentication()

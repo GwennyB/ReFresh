@@ -13,7 +13,7 @@ namespace ReFreshMVC.Models.Interfaces
         Task<List<Cart>> GetLastTenCarts();
         Task<List<Cart>> GetOpenCarts();
         //Task<List<Cart>> GetAllTheCarts();
-
+        Task UpdateCart(Cart cart);
         Task AddOrderToCart(Order order);
         Task UpdateOrderInCart(Order order);
         Task DeleteOrderFromCart(string username, int productId);

@@ -20,11 +20,8 @@ namespace ReFreshMVC.Models.Components
             _inventory = inventory;
         }
 
-        public async Task<IViewComponentResult> InvokeAsync(string userID)
-        {
-            Cart cart = await _cart.GetCartAsync(userID);
-            return View(cart);
-        }
+        [HttpGet]
+        public async Task<IViewComponentResult> InvokeAsync() => View(await _cart.GetCartAsync(User.Identity.Name));
 
         [HttpPost]
         public async Task<IViewComponentResult> Edit([Bind("CartID, ProductID, Qty, Product")] Order order)

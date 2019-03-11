@@ -6,36 +6,38 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ReFreshMVC.Models.Interfaces;
 
-namespace ReFreshMVC.Models
+namespace ReFreshMVC.Models.Services
 {
-    public class AuthorizeNetModel
+    public class AuthorizeNetService : IAuthorizeNetManager
     {
-        public string ApiLoginID { get; set; }
-        public string ApiTransactionKey { get; set; }
+        private IConfiguration _configuration;
 
-        public AuthorizeNetModel(string apiLoginID, string apiTransactionKey)
+        public AuthorizeNetService(IConfiguration configuration)
         {
-            ApiLoginID = apiLoginID;
-            ApiTransactionKey = apiTransactionKey;
+            _configuration = configuration;
         }
 
-        public createTransactionResponse RunCard()
+        public createTransactionResponse RunCard(int orderAmount, string expDate, string number)
         {
             ApiOperationBase<ANetApiRequest, ANetApiResponse>.RunEnvironment = AuthorizeNet.Environment.SANDBOX;
+
+
 
             // define the merchant information (authentication / transaction id)
             ApiOperationBase<ANetApiRequest, ANetApiResponse>.MerchantAuthentication = new merchantAuthenticationType()
             {
-                name = ApiLoginID,
+                name = _configuration.GetConnectionString("AuthorizeNet:ClientId"),
                 ItemElementName = ItemChoiceType.transactionKey,
-                Item = ApiTransactionKey,
+                Item = _configuration.GetConnectionString("Authorize:TransactionKey"),
             };
 
             var creditCard = new creditCardType
             {
-                cardNumber = "4111111111111111",
-                expirationDate = "0719"
+                cardNumber = number,
+                expirationDate = expDate
+
             };
 
             //standard api call to retrieve response
@@ -44,7 +46,7 @@ namespace ReFreshMVC.Models
             var transactionRequest = new transactionRequestType
             {
                 transactionType = transactionTypeEnum.authCaptureTransaction.ToString(),   // charge the card
-                amount = 133.45m,
+                amount = orderAmount,
                 payment = paymentType
             };
 
