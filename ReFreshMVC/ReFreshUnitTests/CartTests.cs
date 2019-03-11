@@ -197,5 +197,54 @@ namespace ReFreshUnitTests
                 Assert.Equal(25, result.ExtPrice);
             }
         }
+
+        [Fact]
+        public async Task CanGetLastTen()
+        {
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetLastTen").Options;
+
+            using (ReFreshDbContext context = new ReFreshDbContext(options))
+            {
+                CartManagementService cms = new CartManagementService(context);
+                List<Cart> carts = new List<Cart>();
+                for(int i = 0; i < 10; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+
+                var result = await cms.GetLastTenCarts();
+
+                Assert.Equal(carts, result);
+            }
+        }
+
+        [Fact]
+        public async Task CanGetOpenCarts()
+        {
+            DbContextOptions<ReFreshDbContext> options = new DbContextOptionsBuilder<ReFreshDbContext>().UseInMemoryDatabase("GetLastTen").Options;
+
+            using (ReFreshDbContext context = new ReFreshDbContext(options))
+            {
+                CartManagementService cms = new CartManagementService(context);
+                List<Cart> carts = new List<Cart>();
+                for (int i = 1; i <= 5; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+                for (int i = 6; i <= 10; i++)
+                {
+                    await cms.CreateCartAsync($"test{i}");
+                    Cart cart = await cms.GetCartAsync($"test{i}");
+                    await cms.CloseCartAsync(cart);
+                    carts.Add(await cms.GetCartAsync($"test{i}"));
+                }
+
+                var result = await cms.GetOpenCarts();
+
+                Assert.Equal(carts, result);
+            }
+        }
     }
 }
