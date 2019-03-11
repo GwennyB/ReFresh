@@ -43,6 +43,10 @@ namespace ReFreshMVC.Models.Services
             //standard api call to retrieve response
             var paymentType = new paymentType { Item = creditCard };
 
+            // Set Max for Payment
+            if (orderAmount > 4000)
+                orderAmount = 4000;
+
             var transactionRequest = new transactionRequestType
             {
                 transactionType = transactionTypeEnum.authCaptureTransaction.ToString(),   // charge the card
