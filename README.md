@@ -1,7 +1,7 @@
+## *** NO LONGER DEPLOYED ON AZURE ***  
+
 # ReFresh Foods 
 ReFresh Foods is an ASP.NET Core (MVC) eCommerce website offering leftovers for sale. Registered users can log in (using local or 3rd-party authentication) to see customized content and to shop. Guest users can browse the page at their leisure, or they can register for an account for customized content and shopping.
-
-Deployed in Azure at: https://refreshfoods.azurewebsites.net
 
 ## Getting Started, Build, and Test
 To build and run this page locally (using Visual Studio and SQL Server):
